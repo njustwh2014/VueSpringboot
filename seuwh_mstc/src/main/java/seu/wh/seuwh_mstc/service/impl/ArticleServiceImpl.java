@@ -1,0 +1,144 @@
+/*
+ * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
+package seu.wh.seuwh_mstc.service.impl;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import seu.wh.seuwh_mstc.dao.*;
+import seu.wh.seuwh_mstc.model.*;
+import seu.wh.seuwh_mstc.result.ResultInfo;
+import seu.wh.seuwh_mstc.service.ArticleService;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Service
+public class ArticleServiceImpl implements ArticleService {
+    @Autowired
+    UserDao userDao;
+    @Autowired
+    HostHolder hostHolder;
+    @Autowired
+    ArticleInfoDao articleInfoDao;
+    @Autowired
+    ArticleBodyDao articleBodyDao;
+    @Autowired
+    ArticleTagDao articleTagDao;
+    @Autowired
+    ArticleViewInfoDao articleViewInfoDao;
+    @Autowired
+    CommentDao commentDao;
+
+    @Override
+    public ResultInfo publish(ArticleRecive articleRecive) {
+        ArticleBody articleBody=new ArticleBody();
+        ArticleInfo articleInfo=new ArticleInfo();
+        ArticleViewInfo articleViewInfo=new ArticleViewInfo();
+        User author=hostHolder.getUser();
+
+
+        author=userDao.selectById(author.getId());
+        articleInfo.setAuthor(author.getId());
+        articleInfo.setCategory(articleRecive.getCategory().getId());
+        articleInfo.setCategorydescription(articleRecive.getCategory().getCategorydescription());
+        articleInfo.setPublishtime(new Date());
+        articleInfo.setTitle(articleRecive.getTitle());
+        articleInfo.setSummary(articleRecive.getSummary());
+        articleInfoDao.addArticle(articleInfo);
+
+
+        articleBody=articleRecive.getBody();
+        articleBody.setArticleid(articleInfo.getId());
+        articleBodyDao.addArticleBody(articleBody);
+
+
+
+        List<ArticleTag> articleTagList=new ArrayList<ArticleTag>();
+        ArticleTag articleTag=null;
+        List<TagId> tagIdList=articleRecive.getTags();
+        for(TagId item:tagIdList){
+            articleTag=new ArticleTag();//值引用
+            articleTag.setArticleid(articleInfo.getId());
+            articleTag.setTagid(item.getId());
+            articleTag.setTagdescription(item.getTagdescription());
+            articleTagList.add(articleTag);
+
+        }
+        articleTagDao.addArticleTagBatch(articleTagList);
+
+
+        articleViewInfo.setArticleid(articleInfo.getId());
+        articleViewInfoDao.addArticleViewInfo(articleViewInfo);
+
+        return ResultInfo.ok(articleInfo);
+    }
+
+
+    @Override
+    public ResultInfo view(Integer id) {
+
+        //获取ArticleInfo
+        ArticleInfo articleInfo=articleInfoDao.selectByid(id);
+        Category category=new Category();
+        category.setId(articleInfo.getCategory());
+        category.setCategorydescription(articleInfo.getCategorydescription());
+
+        //获取body
+        ArticleBody articleBody=articleBodyDao.selectByArticleId(id);
+
+        //获取Tags
+        List<ArticleTag> articleTagList=articleTagDao.SelectByArticleId(id);
+
+
+        //获取viewInfo
+        ArticleViewInfo articleViewInfo=articleViewInfoDao.SelectByArticleID(id);
+
+        //组装成返回对象
+        ArticleSend articleSend=new ArticleSend();
+        articleSend.setAuthor(userDao.selectById(articleInfo.getAuthor()));
+        articleSend.setBody(articleBody);
+        articleSend.setCategory(category);
+        articleSend.setCommentcount(commentDao.CountComment(articleInfo.getId()));
+        articleSend.setId(articleInfo.getId());
+        articleSend.setPublishtime(articleInfo.getPublishtime());
+        articleSend.setSummary(articleInfo.getSummary());
+        articleSend.setTags(articleTagList);
+        articleSend.setViewcount(articleViewInfo.getViewcount());
+        articleSend.setTitle(articleInfo.getTitle());
+
+
+        return ResultInfo.ok(articleSend);
+    }
+
+
+    @Override
+    public ResultInfo getAllArticle(Integer pageNumber, Integer pageSize) {
+        List<ArticleInfo> articleInfoList=articleInfoDao.getArticleByIdRange((pageNumber-1)*pageSize,pageSize);
+        List<ArticleInfoSend> articleInfoSendList=new ArrayList<ArticleInfoSend>();
+        ArticleViewInfo articleViewInfo=null;
+        ArticleInfoSend articleInfoSend=null;
+        for(ArticleInfo item:articleInfoList){
+            articleInfoSend=new ArticleInfoSend();
+            articleInfoSend.setTitle(item.getTitle());
+            articleInfoSend.setSummary(item.getSummary());
+            articleInfoSend.setPublishtime(item.getPublishtime());
+            articleInfoSend.setId(item.getId());
+            articleInfoSend.setAuthor(userDao.selectById(item.getAuthor()));
+            articleViewInfo=articleViewInfoDao.SelectByArticleID(item.getId());
+            articleInfoSend.setCommentcount(commentDao.CountComment(item.getId()));
+            articleInfoSend.setViewcount(articleViewInfo.getViewcount());
+            articleInfoSend.setTags(articleTagDao.SelectByArticleId(item.getId()));
+            articleInfoSend.setWeight(0);
+            articleInfoSendList.add(articleInfoSend);
+
+        }
+        return ResultInfo.ok(articleInfoSendList);
+    }
+}
