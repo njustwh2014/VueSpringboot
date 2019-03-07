@@ -53,7 +53,7 @@ export default new Vuex.Store({
       let that=this
       return new Promise((resolve,reject)=>{
         getUserInfo().then(data=>{
-          if(data.data){
+          if(data.data.data){
             commit('SET_AVATAR',data.data.data.headportraiturl)
             commit('SET_NICKNAME',data.data.data.nickname)
             commit('SET_ID',data.data.data.id)
@@ -63,7 +63,7 @@ export default new Vuex.Store({
             commit('SET_NICKNAME','')
             commit('SET_ID','')
             commit('SET_EMAIL','')
-            // removeToken()
+            removeToken()
           }
           resolve(data)
         }).catch(error=>{

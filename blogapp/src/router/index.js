@@ -76,6 +76,9 @@ const router=new Router({
 })
 
 router.beforeEach((to,from,next)=>{
+  if (to.meta.title) {//判断是否有标题
+    document.title = to.meta.title
+  }
   if(getToken()){
     if(to.path==='/login'){
       next({path:'/'})}else{
