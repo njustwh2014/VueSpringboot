@@ -160,7 +160,7 @@ public class UserServiceImpl implements UserService {
     public ResultInfo getUserInfo(User user) {
         user=userDao.selectByToken(user.getToken());
         if(user==null) {
-            return ResultInfo.build(400, "用户名或密码错误！");
+            return ResultInfo.build(400, "未登录，请登录！");
         }
         return ResultInfo.ok(user);
     }

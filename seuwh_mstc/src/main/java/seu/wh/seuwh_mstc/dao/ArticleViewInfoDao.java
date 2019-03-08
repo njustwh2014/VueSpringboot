@@ -12,6 +12,7 @@ package seu.wh.seuwh_mstc.dao;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 import seu.wh.seuwh_mstc.model.ArticleViewInfo;
 
@@ -29,4 +30,9 @@ public interface ArticleViewInfoDao {
     @Select({"select * from ",TABLE_NAME,"where articleid=#{articleid}"})
     ArticleViewInfo SelectByArticleID(Integer articleid);
 
+    @Update({"update ",TABLE_NAME, " set viewcount=#{viewcount} where articleid=#{articleid}"})
+    void updateArticleViewCount(ArticleViewInfo articleViewInfo);
+
+    @Update({"update ",TABLE_NAME, " set commentcount=#{commentcount} where articleid=#{articleid}"})
+    void updateArticleCommentCount(ArticleViewInfo articleViewInfo);
 }

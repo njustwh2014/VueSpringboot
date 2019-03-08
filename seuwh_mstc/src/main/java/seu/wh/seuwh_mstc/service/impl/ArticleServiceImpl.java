@@ -18,6 +18,9 @@ import seu.wh.seuwh_mstc.service.ArticleService;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import static java.lang.String.valueOf;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
@@ -35,6 +38,8 @@ public class ArticleServiceImpl implements ArticleService {
     ArticleViewInfoDao articleViewInfoDao;
     @Autowired
     CommentDao commentDao;
+    @Autowired
+    ArticleLinkTableDao articleLinkTableDao;
 
     @Override
     public ResultInfo publish(ArticleRecive articleRecive) {
@@ -99,6 +104,8 @@ public class ArticleServiceImpl implements ArticleService {
 
         //获取viewInfo
         ArticleViewInfo articleViewInfo=articleViewInfoDao.SelectByArticleID(id);
+        articleViewInfo.setViewcount(articleViewInfo.getViewcount()+1);
+        articleViewInfoDao.updateArticleViewCount(articleViewInfo);
 
         //组装成返回对象
         ArticleSend articleSend=new ArticleSend();
@@ -111,34 +118,20 @@ public class ArticleServiceImpl implements ArticleService {
         articleSend.setSummary(articleInfo.getSummary());
         articleSend.setTags(articleTagList);
         articleSend.setViewcount(articleViewInfo.getViewcount());
+
         articleSend.setTitle(articleInfo.getTitle());
 
 
         return ResultInfo.ok(articleSend);
     }
 
-
+    // 首页获取文章简要信息
     @Override
     public ResultInfo getAllArticle(Integer pageNumber, Integer pageSize) {
-        List<ArticleInfo> articleInfoList=articleInfoDao.getArticleByIdRange((pageNumber-1)*pageSize,pageSize);
-        List<ArticleInfoSend> articleInfoSendList=new ArrayList<ArticleInfoSend>();
-        ArticleViewInfo articleViewInfo=null;
-        ArticleInfoSend articleInfoSend=null;
-        for(ArticleInfo item:articleInfoList){
-            articleInfoSend=new ArticleInfoSend();
-            articleInfoSend.setTitle(item.getTitle());
-            articleInfoSend.setSummary(item.getSummary());
-            articleInfoSend.setPublishtime(item.getPublishtime());
-            articleInfoSend.setId(item.getId());
-            articleInfoSend.setAuthor(userDao.selectById(item.getAuthor()));
-            articleViewInfo=articleViewInfoDao.SelectByArticleID(item.getId());
-            articleInfoSend.setCommentcount(commentDao.CountComment(item.getId()));
-            articleInfoSend.setViewcount(articleViewInfo.getViewcount());
-            articleInfoSend.setTags(articleTagDao.SelectByArticleId(item.getId()));
-            articleInfoSend.setWeight(0);
-            articleInfoSendList.add(articleInfoSend);
-
+        List<Map<String,Object>> articleslist=articleLinkTableDao.GetAllArticle((pageNumber-1)*pageSize,pageSize);
+        for(Map<String,Object> item:articleslist){
+            item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
         }
-        return ResultInfo.ok(articleInfoSendList);
+        return ResultInfo.ok(articleslist);
     }
 }

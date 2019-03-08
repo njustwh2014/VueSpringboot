@@ -13,10 +13,15 @@ import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import seu.wh.seuwh_mstc.dao.ArticleLinkTableDao;
+import seu.wh.seuwh_mstc.dao.LinkTableQuery;
 import seu.wh.seuwh_mstc.model.ArticleRecive;
 import seu.wh.seuwh_mstc.model.Category;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.ArticleService;
+
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -25,6 +30,10 @@ public class ArrticleController {
 
     @Autowired
     ArticleService articleService;
+    @Autowired
+    LinkTableQuery linkTableQuery;
+    @Autowired
+    ArticleLinkTableDao articleLinkTableDao;
 
     //发表文章
     @RequestMapping(value="/publish",method= RequestMethod.POST,produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -65,4 +74,8 @@ public class ArrticleController {
 
     }
 
+    @RequestMapping(value="/test", method=RequestMethod.GET)
+    public ResultInfo testLinkTableQuery(){
+        return ResultInfo.ok(null);
+    }
 }
