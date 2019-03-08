@@ -17,3 +17,8 @@ HTTP请求不能访问文件的原因：https://blog.csdn.net/qq_34301871/articl
 
 出现缺少fastcommon.h修改办法： https://blog.csdn.net/babydavic/article/details/21240021
 nginx安装：https://blog.csdn.net/qq_36922927/article/details/79554806
+
+
+
+## Mysql学习
+联表查询：https://www.cnblogs.com/withscorpion/p/9454490.html

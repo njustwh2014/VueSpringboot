@@ -15,7 +15,7 @@
     </div>
     <div class="me-article-footer">
       <span class="me-article-author">
-        <i class="el-icon-view"></i>&nbsp;{{author.nickname}}
+        <i class="el-icon-view"></i>&nbsp;{{nickname}}
       </span>
 
       <el-tag v-for="t in tags" :key="t.tagdescription" size="mini" type="success">{{t.tagdescription}}</el-tag>
@@ -38,7 +38,9 @@ export default {
     commentcount:Number,
     viewcount:Number,
     summary:String,
-    author:Object,
+    // author:Object,
+    userid:Number,
+    nickname:String,
     tags:Array,
     publishtime:String
   },
