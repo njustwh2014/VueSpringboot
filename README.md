@@ -1,6 +1,3 @@
-## 2019/3/6发现bug
-前端应该在进入界面getUser时判断，如果不能获取到用户该怎么跳转。
-
 # MyWebLearnPath
 ## servlet学习
 servlet+idea环境配置参考：https://www.cnblogs.com/javabg/p/7976977.html
