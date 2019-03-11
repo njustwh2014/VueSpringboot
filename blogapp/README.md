@@ -1,6 +1,32 @@
 ##2019/3/11
 1.实现热度排行
 2.但是在服务器端不能显示网业图标
+3.问题2解决
+4.优化了nginx gzip压缩，初次加载页面时加载量从1.5MB压缩到600kb
+
+- 修改./build/index.js 
+```javascript
+// Gzip off by default as many popular static hosts such as
+// Surge or Netlify already gzip all static assets for you.
+// Before setting to `true`, make sure to:
+// npm install --save-dev compression-webpack-plugin
+productionGzip: true,
+productionGzipExtensions: ['js', 'css']
+```
+**注意:** compression-webpack-plugin对应的webpack版本
+
+- 修改nginx.conf
+```conf
+gzip on; #开启或关闭gzip on off　　 
+gzip_static on;#是否开启gzip静态资源
+gzip_disable "msie6"; #不使用gzip IE6
+gzip_min_length 100k; #gzip压缩最小文件大小，超出进行压缩（自行调节）
+gzip_buffers 4 16k; #buffer 不用修改
+gzip_comp_level 3; #压缩级别:1-10，数字越大压缩的越好，时间也越长
+gzip_types text/plain application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png; #  压缩文件类型
+gzip_vary off;  #跟Squid等缓存服务有关，on的话会在Header里增加 "Vary: Accept-Encoding"
+```
+
 
 ## 2019/3/7 
 1.解决了登陆时token验证错误时出的bug
