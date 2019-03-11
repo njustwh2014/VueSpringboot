@@ -3,7 +3,8 @@
     <el-main>
       <article-scroll-page></article-scroll-page>
     </el-main>
-    <el-aside >
+    <el-aside style="width:450px;">
+      <carousel></carousel>
       <cardme class="me-area"></cardme>
       <card-article cardHeader="最热文章" :articles="hotArticles"></card-article>
     </el-aside>
@@ -14,6 +15,7 @@ import cardme from '@/components/view/card/cardme.vue'
 import ArticleScrollPage from '@/components/view/article/ArticleScrollPage.vue'
 import CardAticle from '@/components/view/card/CardArticle.vue'
 import {getHotArticles} from '@/api/article'
+import carousel from '@/components/common/carousel/carousel.vue'
 export default {
   name:'index',
   created(){
@@ -38,7 +40,8 @@ export default {
   components:{
     'cardme':cardme,
     ArticleScrollPage,
-    'card-article':CardAticle
+    'card-article':CardAticle,
+    carousel
   }
 }
 </script>
@@ -49,7 +52,7 @@ export default {
 
   .el-aside {
     margin-left: 20px;
-    width: 30%;
+    width: 40%;
   }
 
   .el-main {
