@@ -29,7 +29,8 @@ gzip_comp_level 3; #压缩级别:1-10，数字越大压缩的越好，时间也�
 gzip_types text/plain application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png; #  压缩文件类型
 gzip_vary off;  #跟Squid等缓存服务有关，on的话会在Header里增加 "Vary: Accept-Encoding"
 ```
-
+5. 实现走马灯，目前打算给category用
+图片统一:1964/1160
 
 ## 2019/3/7 
 1.解决了登陆时token验证错误时出的bug
