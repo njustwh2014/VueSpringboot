@@ -1,3 +1,9 @@
+## 2019/3/11
+### 1.建立articleweight表
+
+### 2.实现热度排行
+目前weight=viewcount*2+commentcount*2;
+
 ## 2019/3/8
 
 ### 1. 连表查询
