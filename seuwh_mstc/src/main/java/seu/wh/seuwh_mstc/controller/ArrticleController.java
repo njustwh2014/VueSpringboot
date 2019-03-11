@@ -74,6 +74,15 @@ public class ArrticleController {
 
     }
 
+    //获取最热文章
+    //现阶段说对weight=（访问量*2+评论量*10）进行排序操作
+
+    @RequestMapping(value="/hot",method = RequestMethod.GET)
+    public ResultInfo getHotArticles(){
+        return articleService.getHotArticles();
+
+    }
+
     @RequestMapping(value="/test", method=RequestMethod.GET)
     public ResultInfo testLinkTableQuery(){
         return ResultInfo.ok(null);

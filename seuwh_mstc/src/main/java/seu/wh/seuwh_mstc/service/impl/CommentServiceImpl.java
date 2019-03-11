@@ -10,11 +10,9 @@ package seu.wh.seuwh_mstc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import seu.wh.seuwh_mstc.dao.ArticleInfoDao;
-import seu.wh.seuwh_mstc.dao.ArticleViewInfoDao;
-import seu.wh.seuwh_mstc.dao.CommentDao;
-import seu.wh.seuwh_mstc.dao.UserDao;
+import seu.wh.seuwh_mstc.dao.*;
 import seu.wh.seuwh_mstc.model.ArticleViewInfo;
+import seu.wh.seuwh_mstc.model.ArticleWeight;
 import seu.wh.seuwh_mstc.model.comment.Comment;
 import seu.wh.seuwh_mstc.model.comment.CommentChildren;
 import seu.wh.seuwh_mstc.model.comment.CommentRecive;
@@ -36,6 +34,8 @@ public class CommentServiceImpl implements CommentService {
     ArticleInfoDao articleInfoDao;
     @Autowired
     ArticleViewInfoDao articleViewInfoDao;
+    @Autowired
+    ArticleWeightDao articleWeightDao;
 
     @Override
     public ResultInfo publish(CommentRecive commentRecive) {
@@ -48,13 +48,19 @@ public class CommentServiceImpl implements CommentService {
         comment.setLikecount(0);
         comment.setCreatedate(new Date());
         comment.setAtlevel(0);//对文章进行评论
-        ArticleViewInfo articleViewInfo=new ArticleViewInfo();
+        ArticleViewInfo articleViewInfo=null;
+        ArticleWeight articleWeight=null;
         if(commentRecive.getParentid()==null){
             //对文章评论
             commentDao.AddComment(comment);
             articleViewInfo=articleViewInfoDao.SelectByArticleID(comment.getArticleid());
             articleViewInfo.setCommentcount(articleViewInfo.getCommentcount()+1);
             articleViewInfoDao.updateArticleCommentCount(articleViewInfo);
+
+            articleWeight=articleWeightDao.selectByArticleid(comment.getArticleid());
+            articleWeight.setWeight(articleWeight.getWeight()+10);
+            articleWeightDao.updateArticleWeight(articleWeight);
+
             commentSend.setAuthor(userDao.selectById(comment.getAuthorid()));
             commentSend.setChildrens(null);
             commentSend.setAtlevel(0);

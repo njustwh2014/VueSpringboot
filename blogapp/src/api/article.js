@@ -18,7 +18,7 @@ export function getArticles(page) {
   })
 }
 
-export function getHotArtices() {
+export function getHotArticles() {
   return request({
     url: '/articles/hot',
     method: 'get'

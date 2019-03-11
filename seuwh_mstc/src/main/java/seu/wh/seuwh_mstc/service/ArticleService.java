@@ -15,4 +15,5 @@ public interface ArticleService {
  public ResultInfo publish(ArticleRecive articleRecive);
  public ResultInfo view(Integer id);
  public ResultInfo getAllArticle(Integer pageNumber,Integer pageSize);
+ public ResultInfo getHotArticles();
 }

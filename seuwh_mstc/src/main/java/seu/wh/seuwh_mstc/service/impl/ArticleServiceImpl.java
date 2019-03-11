@@ -40,12 +40,15 @@ public class ArticleServiceImpl implements ArticleService {
     CommentDao commentDao;
     @Autowired
     ArticleLinkTableDao articleLinkTableDao;
+    @Autowired
+    ArticleWeightDao articleWeightDao;
 
     @Override
     public ResultInfo publish(ArticleRecive articleRecive) {
         ArticleBody articleBody=new ArticleBody();
         ArticleInfo articleInfo=new ArticleInfo();
         ArticleViewInfo articleViewInfo=new ArticleViewInfo();
+        ArticleWeight articleWeight=new ArticleWeight();
         User author=hostHolder.getUser();
 
 
@@ -81,6 +84,9 @@ public class ArticleServiceImpl implements ArticleService {
 
         articleViewInfo.setArticleid(articleInfo.getId());
         articleViewInfoDao.addArticleViewInfo(articleViewInfo);
+        articleWeight.setArticleid(articleInfo.getId());
+        articleWeightDao.addArticleWeight(articleWeight);
+
 
         return ResultInfo.ok(articleInfo);
     }
@@ -106,6 +112,11 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleViewInfo articleViewInfo=articleViewInfoDao.SelectByArticleID(id);
         articleViewInfo.setViewcount(articleViewInfo.getViewcount()+1);
         articleViewInfoDao.updateArticleViewCount(articleViewInfo);
+
+        //获取weight
+        ArticleWeight articleWeight=articleWeightDao.selectByArticleid(id);
+        articleWeight.setWeight(articleWeight.getWeight()+2);
+        articleWeightDao.updateArticleWeight(articleWeight);
 
         //组装成返回对象
         ArticleSend articleSend=new ArticleSend();
@@ -133,5 +144,15 @@ public class ArticleServiceImpl implements ArticleService {
             item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
+    }
+
+    //获取最热文章
+    //现阶段说对weight=（访问量*2+评论量*10）进行排序操作
+
+
+    @Override
+    public ResultInfo getHotArticles() {
+        List<Map<String,Object>> hotArticles=articleWeightDao.GetHotArticles();
+        return ResultInfo.ok(hotArticles);
     }
 }

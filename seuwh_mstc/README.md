@@ -51,3 +51,123 @@ public ResultInfo getAllArticle(Integer pageNumber, Integer pageSize) {
 
 ## Mysql学习
 联表查询：https://www.cnblogs.com/withscorpion/p/9454490.html
+
+# 设计数据库
+## 1.用户表设计
+
+## 2.articles表设计
+
+### article关键信息表
+id
+author
+publishtime
+title
+summary
+category
+
+```sql
+create table articles(
+  id int(11) not null primary key auto_increment,
+  author varchar(255) not null,
+  publishtime datetime,
+  title varchar(255) not null,
+  summary text not null,
+  category int(11) not null,
+  categorydescription varchar(255)
+);
+```
+### article标签表
+id
+articleid
+tagid
+```sql
+create table articletag(
+  id int(11) not null primary key auto_increment,
+  articleid int(11) not null,
+  tagid int(11) not null,
+  tagdescription varchar(255)
+);
+```
+### 标签对应表
+id
+tagdesscription
+```sql
+create table tag(
+  id int(11) not null primary key auto_increment,
+  tagdescription varchar(255)
+);
+```
+
+### 分类对应表
+id
+categorydescription
+```sql
+create table category(
+  id int(11) not null primary key auto_increment,
+  categorydescription varchar(255)
+);
+```
+
+### article主体
+id
+articleid
+content
+contenthtml
+
+```sql
+create table articlebody(
+  id int(11) not null primary key auto_increment,
+  articleid int(11) not null,
+  content longtext not null,
+  contenthtml longtext not null
+);
+```
+
+### article访问信息
+后面利用redis实现
+id
+articleid
+viewcount
+commentcount
+```sql
+create table articleviewinfo(
+  id int(11) not null primary key auto_increment,
+  articleid int(11) not null,
+  viewcount int(11) not null,
+  commentcount int(11) not null
+);
+```
+
+## 3.评论表设计
+id
+content
+createdate
+articleid
+authorid
+parentid
+toid
+atlevel
+likecount
+
+```sql
+create table articlecomment(
+  id int(11) not null primary key auto_increment,
+  content text,
+  createdate datetime not null,
+  articleid int(11) not null,
+  authorid int(11) not null,
+  parentid int(11) not null,
+  toid int(11) not null,
+  atlevel int not null,
+  likecount int(11) not null
+);
+```
+
+## 4.热度排行
+```sql
+create table articleweight(
+  id int(11) not null primary key auto_increment,
+  articleid int(11) not null,
+  weight int(11) not null
+);
+```
