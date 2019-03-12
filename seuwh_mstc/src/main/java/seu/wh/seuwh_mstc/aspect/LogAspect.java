@@ -24,8 +24,8 @@ import java.util.Date;
 @Component
 public class LogAspect {
     private static final Logger logger = LoggerFactory.getLogger(LogAspect.class);
-//    private final String filePath="F:/codeHub/myweblearnpath/seuwh_mstc/log/lo4j.txt";
-    private final String filePath="/home/huanhuan/myweb/lo4j.txt";//在服务器上地址
+    private final String filePath="F:/codeHub/myweblearnpath/seuwh_mstc/log/lo4j.txt";
+//    private final String filePath="/home/huanhuan/myweb/lo4j.txt";//在服务器上地址
     @Before("execution(* seu.wh.seuwh_mstc.controller.*Controller.*(..))")
     public void beforeMethod(JoinPoint joinPoint) {
         StringBuilder sb = new StringBuilder();

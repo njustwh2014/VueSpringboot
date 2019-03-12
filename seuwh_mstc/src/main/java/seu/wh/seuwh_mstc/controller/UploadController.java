@@ -29,8 +29,8 @@ import java.util.UUID;
 @RestController
 public class UploadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadController.class);
-//    @Value("F:/git_repository/VueSpringboot/images")
-    @Value("/home/huanhuan/myweb/images")
+    @Value("F:/git_repository/VueSpringboot/images")
+//    @Value("/home/huanhuan/myweb/images")
     private String baseFolderPath;
 
     @RequestMapping("/upload")
@@ -54,8 +54,8 @@ public class UploadController {
 //                .append(":")
 //                .append(request.getServerPort())
 //                .append(request.getContextPath());
-//        url.append("http://localhost:8000");
-        url.append("http://47.100.58.57:3000");
+        url.append("http://localhost:8000");
+//        url.append("http://47.100.58.57:3000");
         String imgName = UUID.randomUUID() + "_" + image.getOriginalFilename().replaceAll(" ", "");
         try {
 

@@ -1,8 +1,8 @@
 export function formatTime(time) {
-  const d = new Date(time)
+  const dt = new Date(time)
   const now = Date.now()
 
-  const diff = (now - d) / 1000
+  const diff = (now - dt) / 1000
 
   if (diff < 30) {
     return '刚刚'
@@ -14,5 +14,14 @@ export function formatTime(time) {
     return '1天前'
   }
 
-  return time
+
+
+  const y=dt.getFullYear();
+  const m=(dt.getMonth()+1).toString().padStart(2,'0');
+  const d=dt.getDate().toString().padStart(2,'0');
+  // pad用于补位
+  const h=dt.getHours().toString().padStart(2,'0');
+  const minute=dt.getMinutes().toString().padStart(2,'0');
+  const s=dt.getSeconds().toString().padStart(2,'0');
+  return  `${y}-${m}-${d} ${h}:${minute}:${s}`
 }
