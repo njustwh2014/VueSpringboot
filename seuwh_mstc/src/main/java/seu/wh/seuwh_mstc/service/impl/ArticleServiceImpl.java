@@ -155,4 +155,27 @@ public class ArticleServiceImpl implements ArticleService {
         List<Map<String,Object>> hotArticles=articleWeightDao.GetHotArticles();
         return ResultInfo.ok(hotArticles);
     }
+
+
+    //根据category 获取文章
+
+
+    @Override
+    public ResultInfo getArticlesByCategory(Integer pageNumber, Integer pageSize, Integer id) {
+        List<Map<String,Object>> articleslist=articleLinkTableDao.GetArticlesByCategory((pageNumber-1)*pageSize,pageSize,id);
+        for(Map<String,Object> item:articleslist){
+            item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
+        }
+        return ResultInfo.ok(articleslist);
+    }
+    //根据Tag 获取文章
+
+    @Override
+    public ResultInfo getArticlesByTag(Integer pageNumber, Integer pageSize, Integer id) {
+        List<Map<String,Object>> articleslist=articleLinkTableDao.GetArticlesByTag((pageNumber-1)*pageSize,pageSize,id);
+        for(Map<String,Object> item:articleslist){
+            item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
+        }
+        return ResultInfo.ok(articleslist);
+    }
 }

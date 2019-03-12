@@ -18,7 +18,7 @@
         <i class="el-icon-view"></i>&nbsp;{{nickname}}
       </span>
 
-      <el-tag v-for="t in tags" :key="t.tagdescription" size="mini" type="success">{{t.tagdescription}}</el-tag>
+      <el-tag v-for="t in tags" :key="t.tagdescription" size="mini" type="success" @click="jumpToTag(t.tagid)">{{t.tagdescription}}</el-tag>
       <span class="me-pull-right me-article-count">
         <i class="el-icon-time"></i>&nbsp;{{publishtime|format}}
         <!-- 后面对时间进行格式化 -->
@@ -50,6 +50,9 @@ export default {
   methods:{
     view(id){
       this.$router.push({path:`/view/${id}`})
+    },
+    jumpToTag(id){
+      this.$router.push({path: '/tag/'+id})
     }
   }
 }

@@ -83,6 +83,26 @@ public class ArrticleController {
 
     }
 
+    //根据category获取文章
+    @RequestMapping(value = "/category",method=RequestMethod.POST)
+    public ResultInfo getArticlesByCategory(@RequestBody JSONObject jsonObject){
+        Integer pageNumber=jsonObject.getInteger("pageNumber");
+        Integer pageSize=jsonObject.getInteger("pageSize");
+        Integer id=jsonObject.getInteger("id");//category id
+
+        return articleService.getArticlesByCategory(pageNumber,pageSize,id);
+
+    }
+
+    //根据tag获取文章
+    @RequestMapping(value = "/tag",method=RequestMethod.POST)
+    public ResultInfo getArticlesByTag(@RequestBody JSONObject jsonObject){
+        Integer pageNumber=jsonObject.getInteger("pageNumber");
+        Integer pageSize=jsonObject.getInteger("pageSize");
+        Integer id=jsonObject.getInteger("id");//tag id
+        return articleService.getArticlesByTag(pageNumber,pageSize,id);
+    }
+
     @RequestMapping(value="/test", method=RequestMethod.GET)
     public ResultInfo testLinkTableQuery(){
         return ResultInfo.ok(null);

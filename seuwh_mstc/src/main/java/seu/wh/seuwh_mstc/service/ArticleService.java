@@ -16,4 +16,6 @@ public interface ArticleService {
  public ResultInfo view(Integer id);
  public ResultInfo getAllArticle(Integer pageNumber,Integer pageSize);
  public ResultInfo getHotArticles();
+ public ResultInfo getArticlesByCategory(Integer pageNumber,Integer pageSize,Integer id);
+ public ResultInfo getArticlesByTag(Integer pageNumber,Integer pageSize,Integer id);
 }

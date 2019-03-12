@@ -13,4 +13,6 @@ import seu.wh.seuwh_mstc.result.ResultInfo;
 public interface CategoryService {
 
     public ResultInfo getAllCategory();
+
+    public ResultInfo getAllArtilcesByCategory(Integer id);
 }

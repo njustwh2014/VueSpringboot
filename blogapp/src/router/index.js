@@ -19,7 +19,7 @@ const test = resolve => require(['@/components/test.vue'], resolve)
 const index=resolve=>require(['@/components/view/index.vue'],resolve)
 const blogview=resolve=>require(['@/components/view/blog/BlogView.vue'],resolve)
 const blogwrite=resolve=>require(['@/components/view/blog/BlogWrite.vue'],resolve)
-
+const blogcategorytag=resolve=>require(['@/components/view/blog/BlogCategoryTag.vue'],resolve)
 const router=new Router({
   routes: [
     {
@@ -44,6 +44,10 @@ const router=new Router({
         {
           path:'/test/:id',
           component:test
+        },
+        {
+          path: '/:type/:id',
+          component:blogcategorytag
         }
       ]
 

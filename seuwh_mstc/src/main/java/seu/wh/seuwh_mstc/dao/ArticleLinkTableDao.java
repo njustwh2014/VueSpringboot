@@ -55,4 +55,19 @@ public interface ArticleLinkTableDao {
             " order by t1.publishtime desc limit #{pageNumber},#{pageSize}"})
 //    List<Map<String,Object>> GetAllArticle(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize);
     List<Map<String,Object>> GetAllArticle(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize);
+
+    @Select({"select t1.id,t1.title,t1.summary,t1.publishtime,t1.author,t2.commentcount,t2.viewcount,t3.nickname,t3.id as userid"+
+            " from "+
+            " (articles as t1 inner join articleviewinfo as t2 on t1.id=t2.articleid and t1.category=#{id})"+
+            " inner join user_information as t3 on t1.author=t3.id"+
+            " order by t1.publishtime desc limit #{pageNumber},#{pageSize}"})
+    List<Map<String, Object>> GetArticlesByCategory(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize, @Param("id") Integer id);
+
+    @Select({"select t1.id,t1.title,t1.summary,t1.publishtime,t1.author,t2.commentcount,t2.viewcount,t3.nickname,t3.id as userid"+
+            " from "+
+            " ((articletag as t4 inner join articles as t1 on t1.id=t4.articleid and t4.tagid=#{id}) inner join articleviewinfo as t2 on t1.id=t2.articleid)"+
+            " inner join user_information as t3 on t1.author=t3.id"+
+            " order by t1.publishtime desc limit #{pageNumber},#{pageSize}"})
+    List<Map<String, Object>>  GetArticlesByTag(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize, @Param("id") Integer id);
+
 }

@@ -50,7 +50,7 @@
             标签：
             <!--<el-tag v-for="t in article.tags" :key="t.id" class="me-view-tag-item" size="mini" type="success">{{t.tagname}}</el-tag>-->
             <!-- <el-button @click="tagOrCategory('tag', t.id)" size="mini" type="primary" v-for="t in article.tags" :key="t.id" round plain>{{t.tagname}}</el-button> -->
-            <el-button v-for="t in article.tags" :key="t.id" round plain>{{t.tagdescription}}</el-button>
+            <el-button v-for="t in article.tags" :key="t.id" round plain @click="jumpToTag(t.tagid)">{{t.tagdescription}}</el-button>
 
           </div>
 
@@ -58,7 +58,7 @@
             文章分类：
             <!--<span style="font-weight: 600">{{article.category.categoryname}}</span>-->
             <!-- <el-button @click="tagOrCategory('category', article.category)" size="mini" type="primary" round plain>{{article.category.categoryname}}</el-button> -->
-            <el-button size="mini" type="primary" round plain>{{article.category.categorydescription}}</el-button>
+            <el-button size="mini" type="primary" round plain @click="jumpToCategory(article.category.id)">{{article.category.categorydescription}}</el-button>
           </div>
 
           <div class="me-view-comment">
@@ -228,6 +228,12 @@
       },
       commentCountsIncrement() {
         this.article.commentcount += 1
+      },
+      jumpToCategory(id){
+        this.$router.push({path: '/category/'+id});
+      },
+      jumpToTag(id){
+        this.$router.push({path: '/tag/'+id});
       }
     },
     components: {

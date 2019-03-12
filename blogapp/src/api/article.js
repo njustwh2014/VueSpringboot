@@ -39,17 +39,27 @@ export function viewArticle(id) {
   })
 }
 
-export function getArticlesByCategory(id) {
+export function getArticlesByCategory(page,id) {
   return request({
-    url: `/articles/category/${id}`,
-    method: 'get'
+    url: '/articles/category',
+    method: 'post',
+    data:{
+      pageNumber: page.pageNumber,
+      pageSize: page.pageSize,
+      id:id
+    }
   })
 }
 
-export function getArticlesByTag(id) {
+export function getArticlesByTag(page,id) {
   return request({
-    url: `/articles/tag/${id}`,
-    method: 'get'
+    url: '/articles/tag',
+    method: 'post',
+    data:{
+      pageNumber: page.pageNumber,
+      pageSize: page.pageSize,
+      id:id
+    }
   })
 }
 

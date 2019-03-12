@@ -3,7 +3,7 @@
     <el-carousel-item v-for="item in imgLists" :key="item.id">
       <el-card :body-style="{ padding: '0px' }">
       <!-- 图片长宽比:1964/1160 -->
-      <img :src="item.imgSrc" class="image">
+      <img :src="item.imgSrc" class="image" @click="jumpToCategory(item.id)">
       <div style="padding: 10px;">
         <span style="font-size:20px;">{{item.desc}}</span>
         <!-- <div class="bottom clearfix">
@@ -22,16 +22,27 @@ export default {
   data() {
     return {
       imgLists:[{
-        id:0,imgSrc:"http://47.100.58.57:3000/前端开发.jpg",desc:"前端开发"
+        id:1,imgSrc:"http://47.100.58.57:3000/前端开发.jpg",desc:"前端开发"
       },
       {
-        id:1,imgSrc:"http://47.100.58.57:3000/后端开发.jpg",desc:"后端开发"
+        id:2,imgSrc:"http://47.100.58.57:3000/后端开发.jpg",desc:"后端开发"
       },
       {
-        id:2,imgSrc:"http://47.100.58.57:3000/数据库.jpg",desc:"数据库"
+        id:3,imgSrc:"http://47.100.58.57:3000/数据库.jpg",desc:"数据库"
+      },
+      {
+        id:4,imgSrc:"http://47.100.58.57:3000/服务器.jpg",desc:"服务器"
+      },
+      {
+        id:5,imgSrc:"http://47.100.58.57:3000/机器学习.jpg",desc:"机器学习"
       }
       ]
     };
+  },
+  methods:{
+    jumpToCategory(id){
+      this.$router.push({path: '/category/'+id})
+    }
   }
 }
 </script>

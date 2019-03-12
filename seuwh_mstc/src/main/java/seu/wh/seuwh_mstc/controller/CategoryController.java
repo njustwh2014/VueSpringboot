@@ -10,10 +10,7 @@ package seu.wh.seuwh_mstc.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.CategoryService;
 
@@ -27,6 +24,11 @@ public class CategoryController {
     public ResultInfo getAllCaregory(){
         return categoryService.getAllCategory();
     }
+
+//    @RequestMapping(value="/categorys/${id}",method = RequestMethod.GET)
+//    public ResultInfo getAllArticleByCategory(@PathVariable Integer id){
+//        return categoryService.getAllArtilcesByCategory(id);
+//    }
 
 
 }
