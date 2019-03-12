@@ -6,7 +6,7 @@
 ### 1.建立articleweight表
 
 ### 2.实现热度排行
-目前weight=viewcount*2+commentcount*2;
+目前$weight=viewcount \times 2+commentcount \times 10$;
 
 ## 2019/3/8
 
