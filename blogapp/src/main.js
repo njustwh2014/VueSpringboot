@@ -11,8 +11,6 @@ import '@/assets/icon/iconfont.css'
 import router from './router'
 import store  from './store'
 import {formatTime} from '@/util/time'
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import '../node_modules/bootstrap/dist/js/bootstrap.min.js'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 /* eslint-disable no-new */

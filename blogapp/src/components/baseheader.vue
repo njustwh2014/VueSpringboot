@@ -8,14 +8,29 @@
       </el-col>
 
       <el-col v-if="!simple" :span="17">
-        <el-menu :router=true menu-trigger="click" active-text-color="#5FB878" :default-active="activeIndex"
+        <el-menu :router=true menu-trigger="hover" active-text-color="#5FB878" :default-active="activeIndex"
                  mode="horizontal">
           <el-menu-item index="/">首页</el-menu-item>
-          <el-menu-item index="/category/all">文章分类</el-menu-item>
-          <el-menu-item index="/tag/all">标签</el-menu-item>
+          <el-submenu index="/category">
+          <template slot="title">分类</template>
+          <el-menu-item index="/category/1">前端开发</el-menu-item>
+          <el-menu-item index="/category/2">后端开发</el-menu-item>
+          <el-menu-item index="/category/3">数据库</el-menu-item>
+          <el-menu-item index="category/4">服务器</el-menu-item>
+          <el-menu-item index="category/5">机器学习</el-menu-item>
+          <el-submenu index="2-6">
+            <template slot="title">其他</template>
+            <el-menu-item index="category/6">经济</el-menu-item>
+            <el-menu-item index="category/7">时政</el-menu-item>
+            <el-menu-item index="category/8">社会生活</el-menu-item>
+          </el-submenu>
+        </el-submenu>
+        <el-menu-item index="3" disabled>程序员步行街</el-menu-item>
+        <el-menu-item index="4" disabled>待开发</el-menu-item>
+          <!-- <el-menu-item index="/tag/all">标签</el-menu-item>
           <el-menu-item index="/archives">文章归档</el-menu-item>
           <el-menu-item index="/log">日志</el-menu-item>
-          <el-menu-item index="/messageBoard">留言板</el-menu-item>
+          <el-menu-item index="/messageBoard">留言板</el-menu-item> -->
           <el-col :span="2" :offset="4">
             <el-menu-item index="/write"><i class="el-icon-edit"></i>写文章</el-menu-item>
           </el-col>
@@ -92,7 +107,7 @@
   }
 </script>
 
-<style>
+<style scoped>
    .el-header {
     position: fixed;
     z-index: 1024;

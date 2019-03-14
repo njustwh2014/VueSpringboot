@@ -77,7 +77,6 @@ export default {
         that.loading = true
 
         getArticles(that.innerPage).then(data => {
-          console.log(data.data.data)
           let newArticles = data.data.data
           if (newArticles && newArticles.length > 0) {
             that.innerPage.pageNumber += 1
@@ -85,8 +84,6 @@ export default {
           } else {
             that.noData = true
           }
-          console.log("ok")
-
         }).catch(error => {
           if (error !== 'error') {
             

@@ -1,11 +1,11 @@
 <template>
   <el-carousel indicator-position="outside" class="me-carousel">
-    <el-carousel-item v-for="item in imgLists" :key="item.id">
+    <el-carousel-item v-for="item in articles" :key="item.id">
       <el-card :body-style="{ padding: '0px' }">
       <!-- 图片长宽比:1964/1160 -->
-      <img :src="item.imgSrc" class="image" @click="jumpToCategory(item.id)">
+      <img :src="item.cover" class="image" @click="view(item.articleid)" height="250" width="100%">
       <div style="padding: 10px;">
-        <span style="font-size:20px;">{{item.desc}}</span>
+        <span style="font-size:20px;">{{item.title}}</span>
         <!-- <div class="bottom clearfix">
           <time class="time">{{ currentDate }}</time>
           <el-button type="text" class="button">操作按钮</el-button>
@@ -19,6 +19,13 @@
 
 <script>
 export default {
+  name:'carousel',
+  props: {
+      articles: {
+        type: Array,
+        required: true
+      }
+    },
   data() {
     return {
       imgLists:[{
@@ -40,9 +47,9 @@ export default {
     };
   },
   methods:{
-    jumpToCategory(id){
-      this.$router.push({path: '/category/'+id})
-    }
+    view(id) {
+        this.$router.push({path: `/view/${id}`})
+      }
   }
 }
 </script>
@@ -79,7 +86,7 @@ export default {
   }
 
   .image {
-    width: 100%;
+    /* width: 100%; */
     display: block;
   }
 

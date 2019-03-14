@@ -26,7 +26,7 @@
 
           </div>
           <div id="placeholder" style="visibility: visible;height: 89px;display: none;"></div>
-          <markdown-editor :editor="articleForm.editor" class="me-write-editor"></markdown-editor>
+          <markdown-editor :editor="articleForm.editor" class="me-write-editor" v-on:saveImgByEditor="saveImgByEditor"></markdown-editor>
         </el-main>
       </el-container>
       <el-dialog title="摘要 分类 标签"
@@ -92,11 +92,13 @@
         publishVisible: false,
         categorys: [],
         tags: [],
+        fileList2: [],
         articleForm: {
           id: '',
           title: '',
           summary: '',
           category: '',
+          imgs:[],
           tags: [],
           editor: {
             value: '',
@@ -148,6 +150,11 @@
       }
     },
     methods: {
+      //保存编辑器中的图片
+      saveImgByEditor(img){
+        this.articleForm.imgs.push(img);
+      },
+
       getArticleById(id) {
         // let that = this
         // getArticleById(id).then(data => {
@@ -222,17 +229,21 @@
           }
 
             let article = {
+              // 发布文章时给后台的数据
               id: this.articleForm.id,
               title: this.articleForm.title,
               summary: this.articleForm.summary,
               category: this.articleForm.category,
               tags: taglist,
               categorydescription:categorydescription,
+              cover:'',
               body: {
                 content: this.articleForm.editor.value,
                 contenthtml: this.articleForm.editor.ref.d_render
               }
-
+            }
+            if(this.articleForm.imgs.length!=0){
+              article.cover=this.articleForm.imgs[0];//将文章的第一张图片作为封面
             }
 
             this.publishVisible = false;

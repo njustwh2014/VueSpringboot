@@ -20,10 +20,10 @@ import java.util.List;
 public interface ArticleInfoDao {
 
     String TABLE_NAME=" articles ";
-    String INSERT_FIELDS=" author,publishtime,title,summary,category,categorydescription";
+    String INSERT_FIELDS=" author,publishtime,title,summary,category,categorydescription,cover";
     String SELECT_FIELDS="id, "+INSERT_FIELDS;
 
-    @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{author},#{publishtime},#{title},#{summary},#{category},#{categorydescription})"})
+    @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{author},#{publishtime},#{title},#{summary},#{category},#{categorydescription},#{cover})"})
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     int addArticle(ArticleInfo articleInfo);
 

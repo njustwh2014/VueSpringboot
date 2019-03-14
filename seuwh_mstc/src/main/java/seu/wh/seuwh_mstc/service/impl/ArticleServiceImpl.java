@@ -59,6 +59,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleInfo.setPublishtime(new Date());
         articleInfo.setTitle(articleRecive.getTitle());
         articleInfo.setSummary(articleRecive.getSummary());
+        articleInfo.setCover(articleRecive.getCover());
         articleInfoDao.addArticle(articleInfo);
 
 

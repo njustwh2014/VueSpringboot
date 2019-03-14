@@ -4,9 +4,9 @@
       <article-scroll-page></article-scroll-page>
     </el-main>
     <el-aside style="width:450px;">
-      <carousel></carousel>
+      <carousel :articles="carouselArticles"></carousel>
       <cardme class="me-area"></cardme>
-      <card-article cardHeader="最热文章" :articles="hotArticles"></card-article>
+      <card-article cardHeader="更多最热文章" :articles="listArticles"></card-article>
     </el-aside>
   </el-container>
 </template>
@@ -23,13 +23,23 @@ export default {
   },
   data(){
     return{
-      hotArticles:[]
+      carouselArticles:[],
+      listArticles:[]
     }  
   },
   methods:{
     GetHotArticles(){
       getHotArticles().then(data=>{
-        this.hotArticles=data.data.data;
+        let hotArticles=data.data.data;
+        let count=0;
+        for(let item of hotArticles){
+          if(item.cover!="" && count<5){
+            this.carouselArticles.push(item);
+            count=count+1;
+          }else{
+            this.listArticles.push(item);
+          }
+        }
       }).catch(error=>{
         if('error'!==error){
           this.message({type: 'error', message: '最热文章加载失败!', showClose: true});

@@ -1,3 +1,9 @@
+**打包命令** mvn clean package -Dmaven.test.skip=true
+## 2019/3/14
+
+### 1.给articles表添加了一栏: cover 用作文章封面
+
+
 ## 2019/3/12
 
 ### 1. 连表查询category和tag
@@ -83,7 +89,8 @@ create table articles(
   title varchar(255) not null,
   summary text not null,
   category int(11) not null,
-  categorydescription varchar(255)
+  categorydescription varchar(255) not null,
+  cover varchar(255)
 );
 ```
 ### article标签表

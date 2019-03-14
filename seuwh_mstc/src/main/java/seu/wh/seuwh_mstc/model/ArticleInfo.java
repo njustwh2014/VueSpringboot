@@ -18,18 +18,30 @@ public class ArticleInfo {
     private String title;
     private String categorydescription;
     private Integer category;
+    private String cover;
 
-
-    public String getCategorydescription() {
-        return categorydescription;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCategorydescription(String categorydescription) {
-        this.categorydescription = categorydescription;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getAuthor() {
         return author;
+    }
+
+    public void setAuthor(Integer author) {
+        this.author = author;
+    }
+
+    public Date getPublishtime() {
+        return publishtime;
+    }
+
+    public void setPublishtime(Date publishtime) {
+        this.publishtime = publishtime;
     }
 
     public String getSummary() {
@@ -40,17 +52,36 @@ public class ArticleInfo {
         this.summary = summary;
     }
 
-
-    public void setAuthor(Integer author) {
-        this.author = author;
+    public String getTitle() {
+        return title;
     }
 
-    public Integer getId() {
-        return id;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getCategorydescription() {
+        return categorydescription;
+    }
+
+    public void setCategorydescription(String categorydescription) {
+        this.categorydescription = categorydescription;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public void setCategory(Integer category) {
+        this.category = category;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     @Override
@@ -63,31 +94,7 @@ public class ArticleInfo {
                 ", title='" + title + '\'' +
                 ", categorydescription='" + categorydescription + '\'' +
                 ", category=" + category +
+                ", cover='" + cover + '\'' +
                 '}';
     }
-
-    public Date getPublishtime() {
-        return publishtime;
-    }
-
-    public void setPublishtime(Date publishtime) {
-        this.publishtime = publishtime;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Integer getCategory() {
-        return category;
-    }
-
-    public void setCategory(Integer category) {
-        this.category = category;
-    }
-
 }

@@ -18,39 +18,7 @@ public class ArticleRecive {
     private String summary;
     private List<TagId> tags;
     private ArticleBody body;
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleRecive{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", category=" + category +
-                ", summary='" + summary + '\'' +
-                ", tags=" + tags +
-                ", body=" + body +
-                '}';
-    }
-
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-
+    private String cover;
 
     public Integer getId() {
         return id;
@@ -60,9 +28,6 @@ public class ArticleRecive {
         this.id = id;
     }
 
-
-
-
     public String getTitle() {
         return title;
     }
@@ -71,6 +36,21 @@ public class ArticleRecive {
         this.title = title;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
     public List<TagId> getTags() {
         return tags;
@@ -88,4 +68,24 @@ public class ArticleRecive {
         this.body = body;
     }
 
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleRecive{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", category=" + category +
+                ", summary='" + summary + '\'' +
+                ", tags=" + tags +
+                ", body=" + body +
+                ", cover='" + cover + '\'' +
+                '}';
+    }
 }
