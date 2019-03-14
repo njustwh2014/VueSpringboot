@@ -71,3 +71,13 @@ vim /etc/rc.local
 //添加
 /usr/local/redis/bin/redis-server /usr/local/redis/etc/redis-conf
 ```
+#### windows端
++ 在D:\my_program\Redis-x64-3.2.100目录下
++ 启动
+```powershell
+redis-server.exe redis.windows.conf
+```
++ 重开一个gitbash，连接
+```powershell
+redis-cli.exe -h 127.0.0.1 -p 6379
+```
