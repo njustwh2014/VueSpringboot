@@ -218,7 +218,6 @@
       getCommentsByArticle() {
         let that = this
         getCommentsByArticle(this.article.id).then(data => {
-          console.log(data.data.data)
           that.comments = data.data.data
         }).catch(error => {
           if (error !== 'error') {

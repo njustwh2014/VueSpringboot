@@ -14,4 +14,5 @@ import seu.wh.seuwh_mstc.result.ResultInfo;
 public interface CommentService {
     public ResultInfo publish(CommentRecive commentRecive);
     public ResultInfo getCommentByArticleId(Integer id);
+    public ResultInfo commentLike(Integer type,Integer entityid,Integer userid);
 }

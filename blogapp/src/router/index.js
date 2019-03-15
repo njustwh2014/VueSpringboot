@@ -38,7 +38,10 @@ const router=new Router({
         component:index},
         {
           path: '/view/:id',
-          component: blogview
+          component: blogview,
+          meta: {
+            requireLogin: true
+          }
         },
     
         {

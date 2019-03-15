@@ -1,4 +1,9 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+## 2019/3/15
+### 1.添加了jedis
+### 2.为了实现点赞功能，在commentsend的model里添加了likecount和islike字段，便于加载文章时获取用户点赞信息
+### 3.redis持久化配置：https://blog.csdn.net/guweiyu_thinker/article/details/78816071
+
 ## 2019/3/14
 
 ### 1.给articles表添加了一栏: cover 用作文章封面

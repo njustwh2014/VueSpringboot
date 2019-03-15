@@ -20,10 +20,10 @@ public class CommentSend {
     private User author;
     private Date createdate;
     private String content;
-    private Integer likecount;
+    private long likecount;
     private Integer atlevel;
     private List<CommentChildren> childrens;
-
+    private boolean islike;
 
     public Integer getId() {
         return id;
@@ -65,11 +65,11 @@ public class CommentSend {
         this.content = content;
     }
 
-    public Integer getLikecount() {
+    public long getLikecount() {
         return likecount;
     }
 
-    public void setLikecount(Integer likecount) {
+    public void setLikecount(long likecount) {
         this.likecount = likecount;
     }
 
@@ -87,5 +87,13 @@ public class CommentSend {
 
     public void setChildrens(List<CommentChildren> childrens) {
         this.childrens = childrens;
+    }
+
+    public boolean isIslike() {
+        return islike;
+    }
+
+    public void setIslike(boolean islike) {
+        this.islike = islike;
     }
 }

@@ -15,4 +15,15 @@ export function publishComment(comment) {
     data: comment
   })
 }
+export function like(type,entityid,userid){
+  return request({
+    url:'/comments/like',
+    method:'post',
+    data:{
+      type:type,
+      entityid:entityid,
+      userid:userid
+    }
+  })
+}
 

@@ -9,6 +9,7 @@
 package seu.wh.seuwh_mstc.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import seu.wh.seuwh_mstc.model.comment.CommentRecive;
@@ -33,5 +34,22 @@ public class CommentController {
     public ResultInfo getCommentByArticle(@PathVariable Integer id){
         return commentService.getCommentByArticleId(id);
     }
+
+    /*
+    * 评论点赞或取消点赞
+    * json格式：
+    * type：1 点赞 2 取消点赞
+    * entityid:评论的id
+    * userid:点赞用户id
+    * */
+    @RequestMapping(value = "/like",method=RequestMethod.POST)
+    public ResultInfo commentLike(@RequestBody JSONObject jsonObject){
+        Integer type=jsonObject.getInteger("type");
+        Integer entityid=jsonObject.getInteger("entityid");
+        Integer userid=jsonObject.getInteger("userid");
+        return commentService.commentLike(type,entityid,userid);
+    }
+
+
 
 }

@@ -22,9 +22,10 @@ public class CommentChildren {
     private Date createdate;
     private String content;
     private Integer atlevel;
-    private Integer likecount;
+    private long likecount;
     private Comment parentcomment;
     private Comment toComment;
+    private boolean islike;
 
     public Integer getId() {
         return id;
@@ -82,11 +83,11 @@ public class CommentChildren {
         this.atlevel = atlevel;
     }
 
-    public Integer getLikecount() {
+    public long getLikecount() {
         return likecount;
     }
 
-    public void setLikecount(Integer likecount) {
+    public void setLikecount(long likecount) {
         this.likecount = likecount;
     }
 
@@ -106,19 +107,11 @@ public class CommentChildren {
         this.toComment = toComment;
     }
 
-    @Override
-    public String toString() {
-        return "CommentChildren{" +
-                "id=" + id +
-                ", articleid=" + articleid +
-                ", author=" + author +
-                ", toUser=" + toUser +
-                ", createdate=" + createdate +
-                ", content='" + content + '\'' +
-                ", atlevel=" + atlevel +
-                ", likecount=" + likecount +
-                ", parentcomment=" + parentcomment +
-                ", toComment=" + toComment +
-                '}';
+    public boolean isIslike() {
+        return islike;
+    }
+
+    public void setIslike(boolean islike) {
+        this.islike = islike;
     }
 }

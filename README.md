@@ -36,12 +36,19 @@ redis是用C语言开发的一个开源的高性能键值对（key-value）数�
 + 网站访问统计 
 + 数据过期处理（可以精确到毫秒）
 + ···
-
+### redis几种数据结构一般应用场景
++ List: 双向列表，适用于最新列表，关注列表；
++ Set: 适用于无顺序的集合，点赞点踩，抽奖，已读，共同好友；
++ SortedSet : 具有排序加成功能，适用于排行榜，优先队列的实现；
++ Hash：对象属性，不定长属性数；
++ KV : 单一数值，适用于验证码，缓存等实现。
 ### redis在centos上安装教程
 https://www.cnblogs.com/herblog/p/9305668.html
 
 https://blog.csdn.net/qq_32092723/article/details/81163642
 
+### redis持久化配置
+https://blog.csdn.net/guweiyu_thinker/article/details/78816071
 ### 备忘
 #### centos端
 + 安装在 /usr/local/redis
@@ -80,4 +87,11 @@ redis-server.exe redis.windows.conf
 + 重开一个gitbash，连接
 ```powershell
 redis-cli.exe -h 127.0.0.1 -p 6379
+```
++ 注册为系统服务
+```powershell
+redis-server --service-install redis.windows-service.conf
+redis-server --service-start
+redis-server --service-stop
+redis-server --service-uninstall//卸载服务
 ```

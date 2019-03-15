@@ -11,14 +11,17 @@ package seu.wh.seuwh_mstc.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import seu.wh.seuwh_mstc.dao.*;
+import seu.wh.seuwh_mstc.jedis.JedisClient;
 import seu.wh.seuwh_mstc.model.ArticleViewInfo;
 import seu.wh.seuwh_mstc.model.ArticleWeight;
+import seu.wh.seuwh_mstc.model.HostHolder;
 import seu.wh.seuwh_mstc.model.comment.Comment;
 import seu.wh.seuwh_mstc.model.comment.CommentChildren;
 import seu.wh.seuwh_mstc.model.comment.CommentRecive;
 import seu.wh.seuwh_mstc.model.comment.CommentSend;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.CommentService;
+import seu.wh.seuwh_mstc.utils.RedisKeyUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +39,10 @@ public class CommentServiceImpl implements CommentService {
     ArticleViewInfoDao articleViewInfoDao;
     @Autowired
     ArticleWeightDao articleWeightDao;
+    @Autowired
+    JedisClient jedisClient;
+    @Autowired
+    HostHolder hostHolder;
 
     @Override
     public ResultInfo publish(CommentRecive commentRecive) {
@@ -110,6 +117,7 @@ public class CommentServiceImpl implements CommentService {
         CommentSend commentSend=null;
         List<Comment> commentstemp=null;
         CommentChildren commentChildren=null;
+        Integer userid=hostHolder.getUser().getId();
         List<CommentChildren> commentChildrenList=null;
         for(Comment item:commentList){
             commentSend=new CommentSend();
@@ -120,6 +128,9 @@ public class CommentServiceImpl implements CommentService {
             commentSend.setContent(item.getContent());
             commentSend.setAtlevel(item.getAtlevel());
             commentSend.setArticleInfo(articleInfoDao.selectByid(item.getArticleid()));
+            String likekey=RedisKeyUtils.getCommentLikeKey(item.getId());
+            commentSend.setLikecount(jedisClient.scard(likekey));
+            commentSend.setIslike(jedisClient.sismember(likekey,String.valueOf(userid)));
             commentSend.setAuthor(userDao.selectById(item.getAuthorid()));
             commentstemp=commentDao.SelectChildren(item.getId());
             for(Comment temp:commentstemp){
@@ -130,7 +141,9 @@ public class CommentServiceImpl implements CommentService {
                 commentChildren.setContent(temp.getContent());
                 commentChildren.setCreatedate(temp.getCreatedate());
                 commentChildren.setId(temp.getId());
-                commentChildren.setLikecount(temp.getLikecount());
+                String likekeychild=RedisKeyUtils.getCommentLikeKey(temp.getId());
+                commentChildren.setLikecount(jedisClient.scard(likekeychild));
+                commentChildren.setIslike(jedisClient.sismember(likekeychild,String.valueOf(userid)));
                 if(temp.getToid()!=null){
                     commentChildren.setToComment(commentDao.SelectById(temp.getToid()));
                     commentChildren.setToUser(userDao.selectById(commentChildren.getToComment().getAuthorid()));
@@ -144,5 +157,30 @@ public class CommentServiceImpl implements CommentService {
 
 
         return ResultInfo.ok(commentSendList);
+    }
+
+
+    /*
+     * 评论点赞或取消点赞
+     * json格式：
+     * type：1 点赞 2 取消点赞
+     * entityid:评论的id
+     * userid:点赞用户id
+     * */
+    @Override
+    public ResultInfo commentLike(Integer type, Integer entityid, Integer userid) {
+
+        if(type==1){
+            String likekey= RedisKeyUtils.getCommentLikeKey(entityid);//static方法不需要new
+            jedisClient.sadd(likekey,String.valueOf(userid));
+            return ResultInfo.ok(jedisClient.scard(likekey));
+        }
+        if(type==2){
+            //取消点赞
+            String likekey=RedisKeyUtils.getCommentLikeKey(entityid);
+            jedisClient.srem(likekey,String.valueOf(userid));
+            return ResultInfo.ok(jedisClient.scard(likekey));
+        }
+        return null;
     }
 }

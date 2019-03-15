@@ -18,6 +18,7 @@
         <!--<a class="me-view-comment-tool">-->
         <!--<i class="el-icon-caret-top"></i> 20-->
         <!--</a>-->
+        <span class="me-view-meta"><i class="el-icon-like" :style="{color:comment.islike?'#2fa751':'#969696'}" @click="like(comment.id)"></i>&nbsp;({{comment.likecount}})&nbsp;&nbsp;|</span>
         <a class="me-view-comment-tool" @click="showComment(-1)">
           <i class="me-icon-comment"></i>&nbsp; 评论
         </a>
@@ -33,11 +34,15 @@
             <span>{{c.content}}</span>
           </div>
           <div class="me-view-meta">
-            <span style="padding-right: 10px">{{c.createDate | format}}</span>
+            
+            <span style="padding-right: 10px">{{c.createdate | format}}&nbsp;&nbsp;</span>
+            <span class="me-view-meta"><i class="el-icon-like" :style="{color:c.islike?'#2fa751':'#969696'}" @click='childlike(c.id)'></i>&nbsp;({{c.likecount}})&nbsp;&nbsp;|</span>
             <a class="me-view-comment-tool" @click="showComment(c.id, c.author)">
-              <i class="me-icon-comment"></i>&nbsp;回复
+            
+              &nbsp;&nbsp;<i class="me-icon-comment"></i>&nbsp;回复
             </a>
           </div>
+          
 
         </div>
 
@@ -63,8 +68,7 @@
 </template>
 
 <script>
-  import {publishComment} from '@/api/comment'
-
+  import {publishComment,like} from '@/api/comment'
   export default {
     name: "CommentItem",
     props: {
@@ -75,13 +79,63 @@
     },
     data() {
       return {
+        color:"#969696",
+        islike:true,
+        commentlike:{
+          islike:true,//当前用户对该条评论是否点赞
+          count:''//该条评论被点赞数量
+        },
         placeholder: '你的评论...',
         commentShow: false,
         commentShowIndex: '',
-        reply: this.getEmptyReply()
+        reply: this.getEmptyReply(),
+        styleObj1:{color:"#969696"},
+        childrensLike:[]
+
       }
     },
     methods: {
+      like(id){
+        let type=1
+        if(this.comment.islike){
+          type=2;//取消点赞
+        }
+        this.comment.islike=!this.comment.islike;
+        let userid=this.$store.state.id;
+
+        like(type,id,userid).then(data=>{
+           this.comment.likecount=data.data.data;
+        }).catch(error => {
+          if (error !== 'error') {
+            that.$message({type: 'error', message: '点赞失败', showClose: true})
+          }
+        })
+
+      },
+      childlike(id){
+        //实现点赞或取消点赞
+        let type=1
+        let comment=this.comment.childrens.find(function(obj){
+          return obj.id===id;
+        })
+        if(comment.islike){
+          type=2;//取消点赞
+        }
+        comment.islike=!comment.islike;
+        let userid=this.$store.state.id;
+
+        like(type,id,userid).then(data=>{
+          comment.likecount=data.data.data;
+        }).catch(error => {
+          if (error !== 'error') {
+            that.$message({type: 'error', message: '点赞失败', showClose: true})
+          }
+        })
+
+      },
+      chgColor(){
+        this.styleObj1={color:"red"};
+      },
       showComment(commentShowIndex, toUser) {
         this.reply = this.getEmptyReply()
 
