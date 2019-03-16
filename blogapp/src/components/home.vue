@@ -23,25 +23,26 @@ export default {
   data (){
   	return {
   			activeIndex: '/',
-  			footerShow:true
+  			footerShow:false
   	}
-  },
+	},
   components:{
   	'baseheader':baseheader,
   	'base-footer':basefooter
   },
   beforeRouteEnter (to, from, next){
   	 next(vm => {
-    	vm.activeIndex = to.path
+			vm.activeIndex = to.path
   	})
   },
   beforeRouteUpdate (to, from, next) {
+		console.log(to.path)
 	  if(to.path == '/'){
 	  	this.footerShow = true
 	  }else{
 	  	this.footerShow = false
 	  }
-	  this.activeIndex = to.path
+		this.activeIndex = to.path
 	  next()
 	}
 }

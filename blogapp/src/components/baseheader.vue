@@ -27,6 +27,7 @@
         </el-submenu>
         <el-menu-item index="3" disabled>程序员步行街</el-menu-item>
         <el-menu-item index="4" disabled>待开发</el-menu-item>
+        <el-menu-item index="/userinfo" >个人中心</el-menu-item>
           <!-- <el-menu-item index="/tag/all">标签</el-menu-item>
           <el-menu-item index="/archives">文章归档</el-menu-item>
           <el-menu-item index="/log">日志</el-menu-item>
@@ -40,7 +41,7 @@
         <slot></slot>
       </template>
       <el-col :span="3">
-        <el-menu :router=true menu-trigger="click" mode="horizontal" active-text-color="#5FB878">
+        <el-menu :router=true menu-trigger="hover" mode="horizontal" active-text-color="#5FB878">
           <!-- <template v-if="!user.login">  -->
           <template v-if= "!user.login">
             <el-menu-item index="/login">
@@ -76,8 +77,6 @@
     },
     data() {
       return {
-        activeIndex1: '1',
-        activeIndex2: '1'
       }
     },
     computed: {

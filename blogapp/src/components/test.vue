@@ -9,8 +9,8 @@
   :on-change="handleChange"
   :file-list="fileList2"
   :http-request="uploadSectionFile"
-  list-type="picture">
-  <el-button size="small" type="primary">点击上传</el-button>
+  list-type="picture-card">
+  <i class="el-icon-plus"></i>
 </el-upload>
 </template>
 

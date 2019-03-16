@@ -7,6 +7,7 @@ import forgetpassword from '@/components/forgetpassword'
 import store from '@/store';
 import { Message } from 'element-ui';
 import {getToken} from '@/request/token'
+import { resolve } from 'upath';
 
 Vue.use(Router)
 
@@ -20,6 +21,8 @@ const index=resolve=>require(['@/components/view/index.vue'],resolve)
 const blogview=resolve=>require(['@/components/view/blog/BlogView.vue'],resolve)
 const blogwrite=resolve=>require(['@/components/view/blog/BlogWrite.vue'],resolve)
 const blogcategorytag=resolve=>require(['@/components/view/blog/BlogCategoryTag.vue'],resolve)
+const infoindex=resolve=>require(['@/components/userinfo/infoindex'],resolve)
+const baseinfo=resolve=>require(['@/components/userinfo//childComponents/baseinfo'],resolve)
 const router=new Router({
   routes: [
     {
@@ -35,13 +38,27 @@ const router=new Router({
       component: home,
       children:[
         {path:'/',
-        component:index},
+        component:index
+        },
         {
           path: '/view/:id',
           component: blogview,
           meta: {
             requireLogin: true
           }
+        },
+        {
+          path:'/userinfo',
+          component:infoindex,
+          children:[
+            {
+              path:'/userinfo',
+              component:baseinfo,
+              meta: {
+                requireLogin: true
+              }
+            }
+          ]
         },
     
         {
