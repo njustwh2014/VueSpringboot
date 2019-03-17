@@ -7,6 +7,7 @@
  */
 
 package seu.wh.seuwh_mstc.service;
+import com.alibaba.fastjson.JSONObject;
 import seu.wh.seuwh_mstc.model.User;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 public interface UserService {
@@ -26,4 +27,5 @@ public interface UserService {
     public ResultInfo updateBackgroundUrlById(User user,String token);
     public ResultInfo updateHeadUrlById(User user,String token);//更新头像
     public ResultInfo getUserInfoByUserId(Integer userId);//获取个人信息
+    public ResultInfo updateInfo(JSONObject jsonObject);
 }

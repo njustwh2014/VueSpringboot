@@ -185,4 +185,11 @@ public class UserController {
 //        return userService.getUserInfo(user);
         return userService.getUserByToken(token);
     }
+    //更新用户信息
+    @RequestMapping(value="/updateInfo",method=RequestMethod.POST)
+    public Object updateInfo(@RequestBody JSONObject jsonObject,HttpServletResponse response){
+
+        return userService.updateInfo(jsonObject);
+
+    }
 }

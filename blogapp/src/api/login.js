@@ -55,6 +55,13 @@ export function getUserInfo(){
   })
 }
 
+export function updateInfo(data){
+  return request({
+    url:'/user/updateInfo',
+    method:'post',
+    data
+  })
+}
 
 export function regist(email,password){
   const data={

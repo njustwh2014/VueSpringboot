@@ -53,6 +53,6 @@ public interface UserDao {
     void updateHeadUrl(User user);
 
     @Update({"update ",TABLE_NAME, " set nickname=#{nickname}, gender=#{gender},  " +
-            "birthdate=#{birthdate},school=#{school},hobby=#{hobby} where id=#{id}" })
+            "birthdate=#{birthdate},school=#{school},hobby=#{hobby},headportraiturl=#{headportraiturl} where id=#{id}" })
     void updateUserInfo(User user);
 }

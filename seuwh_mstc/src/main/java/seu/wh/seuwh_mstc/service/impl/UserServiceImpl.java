@@ -8,6 +8,7 @@
 
 package seu.wh.seuwh_mstc.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -198,5 +199,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultInfo getUserInfoByUserId(Integer userId) {
         return null;
+    }
+
+    //更新个人信息
+
+    @Override
+    public ResultInfo updateInfo(JSONObject jsonObject) {
+        User user=userDao.selectById(jsonObject.getInteger("userid"));
+        if(user!=null){
+            user.setHeadportraiturl(jsonObject.getString("headportraiturl"));
+            user.setBirthdate(jsonObject.getDate("birthdate"));
+            user.setHobby(jsonObject.getString("hobby"));
+            user.setGender(jsonObject.getInteger("gender"));
+            user.setNickname(jsonObject.getString("nickname"));
+            user.setSchool(jsonObject.getString("school"));
+            userDao.updateUserInfo(user);
+            return ResultInfo.ok(user);
+        }
+        return ResultInfo.build(500,"failed",null);
     }
 }

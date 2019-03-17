@@ -49,13 +49,14 @@
 </template>
 <script>
 import { upload } from "@/api/upload";
-import {getUserInfo} from '@/api/login'
+import {getUserInfo,updateInfo} from '@/api/login'
 import { get } from 'http';
 export default {
   data() {
     return {
       imgs: [],
       form: {
+        userid:0,
         nickname: "",
         account: "",
         gender:"",
@@ -92,8 +93,49 @@ export default {
         });
     },
     onSubmit() {
-      console.log(this.imgs)
-      console.log(this.form);
+      let data={
+        userid:0,
+        nickname: "",
+        gender:0,
+        school:"",
+        birthdate:'',
+        hobby:'',
+        headportraiturl:''
+      };
+      data.userid=this.form.userid;
+      data.nickname=this.form.nickname;
+      if(this.form.gender=='男'){
+        data.gender=1;
+      }
+      data.school=this.form.school; 
+      data.birthdate=this.form.birthdate;
+      data.hobby=this.form.hobby;
+      data.headportraiturl=this.imgs[0].url;  
+      updateInfo(data).then(data=>{
+        this.$message("更新资料成功");
+        let userinfo=data.data.data;
+        this.imgs=[];
+        this.imgs=[{url:userinfo.headportraiturl}];
+        console.log(this.imgs);
+        this.form.account=userinfo.account;
+        this.form.nickname=userinfo.nickname;
+        this.form.birthdate=userinfo.birthdate;
+        this.form.hobby=userinfo.hobby;
+        this.form.school=userinfo.school;
+        this.form.gender=userinfo.gender;
+        this.form.userid=userinfo.id;
+        if(userinfo.gender==1){
+          this.form.gender="男";
+        }
+        if(userinfo.gender==0){
+          this.form.gender="女";
+        } 
+        this.$store.commit('SET_AVATAR',userinfo.headportraiturl)
+      }).catch(error=>{
+        if (error !== 'error') {
+          that.$message({type: 'error', message: '更新用户失败', showClose: true})
+        }
+      })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     },
     getUserInfo(){
       getUserInfo().then(data=>{
@@ -107,6 +149,7 @@ export default {
         this.form.hobby=userinfo.hobby;
         this.form.school=userinfo.school;
         this.form.gender=userinfo.gender;
+        this.form.userid=userinfo.id;
         if(userinfo.gender==1){
           this.form.gender="男";
         }

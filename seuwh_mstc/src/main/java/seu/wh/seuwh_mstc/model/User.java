@@ -172,7 +172,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", registerstatus=" + registerstatus +
                 ", IPaddress=" + IPaddress +
-                ", lasttime=" + lasttime +
+                ", lastime=" + lasttime +
                 ", authority=" + authority +
                 ", nickname='" + nickname + '\'' +
                 ", gender=" + gender +

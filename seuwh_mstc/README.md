@@ -1,4 +1,6 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+## 2019/3/17
+### 1.实现用户信息更新
 ## 2019/3/15
 ### 1.添加了jedis
 ### 2.为了实现点赞功能，在commentsend的model里添加了likecount和islike字段，便于加载文章时获取用户点赞信息
