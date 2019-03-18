@@ -73,7 +73,10 @@ export default {
     uploadSectionFile(param) {
       let that = this;
       let formdata = new FormData();
-      formdata.append("editormd-image-file", param.file);
+      if(param.file.size>10485760*3){
+        this.$message("请选择一张小于30MB的图片！")
+      }else{
+        formdata.append("editormd-image-file", param.file);
       upload(formdata)
         .then(data => {
           if (data.data.success == 1) {
@@ -91,6 +94,7 @@ export default {
         .catch(err => {
           that.$message({ message: err, type: "error", showClose: true });
         });
+      }  
     },
     onSubmit() {
       let data={

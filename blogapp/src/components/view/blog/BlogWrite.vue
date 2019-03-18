@@ -69,16 +69,17 @@
   import {publishArticle, getArticleById} from '@/api/article'
   import {getAllCategorys} from '@/api/category'
   import {getAllTags} from '@/api/tag'
+  import {viewArticle} from '@/api/article'
 
   export default {
     name: 'BlogWrite',
     mounted() {
 
-      // if(this.$route.params.id){
-      //   this.getArticleById(this.$route.params.id)
-      // }
+      if(this.$route.params.id){
+        this.getArticle();
+      }
 
-      this.getCategorysAndTags()
+      this.getCategorysAndTags();
       // this.editorToolBarToFixedWrapper = this.$_.throttle(this.editorToolBarToFixed, 200)
 
       // window.addEventListener('scroll', this.editorToolBarToFixedWrapper, false);
@@ -155,25 +156,23 @@
         this.articleForm.imgs.push(img);
       },
 
-      getArticleById(id) {
-        // let that = this
-        // getArticleById(id).then(data => {
-
-        //   Object.assign(that.articleForm, data.data)
-        //   that.articleForm.editor.value = data.data.body.content
-
-        //   let tags = this.articleForm.tags.map(function (item) {
-        //     return item.id;
-        //   })
-
-        //   this.articleForm.tags = tags
-
-
-        // }).catch(error => {
-        //   if (error !== 'error') {
-        //     that.$message({type: 'error', message: '文章加载失败', showClose: true})
-        //   }
-        // })
+      getArticle() {
+        let that = this
+        viewArticle(that.$route.params.id).then(data=> {
+          Object.assign(that.articleForm, data.data.data)
+          that.articleForm.editor.value = data.data.data.body.content;
+          let taglist=[];
+          for(let item of that.articleForm.tags){
+            let temp=item.tagid;
+            taglist.push(temp);
+          }
+          that.articleForm.tags=taglist;
+        }).catch(error => {
+          if (error !== 'error') {
+            console.log(error)
+            that.$message({type: 'error', message: '文章加载失败', showClose: true})
+          }
+        });
       },
       publishShow() {
         if (!this.articleForm.title) {

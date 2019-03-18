@@ -2,6 +2,7 @@
 ## 2019/3/18
 ### 1. 利用redis实现了消息队列，处理了viewcount和commentcount以及计算了weight
 将viewcount和commentcount异步写入了mysql,便于后面操作
+### 2. 实现了文章在线修改
 
 ### 当日任务：
 + 利用redis实现消息队列

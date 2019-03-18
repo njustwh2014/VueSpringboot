@@ -56,51 +56,92 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ResultInfo publish(ArticleRecive articleRecive) {
-        ArticleBody articleBody=new ArticleBody();
-        ArticleInfo articleInfo=new ArticleInfo();
-        ArticleViewInfo articleViewInfo=new ArticleViewInfo();
-        ArticleWeight articleWeight=new ArticleWeight();
-        User author=hostHolder.getUser();
-
-
-        author=userDao.selectById(author.getId());
-        articleInfo.setAuthor(author.getId());
-        articleInfo.setCategory(articleRecive.getCategory().getId());
-        articleInfo.setCategorydescription(articleRecive.getCategory().getCategorydescription());
-        articleInfo.setPublishtime(new Date());
-        articleInfo.setTitle(articleRecive.getTitle());
-        articleInfo.setSummary(articleRecive.getSummary());
-        articleInfo.setCover(articleRecive.getCover());
-        articleInfoDao.addArticle(articleInfo);
-
-
-        articleBody=articleRecive.getBody();
-        articleBody.setArticleid(articleInfo.getId());
-        articleBodyDao.addArticleBody(articleBody);
+        if(articleRecive.getId()!=null){
+            //update
+            ArticleInfo articleInfo=articleInfoDao.selectByid(articleRecive.getId());
+            if(articleInfo!=null){
+                articleInfo.setCategory(articleRecive.getCategory().getId());
+                articleInfo.setCategorydescription(articleRecive.getCategory().getCategorydescription());
+                articleInfo.setPublishtime(new Date());
+                articleInfo.setTitle(articleRecive.getTitle());
+                articleInfo.setSummary(articleRecive.getSummary());
+                articleInfo.setCover(articleRecive.getCover());
+                articleInfoDao.updateArticle(articleInfo);
 
 
 
-        List<ArticleTag> articleTagList=new ArrayList<ArticleTag>();
-        ArticleTag articleTag=null;
-        List<TagId> tagIdList=articleRecive.getTags();
-        for(TagId item:tagIdList){
-            articleTag=new ArticleTag();//值引用
-            articleTag.setArticleid(articleInfo.getId());
-            articleTag.setTagid(item.getId());
-            articleTag.setTagdescription(item.getTagdescription());
-            articleTagList.add(articleTag);
+                ArticleBody articleBody=articleBodyDao.selectByArticleId(articleRecive.getId());
+                articleBody.setContent(articleRecive.getBody().getContent());
+                articleBody.setContenthtml(articleRecive.getBody().getContenthtml());
+                articleBodyDao.updateArticleBodyByArticleId(articleBody);
 
+
+//                先删除tag
+                articleTagDao.deleteArticleTagByArticleId(articleRecive.getId());
+                List<ArticleTag> articleTagList=new ArrayList<ArticleTag>();
+                ArticleTag articleTag=null;
+                List<TagId> tagIdList=articleRecive.getTags();
+                for(TagId item:tagIdList){
+                    articleTag=new ArticleTag();//值引用
+                    articleTag.setArticleid(articleInfo.getId());
+                    articleTag.setTagid(item.getId());
+                    articleTag.setTagdescription(item.getTagdescription());
+                    articleTagList.add(articleTag);
+                }
+                articleTagDao.addArticleTagBatch(articleTagList);
+                return ResultInfo.ok(articleInfo);
+            }
+            return ResultInfo.build(500,"更新错误！",null);
+
+        }else{
+            ArticleBody articleBody=new ArticleBody();
+            ArticleInfo articleInfo=new ArticleInfo();
+            ArticleViewInfo articleViewInfo=new ArticleViewInfo();
+            ArticleWeight articleWeight=new ArticleWeight();
+            User author=hostHolder.getUser();
+
+
+            author=userDao.selectById(author.getId());
+            articleInfo.setAuthor(author.getId());
+            articleInfo.setCategory(articleRecive.getCategory().getId());
+            articleInfo.setCategorydescription(articleRecive.getCategory().getCategorydescription());
+            articleInfo.setPublishtime(new Date());
+            articleInfo.setTitle(articleRecive.getTitle());
+            articleInfo.setSummary(articleRecive.getSummary());
+            articleInfo.setCover(articleRecive.getCover());
+            articleInfoDao.addArticle(articleInfo);
+
+
+            articleBody=articleRecive.getBody();
+            articleBody.setArticleid(articleInfo.getId());
+            articleBodyDao.addArticleBody(articleBody);
+
+
+
+            List<ArticleTag> articleTagList=new ArrayList<ArticleTag>();
+            ArticleTag articleTag=null;
+            List<TagId> tagIdList=articleRecive.getTags();
+            for(TagId item:tagIdList){
+                articleTag=new ArticleTag();//值引用
+                articleTag.setArticleid(articleInfo.getId());
+                articleTag.setTagid(item.getId());
+                articleTag.setTagdescription(item.getTagdescription());
+                articleTagList.add(articleTag);
+
+            }
+            articleTagDao.addArticleTagBatch(articleTagList);
+
+
+            articleViewInfo.setArticleid(articleInfo.getId());
+            articleViewInfoDao.addArticleViewInfo(articleViewInfo);
+            articleWeight.setArticleid(articleInfo.getId());
+            articleWeightDao.addArticleWeight(articleWeight);
+            return ResultInfo.ok(articleInfo);
         }
-        articleTagDao.addArticleTagBatch(articleTagList);
 
 
-        articleViewInfo.setArticleid(articleInfo.getId());
-        articleViewInfoDao.addArticleViewInfo(articleViewInfo);
-        articleWeight.setArticleid(articleInfo.getId());
-        articleWeightDao.addArticleWeight(articleWeight);
 
 
-        return ResultInfo.ok(articleInfo);
     }
 
 

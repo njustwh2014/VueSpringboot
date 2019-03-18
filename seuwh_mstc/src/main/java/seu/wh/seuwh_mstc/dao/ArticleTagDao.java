@@ -39,4 +39,7 @@ public interface ArticleTagDao {
     @Select({"select * from ",TABLE_NAME,"where articleid=#{articleid}"})
     List<ArticleTag> SelectByArticleId(Integer articleid);
 
+    @Delete({"delete from",TABLE_NAME,"where articleid=#{articleid}"})
+    int deleteArticleTagByArticleId(int articleid);
+
 }

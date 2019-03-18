@@ -27,5 +27,8 @@ public interface ArticleBodyDao {
     @Select({"select * from ",TABLE_NAME,"where articleid=#{articleid}"})
     ArticleBody selectByArticleId(Integer articleid);
 
+    @Select({"update ",TABLE_NAME,"set content=#{content},contenthtml=#{contenthtml} where articleid=#{articleid}"})
+    void updateArticleBodyByArticleId(ArticleBody articleBody);
+
 
 }

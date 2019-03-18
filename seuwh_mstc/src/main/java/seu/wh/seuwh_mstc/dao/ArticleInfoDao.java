@@ -27,6 +27,8 @@ public interface ArticleInfoDao {
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     int addArticle(ArticleInfo articleInfo);
 
+    @Update({"update ",TABLE_NAME, " set title=#{title},publishtime=#{publishtime}, summary=#{summary},category=#{category},categorydescription=#{categorydescription} where id=#{id}"})
+    int updateArticle(ArticleInfo articleInfo);
     @Select({"select * from ",TABLE_NAME,"where id=#{id}"})
     ArticleInfo selectByid(Integer id);
 
