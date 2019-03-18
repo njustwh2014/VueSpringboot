@@ -17,10 +17,10 @@ public class ArticleInfoSend {
     private Date publishtime;
     private String summary;
     private String title;
-    private Integer commentcount;
-    private Integer viewcount;
+    private long commentcount;
+    private long viewcount;
     private List<ArticleTag> tags;
-    private Integer weight=0;
+    private long weight=0;
 
     public Integer getId() {
         return id;
@@ -62,19 +62,19 @@ public class ArticleInfoSend {
         this.title = title;
     }
 
-    public Integer getCommentcount() {
+    public long getCommentcount() {
         return commentcount;
     }
 
-    public void setCommentcount(Integer commentcount) {
+    public void setCommentcount(long commentcount) {
         this.commentcount = commentcount;
     }
 
-    public Integer getViewcount() {
+    public long getViewcount() {
         return viewcount;
     }
 
-    public void setViewcount(Integer viewcount) {
+    public void setViewcount(long viewcount) {
         this.viewcount = viewcount;
     }
 
@@ -86,26 +86,11 @@ public class ArticleInfoSend {
         this.tags = tags;
     }
 
-    public Integer getWeight() {
+    public long getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(long weight) {
         this.weight = weight;
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleInfoSend{" +
-                "id=" + id +
-                ", author=" + author +
-                ", publishtime=" + publishtime +
-                ", summary='" + summary + '\'' +
-                ", title='" + title + '\'' +
-                ", commentcount=" + commentcount +
-                ", viewcount=" + viewcount +
-                ", tags=" + tags +
-                ", weight=" + weight +
-                '}';
     }
 }

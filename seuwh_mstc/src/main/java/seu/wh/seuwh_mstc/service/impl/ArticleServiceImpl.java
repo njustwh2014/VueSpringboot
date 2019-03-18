@@ -10,15 +10,22 @@ package seu.wh.seuwh_mstc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import seu.wh.seuwh_mstc.async.EventModel;
+import seu.wh.seuwh_mstc.async.EventProducer;
+import seu.wh.seuwh_mstc.async.EventType;
 import seu.wh.seuwh_mstc.dao.*;
+import seu.wh.seuwh_mstc.jedis.JedisClient;
 import seu.wh.seuwh_mstc.model.*;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.ArticleService;
+import seu.wh.seuwh_mstc.utils.RedisKeyUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.SimpleFormatter;
 
 import static java.lang.String.valueOf;
 
@@ -42,6 +49,10 @@ public class ArticleServiceImpl implements ArticleService {
     ArticleLinkTableDao articleLinkTableDao;
     @Autowired
     ArticleWeightDao articleWeightDao;
+    @Autowired
+    JedisClient jedisClient;
+    @Autowired
+    EventProducer eventProducer;
 
     @Override
     public ResultInfo publish(ArticleRecive articleRecive) {
@@ -109,15 +120,23 @@ public class ArticleServiceImpl implements ArticleService {
         List<ArticleTag> articleTagList=articleTagDao.SelectByArticleId(id);
 
 
-        //获取viewInfo
-        ArticleViewInfo articleViewInfo=articleViewInfoDao.SelectByArticleID(id);
-        articleViewInfo.setViewcount(articleViewInfo.getViewcount()+1);
-        articleViewInfoDao.updateArticleViewCount(articleViewInfo);
 
-        //获取weight
-        ArticleWeight articleWeight=articleWeightDao.selectByArticleid(id);
-        articleWeight.setWeight(articleWeight.getWeight()+2);
-        articleWeightDao.updateArticleWeight(articleWeight);
+        //将viewcount写入redis
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date nowDate=new Date();
+        String dateYmd=simpleDateFormat.format(nowDate).substring(0,13);//限定一个用户一小时内只有一次访问数据有效
+        String viewKey= RedisKeyUtils.getViewKey(id);
+        if(hostHolder.getUser()!=null){
+            jedisClient.sadd(viewKey,String.valueOf(hostHolder.getUser().getId())+dateYmd);
+        }
+        //计算文章热度
+        EventModel weightEventModel=new EventModel();
+        weightEventModel.setAuthorid(hostHolder.getUser().getId());
+        weightEventModel.setEntityid(id);
+        weightEventModel.setEntityownerid(articleInfo.getAuthor());
+        weightEventModel.setEventType(EventType.WEIGHT);
+        eventProducer.fireEvent(weightEventModel);
+
 
         //组装成返回对象
         ArticleSend articleSend=new ArticleSend();
@@ -129,8 +148,7 @@ public class ArticleServiceImpl implements ArticleService {
         articleSend.setPublishtime(articleInfo.getPublishtime());
         articleSend.setSummary(articleInfo.getSummary());
         articleSend.setTags(articleTagList);
-        articleSend.setViewcount(articleViewInfo.getViewcount());
-
+        articleSend.setViewcount(jedisClient.scard(viewKey));
         articleSend.setTitle(articleInfo.getTitle());
 
 

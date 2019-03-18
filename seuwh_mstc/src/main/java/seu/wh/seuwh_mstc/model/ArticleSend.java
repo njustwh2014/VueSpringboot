@@ -15,8 +15,8 @@ public class ArticleSend {
     //后端响应前端请求
     private Integer id;
     private String title;
-    private Integer commentcount=0;
-    private Integer viewcount=0;
+    private long commentcount=0;
+    private long viewcount=0;
     private String summary="";
     private User author;
     private List<ArticleTag> tags;
@@ -40,19 +40,19 @@ public class ArticleSend {
         this.title = title;
     }
 
-    public Integer getCommentcount() {
+    public long getCommentcount() {
         return commentcount;
     }
 
-    public void setCommentcount(Integer commentcount) {
+    public void setCommentcount(long commentcount) {
         this.commentcount = commentcount;
     }
 
-    public Integer getViewcount() {
+    public long getViewcount() {
         return viewcount;
     }
 
-    public void setViewcount(Integer viewcount) {
+    public void setViewcount(long viewcount) {
         this.viewcount = viewcount;
     }
 
@@ -102,21 +102,5 @@ public class ArticleSend {
 
     public void setBody(ArticleBody body) {
         this.body = body;
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleSend{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", commentcount=" + commentcount +
-                ", viewcount=" + viewcount +
-                ", summary='" + summary + '\'' +
-                ", author=" + author +
-                ", tags=" + tags +
-                ", category=" + category +
-                ", publishtime=" + publishtime +
-                ", body=" + body +
-                '}';
     }
 }

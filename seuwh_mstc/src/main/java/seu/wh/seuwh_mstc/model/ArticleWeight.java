@@ -11,7 +11,7 @@ package seu.wh.seuwh_mstc.model;
 public class ArticleWeight {
     private Integer id;
     private Integer articleid;
-    private Integer weight=0;
+    private long weight=0;
 
     public Integer getId() {
         return id;
@@ -29,20 +29,11 @@ public class ArticleWeight {
         this.articleid = articleid;
     }
 
-    public Integer getWeight() {
+    public long getWeight() {
         return weight;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(long weight) {
         this.weight = weight;
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleWeight{" +
-                "id=" + id +
-                ", articleid=" + articleid +
-                ", weight=" + weight +
-                '}';
     }
 }

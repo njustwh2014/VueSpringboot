@@ -15,9 +15,13 @@ package seu.wh.seuwh_mstc.utils;
 public class RedisKeyUtils {
     private static String SPLIT = ":";
 
+    private static String BIZ_EVENT="BizEvent";
+
     private static String BIZ_LIKE="LIKE";
 
     private static String COMMENT_LIKE="CommentLike";
+    private static String VIEW="View";
+    private static String COMMENT="Comment";
     /*
     * 获得评论点赞的key
     * entityid 该条评论的id
@@ -25,4 +29,15 @@ public class RedisKeyUtils {
     public static String getCommentLikeKey(int entityid){
          return COMMENT_LIKE+SPLIT+entityid;
     }
+    public static String getBizEventKey(){
+        return BIZ_EVENT;
+    }
+    public static String getViewKey(int entityid){
+        return VIEW+SPLIT+entityid;
+    }
+    public static String getCommentKey(int entityid){
+        return COMMENT+SPLIT+entityid;
+    }
+
+
 }

@@ -1,4 +1,12 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+## 2019/3/18
+### 1. 利用redis实现了消息队列，处理了viewcount和commentcount以及计算了weight
+将viewcount和commentcount异步写入了mysql,便于后面操作
+
+### 当日任务：
++ 利用redis实现消息队列
++ 对每个输入进行边缘检测
++ 如果有时间，写一个单元测试
 ## 2019/3/17
 ### 1.实现用户信息更新
 ## 2019/3/15

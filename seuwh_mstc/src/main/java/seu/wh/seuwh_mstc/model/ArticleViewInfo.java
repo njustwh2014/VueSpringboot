@@ -11,8 +11,8 @@ package seu.wh.seuwh_mstc.model;
 public class ArticleViewInfo {
     private Integer id;
     private Integer articleid;
-    private Integer viewcount=0;
-    private Integer commentcount=0;
+    private long viewcount=0;
+    private long commentcount=0;
 
     public Integer getId() {
         return id;
@@ -30,30 +30,19 @@ public class ArticleViewInfo {
         this.articleid = articleid;
     }
 
-    public Integer getViewcount() {
+    public long getViewcount() {
         return viewcount;
     }
 
-    public void setViewcount(Integer viewcount) {
+    public void setViewcount(long viewcount) {
         this.viewcount = viewcount;
     }
 
-    public Integer getCommentcount() {
+    public long getCommentcount() {
         return commentcount;
     }
 
-    public void setCommentcount(Integer commentcount) {
+    public void setCommentcount(long commentcount) {
         this.commentcount = commentcount;
-    }
-
-
-    @Override
-    public String toString() {
-        return "ArticleViewInfo{" +
-                "id=" + id +
-                ", articleid=" + articleid +
-                ", viewcount=" + viewcount +
-                ", commentcount=" + commentcount +
-                '}';
     }
 }

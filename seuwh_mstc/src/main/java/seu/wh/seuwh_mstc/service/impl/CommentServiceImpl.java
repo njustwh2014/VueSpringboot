@@ -10,6 +10,9 @@ package seu.wh.seuwh_mstc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import seu.wh.seuwh_mstc.async.EventModel;
+import seu.wh.seuwh_mstc.async.EventProducer;
+import seu.wh.seuwh_mstc.async.EventType;
 import seu.wh.seuwh_mstc.dao.*;
 import seu.wh.seuwh_mstc.jedis.JedisClient;
 import seu.wh.seuwh_mstc.model.ArticleViewInfo;
@@ -43,6 +46,8 @@ public class CommentServiceImpl implements CommentService {
     JedisClient jedisClient;
     @Autowired
     HostHolder hostHolder;
+    @Autowired
+    EventProducer eventProducer;
 
     @Override
     public ResultInfo publish(CommentRecive commentRecive) {
@@ -60,13 +65,17 @@ public class CommentServiceImpl implements CommentService {
         if(commentRecive.getParentid()==null){
             //对文章评论
             commentDao.AddComment(comment);
-            articleViewInfo=articleViewInfoDao.SelectByArticleID(comment.getArticleid());
-            articleViewInfo.setCommentcount(articleViewInfo.getCommentcount()+1);
-            articleViewInfoDao.updateArticleCommentCount(articleViewInfo);
+            //将评论数写入redis
+            String commentkey=RedisKeyUtils.getCommentKey(comment.getArticleid());
+            jedisClient.sadd(commentkey,String.valueOf(comment.getId()));
 
-            articleWeight=articleWeightDao.selectByArticleid(comment.getArticleid());
-            articleWeight.setWeight(articleWeight.getWeight()+10);
-            articleWeightDao.updateArticleWeight(articleWeight);
+            //计算文章热度
+            EventModel hotEventModel=new EventModel();
+            hotEventModel.setEntityid(comment.getArticleid());
+            hotEventModel.setAuthorid(comment.getAuthorid());
+            hotEventModel.setEventType(EventType.WEIGHT);
+            eventProducer.fireEvent(hotEventModel);
+
 
             commentSend.setAuthor(userDao.selectById(comment.getAuthorid()));
             commentSend.setChildrens(null);

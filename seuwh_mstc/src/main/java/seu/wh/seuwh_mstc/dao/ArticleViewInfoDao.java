@@ -27,6 +27,8 @@ public interface ArticleViewInfoDao {
     @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values (#{articleid},#{viewcount},#{commentcount})"})
     int addArticleViewInfo(ArticleViewInfo articleViewInfo);
 
+    @Update({"update ",TABLE_NAME, " set viewcount=#{viewcount},commentcount=#{commentcount} where articleid=#{articleid}"})
+    void updateArticleViewInfo(ArticleViewInfo articleViewInfo);
     @Select({"select * from ",TABLE_NAME,"where articleid=#{articleid}"})
     ArticleViewInfo SelectByArticleID(Integer articleid);
 
