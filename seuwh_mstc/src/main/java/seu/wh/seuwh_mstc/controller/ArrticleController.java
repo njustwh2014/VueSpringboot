@@ -103,6 +103,15 @@ public class ArrticleController {
         return articleService.getArticlesByTag(pageNumber,pageSize,id);
     }
 
+    //搜索
+    @RequestMapping(value="/search",method =RequestMethod.POST)
+    public ResultInfo searchArticles(@RequestBody JSONObject jsonObject){
+        Integer pageNumber=jsonObject.getInteger("pageNumber");
+        Integer pageSize=jsonObject.getInteger("pageSize");
+        String searchData=jsonObject.getString("searchData");
+        return articleService.searchArticles(pageNumber,pageSize,searchData);
+    }
+
     @RequestMapping(value="/test", method=RequestMethod.GET)
     public ResultInfo testLinkTableQuery(){
         return ResultInfo.ok(null);

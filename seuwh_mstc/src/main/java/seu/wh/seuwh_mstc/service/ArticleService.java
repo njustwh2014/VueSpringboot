@@ -18,4 +18,5 @@ public interface ArticleService {
  public ResultInfo getHotArticles();
  public ResultInfo getArticlesByCategory(Integer pageNumber,Integer pageSize,Integer id);
  public ResultInfo getArticlesByTag(Integer pageNumber,Integer pageSize,Integer id);
+ public ResultInfo searchArticles(Integer pageNumber,Integer pageSize,String searchData);
 }

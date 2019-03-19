@@ -238,4 +238,13 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return ResultInfo.ok(articleslist);
     }
+
+    @Override
+    public ResultInfo searchArticles(Integer pageNumber, Integer pageSize, String searchData) {
+        List<Map<String,Object>> articleslist=articleLinkTableDao.getAllArticleByKeyWords((pageNumber-1)*pageSize,pageSize,searchData);
+        for(Map<String,Object> item:articleslist){
+            item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
+        }
+        return ResultInfo.ok(articleslist);
+    }
 }

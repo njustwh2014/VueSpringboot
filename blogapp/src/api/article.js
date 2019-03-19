@@ -18,6 +18,20 @@ export function getArticles(page) {
   })
 }
 
+//搜索
+export function search(page,searchData){
+  return request({
+    url:'/articles/search',
+    method:'post',
+    data:{
+      pageNumber: page.pageNumber,
+      pageSize: page.pageSize,
+      searchData:searchData
+    }
+  })
+
+}
+
 export function getHotArticles() {
   return request({
     url: '/articles/hot',

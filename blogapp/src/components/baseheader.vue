@@ -1,23 +1,23 @@
 <template>
  <el-header class="me-area">
     <el-row class="me-header">
-      <el-col :span="4" class="me-header-left" align="center" >
+      <el-col :span="3" class="me-header-left" align="center" >
         <router-link to="/" class="me-title">
           <img  src="../assets/logo.png"/>
         </router-link>
       </el-col>
 
-      <el-col v-if="!simple" :span="17">
+      <el-col v-if="!simple" :span="18">
         <el-menu :router=true menu-trigger="hover" active-text-color="#5FB878" :default-active="activeIndex"
                  mode="horizontal">
           <el-menu-item index="/">首页</el-menu-item>
           <el-submenu index="/category">
           <template slot="title">分类</template>
-          <el-menu-item index="/category/1">前端开发</el-menu-item>
-          <el-menu-item index="/category/2">后端开发</el-menu-item>
-          <el-menu-item index="/category/3">数据库</el-menu-item>
-          <el-menu-item index="category/4">服务器</el-menu-item>
-          <el-menu-item index="category/5">机器学习</el-menu-item>
+          <el-menu-item index="/articles/category/1">前端开发</el-menu-item>
+          <el-menu-item index="/articles/category/2">后端开发</el-menu-item>
+          <el-menu-item index="/articles/category/3">数据库</el-menu-item>
+          <el-menu-item index="/articles/category/4">服务器</el-menu-item>
+          <el-menu-item index="/articles/category/5">机器学习</el-menu-item>
           <el-submenu index="2-6">
             <template slot="title">其他</template>
             <el-menu-item index="category/6">经济</el-menu-item>
@@ -28,16 +28,21 @@
         <el-menu-item index="3" disabled>程序员步行街</el-menu-item>
         <el-menu-item index="4" disabled>待开发</el-menu-item>
         <el-menu-item index="/userinfo" >个人中心</el-menu-item>
+        <el-menu-item index="/write"><i class="el-icon-edit"></i>写文章</el-menu-item>
           <!-- <el-menu-item index="/tag/all">标签</el-menu-item>
           <el-menu-item index="/archives">文章归档</el-menu-item>
           <el-menu-item index="/log">日志</el-menu-item>
           <el-menu-item index="/messageBoard">留言板</el-menu-item> -->
-          <el-col :span="2" :offset="4">
-            <el-menu-item index="/write"><i class="el-icon-edit"></i>写文章</el-menu-item>
+          <el-col :span="7" :offset="4">
+            <div style="margin-top: 10px;">
+              <el-input placeholder="请输入搜索内容" v-model="searchData" class="input-with-select" autofocus="true">
+                <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+              </el-input>
+            </div>
           </el-col>
         </el-menu>
       </el-col>
-      <template v-else :span="17">
+      <template v-else :span="18">
         <slot></slot>
       </template>
       <el-col :span="3">
@@ -66,6 +71,7 @@
 </template>
 
 <script>
+
   export default {
     name: 'baseheader',
     props: {
@@ -77,6 +83,7 @@
     },
     data() {
       return {
+        searchData:"",
       }
     },
     computed: {
@@ -101,6 +108,31 @@
             that.$message({message: error, type: 'error', showClose: true});
             }
           })
+      },
+      search(){
+        let searchData=this.searchData;
+        if(searchData!=""){
+          this.searchData="";
+          this.$router.push({path: `/search/${searchData}`});
+        }else{
+          this.$message("不要调戏人家啦！")
+        }       
+      }
+    },
+    directives:{
+      focus:{
+        bind(el){
+            // 在元素绑定时执行，只执行一次
+            //还没有插入到dom树中，只在内存中
+        },
+        inserted(el){
+            // 表示元素插入到dom中会执行，也执行一次
+            el.focus();
+        },
+        updated(el){
+            // 当组建更新的时候执行，科能会触发多次
+            
+        }
       }
     }
   }

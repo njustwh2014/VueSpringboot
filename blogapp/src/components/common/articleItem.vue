@@ -52,7 +52,7 @@ export default {
       this.$router.push({path:`/view/${id}`})
     },
     jumpToTag(id){
-      this.$router.push({path: '/tag/'+id})
+      this.$router.push({path: '/articles/tag/'+id})
     }
   }
 }

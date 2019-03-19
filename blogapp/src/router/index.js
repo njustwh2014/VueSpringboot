@@ -23,6 +23,7 @@ const blogwrite=resolve=>require(['@/components/view/blog/BlogWrite.vue'],resolv
 const blogcategorytag=resolve=>require(['@/components/view/blog/BlogCategoryTag.vue'],resolve)
 const infoindex=resolve=>require(['@/components/userinfo/infoindex'],resolve)
 const baseinfo=resolve=>require(['@/components/userinfo//childComponents/baseinfo'],resolve)
+const searchresult=resolve=>require(['@/components/searchResult.vue'],resolve)
 const router=new Router({
   routes: [
     {
@@ -66,8 +67,13 @@ const router=new Router({
           component:test
         },
         {
-          path: '/:type/:id',
+          path: '/articles/:type/:id',
           component:blogcategorytag
+        },
+        {
+          path:'search/:searchData',
+          component:searchresult
+
         }
       ]
 

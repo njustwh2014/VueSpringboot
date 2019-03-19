@@ -229,10 +229,10 @@
         this.article.commentcount += 1
       },
       jumpToCategory(id){
-        this.$router.push({path: '/category/'+id});
+        this.$router.push({path: '/articles/category/'+id});
       },
       jumpToTag(id){
-        this.$router.push({path: '/tag/'+id});
+        this.$router.push({path: '/articles/tag/'+id});
       }
     },
     components: {

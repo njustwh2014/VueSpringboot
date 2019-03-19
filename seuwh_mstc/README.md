@@ -1,4 +1,6 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+## 2019/3/19
+### 1.利用模糊查询实现搜索功能，需要改进！！！！！！！！！！！！
 ## 2019/3/18
 ### 1. 利用redis实现了消息队列，处理了viewcount和commentcount以及计算了weight
 将viewcount和commentcount异步写入了mysql,便于后面操作
