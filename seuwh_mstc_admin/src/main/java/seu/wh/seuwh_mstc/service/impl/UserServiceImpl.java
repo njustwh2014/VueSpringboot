@@ -102,7 +102,6 @@ public class UserServiceImpl implements UserService {
     public ResultInfo login(String email, String password,String token) {
         User user=null;
         user=userDao.selectByAccount(email);
-        System.out.println(user);
         if(user==null){
             return ResultInfo.build(400,"用户名或密码错误！");
         }
