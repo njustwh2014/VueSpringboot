@@ -16,6 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `admininfo`
+--
+
+DROP TABLE IF EXISTS `admininfo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `admininfo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `salt` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `admininfo`
+--
+
+LOCK TABLES `admininfo` WRITE;
+/*!40000 ALTER TABLE `admininfo` DISABLE KEYS */;
+INSERT INTO `admininfo` VALUES (7,'admin','35C09AB3702B91D0C9D78F8ED624EF98','5f64a47e-fbbd-4fb4-bdaf-a4d4db1c9ecd','da9f6');
+/*!40000 ALTER TABLE `admininfo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `articlebody`
 --
 
@@ -28,7 +55,7 @@ CREATE TABLE `articlebody` (
   `content` longtext NOT NULL,
   `contenthtml` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +64,7 @@ CREATE TABLE `articlebody` (
 
 LOCK TABLES `articlebody` WRITE;
 /*!40000 ALTER TABLE `articlebody` DISABLE KEYS */;
-INSERT INTO `articlebody` VALUES (18,19,'![boglogo.png](http://47.100.58.57:9999/group1/M00/00/00/rBNWFlx7P9iAFIzMAAEynFqffTs295.png)\n\n学习使我快乐呀！','<p><img src=\"http://47.100.58.57:9999/group1/M00/00/00/rBNWFlx7P9iAFIzMAAEynFqffTs295.png\" alt=\"boglogo.png\" /></p>\n<p>学习使我快乐呀！</p>\n'),(28,29,'真的','<p>真的</p>\n'),(29,30,'超级难用','<p>超级难用</p>\n'),(30,31,'系呀系呀','<p>系呀系呀</p>\n'),(31,32,'什么水平','<p>什么水平</p>\n'),(32,33,'![logo.png](http://47.100.58.57:9999/group1/M00/00/00/rBNWFlx8mI-ANxKFAAAJZNTcgWE420.png)','<p><img src=\"http://47.100.58.57:9999/group1/M00/00/00/rBNWFlx8mI-ANxKFAAAJZNTcgWE420.png\" alt=\"logo.png\" /></p>\n'),(33,34,'22222222222222','<p>22222222222222</p>\n'),(34,35,'再次测试![btnright.png](http://47.100.58.57:9999/group1/M00/00/00/rBNWFlx-UVKAMCB_AAAFq8bP78s977.png)','<p>再次测试<img src=\"http://47.100.58.57:9999/group1/M00/00/00/rBNWFlx-UVKAMCB_AAAFq8bP78s977.png\" alt=\"btnright.png\" /></p>\n');
+INSERT INTO `articlebody` VALUES (41,42,'![pc页面设计.png](http://localhost:8000/59159c52-25b0-422c-bdc0-81b3f390d03d_pc页面设计.png)\n','<p><img src=\"http://localhost:8000/59159c52-25b0-422c-bdc0-81b3f390d03d_pc%E9%A1%B5%E9%9D%A2%E8%AE%BE%E8%AE%A1.png\" alt=\"pc页面设计.png\" /></p>\n'),(42,43,'永远永远','<p>永远永远</p>\n'),(43,44,'1111111111111','<p>1111111111111</p>\n'),(44,45,'vue。js','<p>vue。js</p>\n'),(45,46,'222222222222222','<p>222222222222222</p>\n'),(47,48,'![blogbg.png](http://localhost:8000/d0ce9440-16b6-487f-a72e-aa815775fc77_blog-bg.png)','<p><img src=\"http://localhost:8000/d0ce9440-16b6-487f-a72e-aa815775fc77_blog-bg.png\" alt=\"blogbg.png\" /></p>\n'),(48,49,'111','<p>111</p>\n'),(49,50,'3333333333![blogname.png](http://localhost:8000/9a7b7ebb-bf74-44b8-92bc-847edcbf966b_blog-name.png)','<p>3333333333<img src=\"http://localhost:8000/9a7b7ebb-bf74-44b8-92bc-847edcbf966b_blog-name.png\" alt=\"blogname.png\" /></p>\n'),(50,51,'5555555555','<p>5555555555</p>\n');
 /*!40000 ALTER TABLE `articlebody` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -58,8 +85,10 @@ CREATE TABLE `articlecomment` (
   `toid` int(11) DEFAULT NULL,
   `atlevel` int(11) NOT NULL,
   `likecount` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `fkarticlescomment` (`articleid`),
+  CONSTRAINT `fkarticlescomment` FOREIGN KEY (`articleid`) REFERENCES `articles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +97,7 @@ CREATE TABLE `articlecomment` (
 
 LOCK TABLES `articlecomment` WRITE;
 /*!40000 ALTER TABLE `articlecomment` DISABLE KEYS */;
-INSERT INTO `articlecomment` VALUES (21,'第一','2019-03-05 18:15:43',34,12,NULL,NULL,0,0),(22,'第二','2019-03-05 18:15:49',34,12,21,NULL,1,0),(23,'四三','2019-03-05 18:15:57',34,12,21,22,2,0),(24,'哈哈哈 搞定','2019-03-05 18:18:24',34,12,NULL,NULL,0,0),(25,'厉害','2019-03-05 18:18:31',34,12,24,NULL,1,0),(26,'厉害','2019-03-05 18:18:36',34,12,24,25,2,0),(27,'嘻嘻','2019-03-05 18:27:45',34,12,NULL,NULL,0,0),(28,'66','2019-03-05 18:38:05',34,11,24,26,2,0);
+INSERT INTO `articlecomment` VALUES (37,'11111111111111','2019-03-18 13:55:31',49,11,NULL,NULL,0,0),(38,'12','2019-03-18 13:56:30',50,11,NULL,NULL,0,0);
 /*!40000 ALTER TABLE `articlecomment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,8 +116,9 @@ CREATE TABLE `articles` (
   `summary` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   `category` int(11) NOT NULL,
   `categorydescription` varchar(255) DEFAULT NULL,
+  `cover` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -97,7 +127,7 @@ CREATE TABLE `articles` (
 
 LOCK TABLES `articles` WRITE;
 /*!40000 ALTER TABLE `articles` DISABLE KEYS */;
-INSERT INTO `articles` VALUES (19,11,'2019-03-03 10:46:37','这是关于文章测试','vue是最好的前端开发框架，Java世界上最优秀的语言。',1,'Java'),(29,11,'2019-03-04 11:08:49','武天元很帅','111',1,'Java'),(30,11,'2019-03-04 11:14:12','Vue真的很难用啊','哎',2,'Vue'),(31,11,'2019-03-04 11:15:34','疯狂发文章中','永远永远',3,'Python'),(32,11,'2019-03-04 11:16:13','继续向继续','湖人总冠军',1,'Java'),(33,11,'2019-03-04 11:16:39','go on','有有有由于',1,'Java'),(34,11,'2019-03-04 11:17:05','1111111111111111','3333333333333333333',2,'Vue'),(35,11,'2019-03-05 18:37:14','测试','嘻嘻嘻',1,'Java');
+INSERT INTO `articles` VALUES (42,11,'2019-03-08 12:44:28','这是一个测试','vue很难用啊',2,'后端开发','http://localhost:8000/24db0138-3f77-4d4b-a6ab-9c9e32c364b9_java.jpg'),(43,11,'2019-03-11 15:53:53','江南','圈圈',3,'数据库','http://localhost:8000/24db0138-3f77-4d4b-a6ab-9c9e32c364b9_java.jpg'),(44,11,'2019-03-06 18:49:33','加一','222222',1,'前端开发','http://localhost:8000/24db0138-3f77-4d4b-a6ab-9c9e32c364b9_java.jpg'),(45,11,'2019-03-11 15:54:41','vue','234',1,'前端开发','http://localhost:8000/24db0138-3f77-4d4b-a6ab-9c9e32c364b9_java.jpg'),(46,11,'2019-03-11 15:55:05','00000000000','3333333333',4,'服务器','http://localhost:8000/24db0138-3f77-4d4b-a6ab-9c9e32c364b9_java.jpg'),(48,11,'2019-03-14 09:23:57','测试封面','213',1,'前端开发','http://localhost:8000/d0ce9440-16b6-487f-a72e-aa815775fc77_blog-bg.png'),(49,11,'2019-03-14 10:02:22','测试','23',1,'前端开发',''),(50,11,'2019-03-18 13:56:17','2222222','1',1,'前端开发','http://localhost:8000/9a7b7ebb-bf74-44b8-92bc-847edcbf966b_blog-name.png'),(51,11,'2019-03-18 15:35:09','445','12',1,'前端开发','');
 /*!40000 ALTER TABLE `articles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,8 +143,12 @@ CREATE TABLE `articletag` (
   `articleid` int(11) NOT NULL,
   `tagid` int(11) NOT NULL,
   `tagdescription` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  KEY `fkarticles` (`articleid`),
+  KEY `fktag` (`tagid`),
+  CONSTRAINT `fkarticles` FOREIGN KEY (`articleid`) REFERENCES `articles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fktag` FOREIGN KEY (`tagid`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +157,7 @@ CREATE TABLE `articletag` (
 
 LOCK TABLES `articletag` WRITE;
 /*!40000 ALTER TABLE `articletag` DISABLE KEYS */;
-INSERT INTO `articletag` VALUES (37,19,1,'C++'),(38,19,2,'Java'),(39,19,3,'Vue'),(40,19,5,'前端'),(41,19,6,'后端开发'),(48,29,3,'Vue'),(49,29,8,'机器学习'),(50,29,4,'JavaScript'),(51,30,3,'Vue'),(52,30,5,'前端'),(53,31,3,'Vue'),(54,31,4,'JavaScript'),(55,31,8,'机器学习'),(56,32,3,'Vue'),(57,32,8,'机器学习'),(58,33,3,'Vue'),(59,33,8,'机器学习'),(60,34,4,'JavaScript'),(61,34,8,'机器学习'),(62,35,1,'C++'),(63,35,2,'Java'),(64,35,8,'机器学习');
+INSERT INTO `articletag` VALUES (78,42,3,'Vue'),(79,42,2,'Java'),(80,42,5,'前端'),(81,42,6,'后端开发'),(82,43,3,'Vue'),(83,43,8,'机器学习'),(84,44,3,'Vue'),(85,44,8,'机器学习'),(86,45,3,'Vue'),(87,45,8,'机器学习'),(88,46,3,'Vue'),(89,46,8,'机器学习'),(92,48,5,'前端'),(93,48,4,'JavaScript'),(94,49,3,'Vue'),(95,49,8,'机器学习'),(96,50,1,'C++'),(97,50,2,'Java'),(104,51,3,'Vue'),(105,51,8,'机器学习');
 /*!40000 ALTER TABLE `articletag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +174,7 @@ CREATE TABLE `articleviewinfo` (
   `viewcount` int(11) NOT NULL,
   `commentcount` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,8 +183,33 @@ CREATE TABLE `articleviewinfo` (
 
 LOCK TABLES `articleviewinfo` WRITE;
 /*!40000 ALTER TABLE `articleviewinfo` DISABLE KEYS */;
-INSERT INTO `articleviewinfo` VALUES (1,19,100,0),(4,29,0,0),(5,30,0,0),(6,31,0,0),(7,32,0,0),(8,33,0,0),(9,34,0,0),(10,35,0,0);
+INSERT INTO `articleviewinfo` VALUES (17,42,2,0),(18,43,1,0),(19,44,1,0),(20,45,2,0),(21,46,1,0),(23,48,1,0),(24,49,3,1),(25,50,4,1),(26,51,2,0);
 /*!40000 ALTER TABLE `articleviewinfo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `articleweight`
+--
+
+DROP TABLE IF EXISTS `articleweight`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `articleweight` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `articleid` int(11) NOT NULL,
+  `weight` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `articleweight`
+--
+
+LOCK TABLES `articleweight` WRITE;
+/*!40000 ALTER TABLE `articleweight` DISABLE KEYS */;
+INSERT INTO `articleweight` VALUES (1,42,4),(2,43,2),(3,44,2),(4,45,4),(5,46,2),(7,48,2),(8,49,14),(9,50,16),(10,51,4);
+/*!40000 ALTER TABLE `articleweight` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -243,7 +302,7 @@ CREATE TABLE `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `categorydescription` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +311,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Java'),(2,'Vue'),(3,'Python'),(4,'C++');
+INSERT INTO `category` VALUES (1,'前端开发'),(2,'后端开发'),(3,'数据库'),(4,'服务器'),(5,'机器学习');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,7 +373,7 @@ CREATE TABLE `user_information` (
 
 LOCK TABLES `user_information` WRITE;
 /*!40000 ALTER TABLE `user_information` DISABLE KEYS */;
-INSERT INTO `user_information` VALUES (4,'wanghuan2018@seu.edu.cn','78B0EF01C747B41BFAB669CD0248C951',NULL,NULL,'b4a13',NULL,'2019-01-04 13:55:41',NULL,'wanghuan2018@seu.edu.cn',NULL,NULL,NULL,NULL,'http://47.100.58.57:9999/group1/M00/00/00/rBNWFlxIPP6AF8GUAABHPeDd0g8601.jpg',NULL),(10,'744640112@qq.com','60BD49603CB50A26D8B699F59960DBCC',NULL,'7f4edd79-7f02-4760-846d-5ab198f3d5aa','21918',NULL,'2019-02-28 12:34:49',NULL,'744640112@qq.com',NULL,NULL,NULL,NULL,'http://47.100.58.57:9999/group1/M00/00/00/rBNWFlxIPP6AF8GUAABHPeDd0g8601.jpg',NULL),(11,'njustwh2014@163.com','9885361D64C98C580DC3AF9AFBEFC55E',NULL,'8ca8664e-3786-4bf6-99e6-76a738056c04','abb41',NULL,'2019-02-28 12:41:45',NULL,'njustwh2014@163.com',NULL,NULL,NULL,NULL,'http://47.100.58.57:9999/group1/M00/00/00/rBNWFlxIPP6AF8GUAABHPeDd0g8601.jpg',NULL),(12,'seuwh2018@foxmail.com','3387409D70CF3131B88ED4780988E60C',NULL,NULL,'0885c',NULL,'2019-03-04 04:50:29',NULL,'seuwh2018@foxmail.com',NULL,NULL,NULL,NULL,'http://47.100.58.57:9999/group1/M00/00/00/rBNWFlxIPP6AF8GUAABHPeDd0g8601.jpg',NULL);
+INSERT INTO `user_information` VALUES (4,'wanghuan2018@seu.edu.cn','78B0EF01C747B41BFAB669CD0248C951',NULL,NULL,'b4a13',NULL,'2019-01-04 13:55:41',NULL,'wanghuan2018@seu.edu.cn',NULL,NULL,NULL,NULL,'http://47.100.58.57:9999/group1/M00/00/00/rBNWFlxIPP6AF8GUAABHPeDd0g8601.jpg',NULL),(10,'744640112@qq.com','60BD49603CB50A26D8B699F59960DBCC',NULL,'7f4edd79-7f02-4760-846d-5ab198f3d5aa','21918',NULL,'2019-02-28 12:34:49',NULL,'744640112@qq.com',NULL,NULL,NULL,NULL,'http://47.100.58.57:9999/group1/M00/00/00/rBNWFlxIPP6AF8GUAABHPeDd0g8601.jpg',NULL),(11,'njustwh2014@163.com','9885361D64C98C580DC3AF9AFBEFC55E',NULL,'9c0715b5-a85d-42dc-85e8-6eee61ad5fb9','abb41',NULL,'2019-02-28 12:41:45',NULL,'一天只赢一把',_binary '','1996-04-17 00:00:00','东南大学','篮球','http://localhost:8000/bcb1636b-5caa-46af-9f42-464ae0b5ed57_DPJB4260.JPG',NULL),(12,'seuwh2018@foxmail.com','3387409D70CF3131B88ED4780988E60C',NULL,NULL,'0885c',NULL,'2019-03-04 04:50:29',NULL,'seuwh2018@foxmail.com',NULL,NULL,NULL,NULL,'http://47.100.58.57:9999/group1/M00/00/00/rBNWFlxIPP6AF8GUAABHPeDd0g8601.jpg',NULL);
 /*!40000 ALTER TABLE `user_information` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -327,4 +386,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-05 18:59:07
+-- Dump completed on 2019-03-22 11:07:49

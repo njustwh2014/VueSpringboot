@@ -8,6 +8,7 @@
 
 package seu.wh.seuwh_mstc.dao;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -77,5 +78,15 @@ public interface ArticleLinkTableDao {
             " inner join articleviewinfo as t2 on t1.id=t2.articleid"+
             " order by t1.publishtime desc limit #{pageNumber},#{pageSize}"})
     List<Map<String,Object>> getAllArticleByKeyWords(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize,@Param("keywords") String keywords);
+
+
+
+    //表articletag和articlecomment设置了外键关联了articles，当articles有删除更新时，articletag和articlecomment对应记录也会更新
+    @Delete({"DELETE articles,articlebody,articleviewinfo,articleweight",
+            " FROM articles LEFT JOIN articlebody ON articles.id=articlebody.articleid",
+            " LEFT JOIN articleviewinfo ON articles.id=articleviewinfo.articleid",
+            " LEFT JOIN articleweight ON articles.id=articleweight.articleid",
+            " where articles.id=#{articleid};"})
+    int deleteArticleByid(Integer articleid);
 
 }

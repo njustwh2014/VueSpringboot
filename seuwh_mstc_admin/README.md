@@ -1,4 +1,7 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+**sql导出命令** mysqldump -u root -p seumstc >f:/seumstc.sql
+## 2019/3/22
+### 1.实现文章删除，并部署到服务器，准备导出服务器系统镜像
 ## 2019/3/21
 休息了两天，该干活了。昨天mock失败了！！！
 ### 1.管理员添加方法。
@@ -27,6 +30,18 @@ FROM
 WHERE
     articles.id=articletag.articleid
 AND tag.id=articletag.tagid; 
+
+
+//修改主键
+ALTER TABLE articletag DROP FOREIGN KEY fkarticles;
+ALTER TABLE articletag DROP FOREIGN KEY fktag;
+
+//添加外键约束
+ALTER TABLE articletag ADD CONSTRAINT fkarticles FOREIGN KEY(articleid) REFERENCES articles(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE articletag ADD CONSTRAINT fktag FOREIGN KEY(tagid) REFERENCES tag(id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE articlecomment ADD CONSTRAINT fkarticlescomment FOREIGN KEY(articleid) REFERENCES articles(id) ON DELETE CASCADE ON UPDATE  CASCADE;
+//删除父表记录
+DELETE articles,articlebody,articleviewinfo,articleweight FROM articles LEFT JOIN articlebody ON articles.id=articlebody.articleid LEFT JOIN articleviewinfo ON articles.id=articleviewinfo.articleid LEFT JOIN articleweight ON articles.id=articleweight.articleid where articles.id=47;
 
 ```
 ## 2019/3/19

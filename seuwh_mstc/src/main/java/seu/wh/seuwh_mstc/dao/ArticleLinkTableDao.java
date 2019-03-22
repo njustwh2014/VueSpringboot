@@ -8,6 +8,7 @@
 
 package seu.wh.seuwh_mstc.dao;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -77,5 +78,6 @@ public interface ArticleLinkTableDao {
             " inner join articleviewinfo as t2 on t1.id=t2.articleid"+
             " order by t1.publishtime desc limit #{pageNumber},#{pageSize}"})
     List<Map<String,Object>> getAllArticleByKeyWords(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize,@Param("keywords") String keywords);
+
 
 }

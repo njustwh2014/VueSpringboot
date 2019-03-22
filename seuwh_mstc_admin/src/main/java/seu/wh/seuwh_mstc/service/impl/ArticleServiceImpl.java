@@ -8,11 +8,14 @@
 
 package seu.wh.seuwh_mstc.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import seu.wh.seuwh_mstc.async.EventModel;
 import seu.wh.seuwh_mstc.async.EventProducer;
 import seu.wh.seuwh_mstc.async.EventType;
+import seu.wh.seuwh_mstc.controller.AdminController;
 import seu.wh.seuwh_mstc.dao.*;
 import seu.wh.seuwh_mstc.jedis.JedisClient;
 import seu.wh.seuwh_mstc.model.*;
@@ -28,6 +31,7 @@ import static java.lang.String.valueOf;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
+    private static final Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
     @Autowired
     UserDao userDao;
     @Autowired
@@ -249,6 +253,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ResultInfo deleteArticle(Integer articleid) {
-        return null;
+        try{
+            articleLinkTableDao.deleteArticleByid(articleid);
+            return ResultInfo.ok();
+        }catch (Exception e){
+            logger.error("删除文章时出现异常：",e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"删除时服务器出现异常！");
+        }
     }
 }

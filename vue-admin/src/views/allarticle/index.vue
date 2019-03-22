@@ -115,8 +115,7 @@ export default {
         title: undefined,
         type: undefined,
         sort: '+id',
-        importance: undefined
-        
+        importance: undefined 
       }
 
     }
@@ -168,6 +167,24 @@ export default {
           type: 'warning'
         }).then(() => {
           deleteArticle(row.id).then(response=>{
+            if(response.data.status==200){
+              //删除成功
+              //重新加载文章
+              this.listLoading=true;
+              this.listQuery={
+                pageNumber: 1,
+                pageSize: 20,
+                title: undefined,
+                type: undefined,
+                sort: '+id',
+                importance: undefined
+              };
+              this.list=[];
+              this.fetchData();
+            }else{
+              //删除失败
+              this.$message(response.data.msg);
+            }
             
           })
           this.$message({
