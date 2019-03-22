@@ -1,4 +1,5 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+
 **sql导出命令** mysqldump -u root -p seumstc >f:/seumstc.sql
 ## 2019/3/22
 ### 1.实现文章删除，并部署到服务器，准备导出服务器系统镜像
