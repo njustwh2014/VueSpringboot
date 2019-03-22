@@ -34,4 +34,7 @@ public interface ArticleInfoDao {
 
     @Select({"select * from",TABLE_NAME,"order by publishtime desc limit #{pageNumber},#{pageSize} "})
     List<ArticleInfo> getArticleByIdRange(@Param("pageNumber") Integer pageNumber,@Param("pageSize") Integer pageSize);
+
+    @Select({"select count(*) from ",TABLE_NAME})
+    Integer countArticles();
 }

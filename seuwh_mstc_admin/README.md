@@ -2,6 +2,33 @@
 ## 2019/3/21
 休息了两天，该干活了。昨天mock失败了！！！
 ### 1.管理员添加方法。
+### 2.多表删除
+```sql
+delete 
+
+```
+### 3.实现了拦截http的头部信息
+### 4.多对多Mysql查询
+```sql
+//添加外键
+ALTER TABLE articletag ADD CONSTRAINT fkarticles FOREIGN KEY(articleid) REFERENCES articles(id);
+ALTER TABLE articletag ADD CONSTRAINT fktag FOREIGN KEY(tagid) REFERENCES tag(id);
+
+//添加联合主键
+ALTER TABLE articletag ADD CONSTRAINT pkarticletag PRIMARY KEY(articleid,tagid);
+
+SELECT 
+    articles.title,
+    tag.tagdescription 
+FROM 
+    articles,
+    tag,
+    articletag
+WHERE
+    articles.id=articletag.articleid
+AND tag.id=articletag.tagid; 
+
+```
 ## 2019/3/19
 ### 1.利用模糊查询实现搜索功能，需要改进！！！！！！！！！！！！
 ## 2019/3/18

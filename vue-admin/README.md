@@ -1,17 +1,17 @@
-# vue-admin-template
-
-> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
-
-**Live demo:** http://panjiachen.github.io/vue-admin-template
-
-[中文文档](https://github.com/PanJiaChen/vue-admin-template/blob/master/README-zh.md)
-
+# vue-admin
+**参考：** https://github.com/PanJiaChen/vue-admin-template 
+## 2019/3/21
+### 1.实现登陆登出功能
++后面要学习mock，更好的做到前后端分离
++question:http与https区别：https是通过ssl加密，是http的安全版。
+参考：https://www.cnblogs.com/wqhwe/p/5407468.html
 ## Build Setup
 
 ```bash
 # Clone project
-git clone https://github.com/PanJiaChen/vue-admin-template.git
-
+git clone git@github.com:njustwh2014/VueSpringboot.git
+# cd
+cd vue-admin
 # Install dependencies
 npm install
 

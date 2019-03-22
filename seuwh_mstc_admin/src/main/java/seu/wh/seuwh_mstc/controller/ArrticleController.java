@@ -69,7 +69,6 @@ public class ArrticleController {
     public ResultInfo getAllArticle(@RequestBody JSONObject jsonObject){
         Integer pageNumber=jsonObject.getInteger("pageNumber");
         Integer pageSize=jsonObject.getInteger("pageSize");
-
         return articleService.getAllArticle(pageNumber,pageSize);
 
     }
@@ -110,6 +109,13 @@ public class ArrticleController {
         Integer pageSize=jsonObject.getInteger("pageSize");
         String searchData=jsonObject.getString("searchData");
         return articleService.searchArticles(pageNumber,pageSize,searchData);
+    }
+
+    //delete article
+    @RequestMapping(value = "delete",method = RequestMethod.POST)
+    public ResultInfo deleteArticle(@RequestBody JSONObject jsonObject){
+        Integer articleid=jsonObject.getInteger("articleid");
+        return articleService.deleteArticle(articleid);
     }
 
     @RequestMapping(value="/test", method=RequestMethod.GET)

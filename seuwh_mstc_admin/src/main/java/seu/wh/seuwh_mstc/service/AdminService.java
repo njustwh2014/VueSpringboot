@@ -8,8 +8,11 @@
 
 package seu.wh.seuwh_mstc.service;
 
+import seu.wh.seuwh_mstc.model.HostHolder;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 
 public interface AdminService {
     public ResultInfo login(String username,String password);
+    public ResultInfo getAdminByToken(HostHolder hostHolder);
+    public ResultInfo logout(HostHolder hostHolder);
 }

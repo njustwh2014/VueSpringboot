@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import seu.wh.seuwh_mstc.model.HostHolder;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.AdminService;
 
@@ -32,4 +33,17 @@ public class AdminController {
         String password=jsonObject.getString("password");
         return adminService.login(username,password);
     }
+
+    //getinfo by token
+    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    public ResultInfo getInfo(HostHolder hostHolder){
+        return adminService.getAdminByToken(hostHolder);
+    }
+
+    //logout
+    @RequestMapping(value="/logout",method = RequestMethod.GET)
+    public ResultInfo logout(HostHolder hostHolder){
+        return adminService.logout(hostHolder);
+    }
+
 }

@@ -24,11 +24,14 @@ public interface AdminDao {
     @Select({"select * from ",TABLE_NAME,"where username=#{username}"})
     Admin selectByUsername(String username);
 
-    @Insert({"insert into ",TABLE_NAME,"(",INSERT_FIELDS,") values(username=#{username},password=#{password},salt=#{salt},token=#{token})"})
+    @Insert({"insert into ",TABLE_NAME,"(",INSERT_FIELDS,") values(#{username},#{password},#{salt},#{token})"})
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     int insertAdmin(Admin admin);
 
     @Update({"update ",TABLE_NAME,"set token=#{token} where id=#{id}"})
     void updateToken(Admin admin);
+
+    @Select({"select * from ",TABLE_NAME,"where token=#{token}"})
+    Admin selectByToken(String token);
 
 }

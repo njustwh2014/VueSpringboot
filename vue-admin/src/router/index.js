@@ -27,35 +27,57 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
-    path: '/',
+    path: '',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
-    hidden: true,
     children: [{
+      name: '首页',
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '首页', icon: 'dashboard', noCache: true, affix: true }
     }]
   },
 
   {
-    path: '/example',
+    path: '/article',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    redirect: '/allarticle',
+    name: '文章管理',
+    meta: { title: '文章管理', icon: 'table' },
     children: [
       {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        path: '/allarticle',
+        name: '所有文章',
+        component: () => import('@/views/allarticle/index'),
+        meta: { title: '所有文章', icon: 'table' }
       },
       {
         path: 'tree',
         name: 'Tree',
         component: () => import('@/views/tree/index'),
         meta: { title: 'Tree', icon: 'tree' }
+      }
+    ]
+  },
+
+  {
+    path: '/user',
+    component: Layout,
+    redirect: '/alluser',
+    name: '用户管理',
+    meta: { title: '用户管理', icon: 'table' },
+    children: [
+      {
+        path: '/alluser',
+        name: '所有用户',
+        component: () => import('@/views/user/index'),
+        meta: { title: '所有用户', icon: 'table' }
+      },
+      {
+        path: 'tree',
+        name: '用户Tree',
+        component: () => import('@/views/tree/index'),
+        meta: { title: '用户Tree', icon: 'tree' }
       }
     ]
   },

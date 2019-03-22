@@ -21,10 +21,7 @@ import seu.wh.seuwh_mstc.service.ArticleService;
 import seu.wh.seuwh_mstc.utils.RedisKeyUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.SimpleFormatter;
 
 import static java.lang.String.valueOf;
@@ -203,9 +200,11 @@ public class ArticleServiceImpl implements ArticleService {
         for(Map<String,Object> item:articleslist){
             item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
         }
-        return ResultInfo.ok(articleslist);
+        Map<String,Object> ret=new HashMap<>();
+        ret.put("data",articleslist);
+        ret.put("total",articleInfoDao.countArticles());
+        return ResultInfo.ok(ret);
     }
-
     //获取最热文章
     //现阶段说对weight=（访问量*2+评论量*10）进行排序操作
 
@@ -246,5 +245,10 @@ public class ArticleServiceImpl implements ArticleService {
             item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
+    }
+
+    @Override
+    public ResultInfo deleteArticle(Integer articleid) {
+        return null;
     }
 }

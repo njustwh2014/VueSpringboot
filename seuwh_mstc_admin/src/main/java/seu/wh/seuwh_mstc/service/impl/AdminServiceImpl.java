@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import seu.wh.seuwh_mstc.controller.UserController;
 import seu.wh.seuwh_mstc.dao.AdminDao;
 import seu.wh.seuwh_mstc.model.Admin;
+import seu.wh.seuwh_mstc.model.HostHolder;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.AdminService;
 import seu.wh.seuwh_mstc.utils.Md5Utils;
@@ -32,7 +33,7 @@ public class AdminServiceImpl implements AdminService {
     //login
     @Override
     public ResultInfo login(String username, String password) {
-
+        System.out.println(username);
         Admin admin=adminDao.selectByUsername(username);
         if(admin!=null){
             //正常登陆
@@ -49,21 +50,45 @@ public class AdminServiceImpl implements AdminService {
                 return(ResultInfo.build(500,"更新Token时服务器异常！"));
             }
         }else{
-            //初始阶段统一注册，相当于不设密码
-            admin=new Admin();
-            admin.setSalt(UUID.randomUUID().toString().substring(0, 5));
-            admin.setToken(UUID.randomUUID().toString());
-            admin.setPassword(Md5Utils.MD5(password + admin.getSalt()));
-            admin.setUsername(username);
-            try{
-                adminDao.insertAdmin(admin);
-                return ResultInfo.ok(admin);
-            }catch (Exception e){
-                logger.error("添加用户异常"+e.getMessage());
-                e.printStackTrace();
-                return(ResultInfo.build(500, "添加时服务器发生错误！"));
-            }
+//            //初始阶段统一注册，相当于不设密码
+//            admin=new Admin();
+//            admin.setSalt(UUID.randomUUID().toString().substring(0, 5));
+//            admin.setToken(UUID.randomUUID().toString());
+//            admin.setPassword(Md5Utils.MD5(password + admin.getSalt()));
+//            admin.setUsername(username);
+//
+//            try{
+//                adminDao.insertAdmin(admin);
+//                return ResultInfo.ok(admin);
+//            }catch (Exception e){
+//                logger.error("添加用户异常"+e.getMessage());
+//                e.printStackTrace();
+//                return(ResultInfo.build(500, "添加时服务器发生错误！"));
+//            }
+            /////////////////////////////////////////
+            return ResultInfo.build(400,"用户名或密码错误！");
         }
-        return null;
+    }
+
+    @Override
+    public ResultInfo getAdminByToken(HostHolder hostHolder) {
+        Admin admin=hostHolder.getAdmin();
+        if(admin!=null){
+            return ResultInfo.ok(admin);
+        }else{
+            return ResultInfo.build(500,"未登录");
+        }
+    }
+
+    @Override
+    public ResultInfo logout(HostHolder hostHolder) {
+        Admin admin=hostHolder.getAdmin();
+        if(admin!=null){
+            admin.setToken("");
+            adminDao.updateToken(admin);
+            return ResultInfo.build(200,"退出登陆成功",admin);
+        }else{
+            return ResultInfo.build(500,"未登录");
+        }
     }
 }
