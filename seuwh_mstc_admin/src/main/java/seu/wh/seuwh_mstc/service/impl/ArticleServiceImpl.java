@@ -197,7 +197,7 @@ public class ArticleServiceImpl implements ArticleService {
         return ResultInfo.ok(articleSend);
     }
 
-    // 首页获取文章简要信息
+    // 获取所有文章
     @Override
     public ResultInfo getAllArticle(Integer pageNumber, Integer pageSize) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.GetAllArticle((pageNumber-1)*pageSize,pageSize);

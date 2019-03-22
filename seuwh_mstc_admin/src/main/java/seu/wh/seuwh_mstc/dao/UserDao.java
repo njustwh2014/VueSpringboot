@@ -8,12 +8,12 @@
 
 package seu.wh.seuwh_mstc.dao;
 
+import org.apache.ibatis.annotations.*;
 import seu.wh.seuwh_mstc.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 @Mapper
@@ -55,4 +55,16 @@ public interface UserDao {
     @Update({"update ",TABLE_NAME, " set nickname=#{nickname}, gender=#{gender},  " +
             "birthdate=#{birthdate},school=#{school},hobby=#{hobby},headportraiturl=#{headportraiturl} where id=#{id}" })
     void updateUserInfo(User user);
+
+    // 根据分页获取用户
+    @Select({"SELECT id,account,nickname,gender,birthdate,headportraiturl,school,contributiondegree FROM user_information ORDER BY id LIMIT #{start},#{end}"})
+    List<Map<String,Object>> getAllUser(@Param("start") Integer start, @Param("end") Integer end);
+
+    @Select({"select count(*) from ",TABLE_NAME})
+    Integer countUser();
+
+    //删除用户
+    @Delete({"DELETE FROM user_information WHERE id=#{id}"})
+    Integer deleteUser(Integer id);
+
 }

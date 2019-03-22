@@ -93,7 +93,10 @@ export default {
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: this.redirect || '/' })
-          }).catch(() => {
+          }).catch(error => {
+            if(error !== 'error'){
+                this.$message("用户名或密码错误");
+              }
             this.loading = false
           })
         } else {

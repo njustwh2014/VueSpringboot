@@ -1,18 +1,30 @@
-**打包命令** mvn clean package -Dmaven.test.skip=true
-
-**sql导出命令** mysqldump -u root -p seumstc >f:/seumstc.sql
++ **打包命令** mvn clean package -Dmaven.test.skip=true
++ **sql导出命令** mysqldump -u root -p seumstc >f:/seumstc.sql
 ## 2019/3/22
 ### 1.实现文章删除，并部署到服务器，准备导出服务器系统镜像
+### 2.返回所有用户给前端
+数据格式：
++ id
++ account
++ nickname
++ gender
++ birthdate
++ headportraiturl
++ school
++ contributiondegree
+```sql
+SELECT id,account,nickname,gender,birthdate,headportraiturl,school,contributiondegree FROM user_information ORDER BY id LIMIT #{start},#{end};
+```
+### 3.删除用户
+```sql
+DELETE FROM user_information WHERE id=#{id};
+```
 ## 2019/3/21
 休息了两天，该干活了。昨天mock失败了！！！
 ### 1.管理员添加方法。
 ### 2.多表删除
-```sql
-delete 
-
-```
 ### 3.实现了拦截http的头部信息
-### 4.多对多Mysql查询
+### 4.多对多Mysql查询删除
 ```sql
 //添加外键
 ALTER TABLE articletag ADD CONSTRAINT fkarticles FOREIGN KEY(articleid) REFERENCES articles(id);

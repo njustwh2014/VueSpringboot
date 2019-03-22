@@ -24,56 +24,60 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column label="标题" width="min-150">
+      <el-table-column label="昵称" min-width="150" align="center">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.nickname }}
         </template>
       </el-table-column>
       
-      <el-table-column label="摘要" min-width="150" align="center">
+      <el-table-column label="账号" min-width="150" align="center">
         <template slot-scope="scope">
-          {{ scope.row.summary }}
+          <span>{{ scope.row.account }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="作者" width="110" align="center">
+      <el-table-column class-name="status-col" label="性别" width="110" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.nickname }}</span>
+          <el-tag :type="scope.row.gender | genderColorFilter">{{ scope.row.gender|genderFilter }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column label="阅读量" width="90" align="center">
+      <el-table-column label="毕业学校" width="90" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.viewcount }}</span>
+          {{ scope.row.school }}
         </template>
       </el-table-column>
 
-      <el-table-column label="评论量" width="90" align="center">
+      <el-table-column label="贡献度" width="90" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.commentcount }}</span>
+          {{ scope.row.contributiondegree }}
         </template>
       </el-table-column>
+
       <!-- <el-table-column class-name="status-col" label="Status" width="110" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
         </template>
       </el-table-column> -->
-      <el-table-column align="center" prop="created_at" label="发表时间" width="200">
+      <el-table-column align="center" prop="created_at" label="出生日期" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time"/>
-          <span>{{ scope.row.publishtime|parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.birthdate|parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="320" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">{{ "edit" }}</el-button>
-          <el-button v-if="scope.row.status!='published'" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">
+          <el-button type="primary" size="mini" :disabled="true" @click="handleUpdate(scope.row)">{{ "edit" }}</el-button>
+          <el-button v-if="scope.row.status!='published'" :disabled="true" size="mini" type="success" @click="handleModifyStatus(scope.row,'禁言')">
             {{ "publish" }}
           </el-button>
-          <el-button v-if="scope.row.status!='draft'" size="mini" @click="handleModifyStatus(scope.row,'draft')">
+          <el-button v-if="scope.row.status!='draft'" :disabled="true" size="mini" @click="handleModifyStatus(scope.row,'draft')">
             {{ "draft" }}
           </el-button>
-          <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
+          <!-- <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
+            {{ "delete" }}
+          </el-button> -->
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row)">
             {{ "delete" }}
           </el-button>
         </template>
@@ -84,7 +88,7 @@
 </template>
 
 <script>
-import { getAllArticles } from '@/api/article'
+import { getAllUser,deleteUser } from '@/api/user'
 import { parseTime } from '@/utils'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination'
@@ -99,6 +103,20 @@ export default {
         deleted: 'danger'
       }
       return statusMap[status]
+    },
+    genderFilter(gender){
+      const genderMap={
+        true:'男',
+        false:'女'
+      }
+      return genderMap[gender]
+    },
+    genderColorFilter(gender){
+      const genderMap={
+        true:'blue',
+        false:'danger'
+      }
+      return genderMap[gender]
     }
   },
   data() {
@@ -124,7 +142,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getAllArticles(this.listQuery).then(response => {
+      getAllUser(this.listQuery).then(response => {
         this.list = response.data.data.data;
         this.listLoading = false
         this.total=response.data.data.total;
@@ -158,7 +176,44 @@ export default {
       
     },
     handleDelete(row) {
-      
+      //删除文章
+      console.log(row)
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteUser(row.id).then(response=>{
+            if(response.data.status==200){
+              //删除成功
+              //重新加载文章
+              this.listLoading=true;
+              this.listQuery={
+                pageNumber: 1,
+                pageSize: 20,
+                title: undefined,
+                type: undefined,
+                sort: '+id',
+                importance: undefined
+              };
+              this.list=[];
+              this.fetchData();
+            }else{
+              //删除失败
+              this.$message(response.data.msg);
+            }
+            
+          })
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
     },
     handleFetchPv(pv) {
       

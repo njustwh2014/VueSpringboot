@@ -1,5 +1,7 @@
 # vue-admin
 **参考：** https://github.com/PanJiaChen/vue-admin-template 
+## 2019/3/22
+### 1.实现了获取和删除文章和用户
 ## 2019/3/21
 ### 1.实现登陆登出功能
 +后面要学习mock，更好的做到前后端分离
