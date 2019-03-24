@@ -13,17 +13,7 @@
           <el-menu-item index="/">首页</el-menu-item>
           <el-submenu index="/category">
           <template slot="title">分类</template>
-          <el-menu-item index="/articles/category/1">前端开发</el-menu-item>
-          <el-menu-item index="/articles/category/2">后端开发</el-menu-item>
-          <el-menu-item index="/articles/category/3">数据库</el-menu-item>
-          <el-menu-item index="/articles/category/4">服务器</el-menu-item>
-          <el-menu-item index="/articles/category/5">机器学习</el-menu-item>
-          <el-submenu index="2-6">
-            <template slot="title">其他</template>
-            <el-menu-item index="category/6">经济</el-menu-item>
-            <el-menu-item index="category/7">时政</el-menu-item>
-            <el-menu-item index="category/8">社会生活</el-menu-item>
-          </el-submenu>
+          <el-menu-item v-for="a in allcategory" :key=a.id :index="generateIndex(a.id)">{{a.categorydescription}}</el-menu-item>
         </el-submenu>
         <el-menu-item index="3" disabled>程序员步行街</el-menu-item>
         <el-menu-item index="4" disabled>待开发</el-menu-item>
@@ -71,7 +61,7 @@
 </template>
 
 <script>
-
+import {getAllCategorys} from '@/api/category'
   export default {
     name: 'baseheader',
     props: {
@@ -81,8 +71,12 @@
         default: false
       }
     },
+    created(){
+      this.getCategorys();
+    },
     data() {
       return {
+        allcategory:[{id:1,categorydescription:"时政"}],
         searchData:"",
       }
     },
@@ -117,7 +111,19 @@
         }else{
           this.$message("不要调戏人家啦！")
         }       
-      }
+      },
+      generateIndex(id){
+        return "/articles/category/"+id;
+      },
+      getCategorys() {
+        getAllCategorys().then(data => {
+          this.allcategory = data.data.data;
+        }).catch(error => {
+          if (error !== 'error') {
+            that.$message({type: 'error', message: '文章分类加载失败', showClose: true})
+          }
+        })
+      },
     },
     directives:{
       focus:{

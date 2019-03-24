@@ -1,4 +1,6 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+## 2019/3/24
+### 1.实现了文章按category的status加载
 ## 2019/3/19
 ### 1.利用模糊查询实现搜索功能，需要改进！！！！！！！！！！！！
 ## 2019/3/18

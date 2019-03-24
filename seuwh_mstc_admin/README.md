@@ -1,5 +1,20 @@
 + **打包命令** mvn clean package -Dmaven.test.skip=true
 + **sql导出命令** mysqldump -u root -p seumstc >f:/seumstc.sql
+
+## 2019/3/24
+### 1.修改category表
+```sql
+ALTER TABLE category ADD categorystatus varchar(10);
+SELECT * FROM category ORDER BY id LIMIT #{start},#{end};
+UPDATE category SET categorystatus=#{categorystatus} WHERE id=#{id};
+```
+### 2.修改tag表
+```sql
+ALTER TABLE tag ADD tagstatus varchar(10);
+```
+### 3.实现对category的管理
+
+### 2.实现category状态修改
 ## 2019/3/22
 ### 1.实现文章删除，并部署到服务器，准备导出服务器系统镜像
 ### 2.返回所有用户给前端

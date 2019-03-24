@@ -24,6 +24,6 @@ public interface CategoryDao {
     String INSERT_FIELDS=" categorydescription";
     String SELECT_FIELDS="id, "+INSERT_FIELDS;
 
-    @Select({"select * from"+TABLE_NAME})
+    @Select({"select * from"+TABLE_NAME+"where categorystatus='show'"})
     List<Category> getAllCategory();
 }

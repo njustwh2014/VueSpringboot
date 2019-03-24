@@ -51,8 +51,9 @@ public interface ArticleLinkTableDao {
     * */
     @Select({"select t1.id,t1.title,t1.summary,t1.publishtime,t1.author,t2.commentcount,t2.viewcount,t3.nickname,t3.id as userid"+
             " from "+
-            " (articles as t1 inner join articleviewinfo as t2 on t1.id=t2.articleid)"+
-            " inner join user_information as t3 on t1.author=t3.id"+
+            " ((articles as t1 inner join articleviewinfo as t2 on t1.id=t2.articleid)"+
+            " inner join user_information as t3 on t1.author=t3.id)"+
+            " inner join category as t4 on t1.category=t4.id and t4.categorystatus='show'"+
             " order by t1.publishtime desc limit #{pageNumber},#{pageSize}"})
 //    List<Map<String,Object>> GetAllArticle(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize);
     List<Map<String,Object>> GetAllArticle(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize);

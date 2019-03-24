@@ -12,7 +12,9 @@ import seu.wh.seuwh_mstc.result.ResultInfo;
 
 public interface CategoryService {
 
-    public ResultInfo getAllCategory();
-
+    public ResultInfo getAllCategory(Integer pageNumber,Integer pageSize);
+    public ResultInfo changeStatus(Integer id,String status);
     public ResultInfo getAllArtilcesByCategory(Integer id);
+    public ResultInfo deleteCategory(Integer id);
+    public ResultInfo addCategory(String newcategory);
 }

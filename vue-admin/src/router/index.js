@@ -83,6 +83,19 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/category',
+    component: Layout,
+    children: [
+      {
+        path: '/allcategory',
+        name: '所有用户',
+        component: () => import('@/views/category/index'),
+        meta: { title: '分类管理', icon: 'table' }
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [

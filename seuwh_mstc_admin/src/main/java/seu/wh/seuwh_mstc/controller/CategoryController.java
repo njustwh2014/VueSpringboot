@@ -9,6 +9,7 @@
 package seu.wh.seuwh_mstc.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import seu.wh.seuwh_mstc.result.ResultInfo;
@@ -16,19 +17,33 @@ import seu.wh.seuwh_mstc.service.CategoryService;
 
 @RestController
 @CrossOrigin
+@RequestMapping("/category")
 public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    @RequestMapping(value = "/categorys", method = RequestMethod.GET)
-    public ResultInfo getAllCaregory(){
-        return categoryService.getAllCategory();
+    @RequestMapping(value = "/getall", method = RequestMethod.POST)
+    public ResultInfo getAllCaregory(@RequestBody JSONObject jsonObject){
+        Integer pageNumber=jsonObject.getInteger("pageNumber");
+        Integer pageSize=jsonObject.getInteger("pageSize");
+        return categoryService.getAllCategory(pageNumber,pageSize);
     }
 
-//    @RequestMapping(value="/categorys/${id}",method = RequestMethod.GET)
-//    public ResultInfo getAllArticleByCategory(@PathVariable Integer id){
-//        return categoryService.getAllArtilcesByCategory(id);
-//    }
-
+    @RequestMapping(value="/changestatus",method = RequestMethod.POST)
+    public ResultInfo changeStatus(@RequestBody JSONObject jsonObject){
+        Integer id=jsonObject.getInteger("id");
+        String categorystatus=jsonObject.getString("categorystatus");
+        return categoryService.changeStatus(id,categorystatus);
+    }
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    public ResultInfo deleteCategory(@RequestBody JSONObject jsonObject){
+        Integer id=jsonObject.getInteger("id");
+        return categoryService.deleteCategory(id);
+    }
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    public ResultInfo addCategory(@RequestBody JSONObject jsonObject){
+        String newcategory=jsonObject.getString("newcategory");
+        return categoryService.addCategory(newcategory);
+    }
 
 }

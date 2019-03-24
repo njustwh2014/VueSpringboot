@@ -89,4 +89,11 @@ public interface ArticleLinkTableDao {
             " where articles.id=#{articleid};"})
     int deleteArticleByid(Integer articleid);
 
+    @Delete({"DELETE articles,articlebody,articleviewinfo,articleweight",
+            " FROM articles LEFT JOIN articlebody ON articles.id=articlebody.articleid",
+            " LEFT JOIN articleviewinfo ON articles.id=articleviewinfo.articleid",
+            " LEFT JOIN articleweight ON articles.id=articleweight.articleid",
+            " where articles.category=#{categoryid};"})
+    int deleteArticleByCategoryid(Integer categoryid);
+
 }

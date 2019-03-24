@@ -11,6 +11,7 @@ package seu.wh.seuwh_mstc.model;
 public class Category {
     private Integer id;
     private String categorydescription;
+    private String categorystatus;
 
 
     public Integer getId() {
@@ -29,11 +30,11 @@ public class Category {
         this.categorydescription = categorydescription;
     }
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", categorydescription='" + categorydescription + '\'' +
-                '}';
+    public String getCategorystatus() {
+        return categorystatus;
+    }
+
+    public void setCategorystatus(String categorystatus) {
+        this.categorystatus = categorystatus;
     }
 }
