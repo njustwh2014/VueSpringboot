@@ -9,6 +9,7 @@
 package seu.wh.seuwh_mstc.model;
 
 public class ArticleBody {
+    //对应的表aticlebody
     private Integer id;
     private Integer articleid;
 

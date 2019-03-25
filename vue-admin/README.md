@@ -1,5 +1,7 @@
 # vue-admin
 **参考：** https://github.com/PanJiaChen/vue-admin-template 
+## 2019/3/25
+### 1.实现对tag的管理
 ## 2019/3/24
 ### 1.实现对category的管理
 ## 2019/3/22

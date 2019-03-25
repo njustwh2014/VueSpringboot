@@ -14,7 +14,7 @@ import java.util.List;
 public class ArticleRecive {
     private Integer id;
     private String title;
-    private Category category;
+    private Integer category;
     private String summary;
     private List<TagId> tags;
     private ArticleBody body;
@@ -36,11 +36,11 @@ public class ArticleRecive {
         this.title = title;
     }
 
-    public Category getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(Integer category) {
         this.category = category;
     }
 

@@ -42,4 +42,7 @@ public interface ArticleTagDao {
     @Delete({"delete from",TABLE_NAME,"where articleid=#{articleid}"})
     int deleteArticleTagByArticleId(int articleid);
 
+    @Delete({"delete from",TABLE_NAME,"where tagid=#{tagid}"})
+    int deleteArticleTagByTagId(int tagid);
+
 }

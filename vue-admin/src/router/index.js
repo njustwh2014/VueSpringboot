@@ -88,9 +88,22 @@ export const constantRouterMap = [
     children: [
       {
         path: '/allcategory',
-        name: '所有用户',
+        name: '所有分类',
         component: () => import('@/views/category/index'),
         meta: { title: '分类管理', icon: 'table' }
+      }
+    ]
+  },
+
+  {
+    path: '/tag',
+    component: Layout,
+    children: [
+      {
+        path: '/alltag',
+        name: '所有标签',
+        component: () => import('@/views/tag/index'),
+        meta: { title: '标签管理', icon: 'table' }
       }
     ]
   },

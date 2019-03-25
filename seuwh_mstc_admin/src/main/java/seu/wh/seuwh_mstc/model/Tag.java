@@ -11,6 +11,8 @@ package seu.wh.seuwh_mstc.model;
 public class Tag {
     private Integer id;
     private String tagdescription;
+    private String tagstatus;
+    private Integer categoryid;
 
     public Integer getId() {
         return id;
@@ -28,11 +30,19 @@ public class Tag {
         this.tagdescription = tagdescription;
     }
 
-    @Override
-    public String toString() {
-        return "Tag{" +
-                "id=" + id +
-                ", tagdescription='" + tagdescription + '\'' +
-                '}';
+    public String getTagstatus() {
+        return tagstatus;
+    }
+
+    public void setTagstatus(String tagstatus) {
+        this.tagstatus = tagstatus;
+    }
+
+    public Integer getCategoryid() {
+        return categoryid;
+    }
+
+    public void setCategoryid(Integer categoryid) {
+        this.categoryid = categoryid;
     }
 }

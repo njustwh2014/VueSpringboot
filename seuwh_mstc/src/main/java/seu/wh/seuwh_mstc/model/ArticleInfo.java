@@ -19,6 +19,7 @@ public class ArticleInfo {
     private String categorydescription;
     private Integer category;
     private String cover;
+    private String articlestatus;
 
     public Integer getId() {
         return id;
@@ -84,17 +85,11 @@ public class ArticleInfo {
         this.cover = cover;
     }
 
-    @Override
-    public String toString() {
-        return "ArticleInfo{" +
-                "id=" + id +
-                ", author=" + author +
-                ", publishtime=" + publishtime +
-                ", summary='" + summary + '\'' +
-                ", title='" + title + '\'' +
-                ", categorydescription='" + categorydescription + '\'' +
-                ", category=" + category +
-                ", cover='" + cover + '\'' +
-                '}';
+    public String getArticlestatus() {
+        return articlestatus;
+    }
+
+    public void setArticlestatus(String articlestatus) {
+        this.articlestatus = articlestatus;
     }
 }

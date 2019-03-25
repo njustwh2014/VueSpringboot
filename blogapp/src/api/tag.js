@@ -6,6 +6,12 @@ export function getAllTags() {
     method: 'get',
   })
 }
+export function getTagByCategory(id) {
+  return request({
+    url: `/tags/category/${id}`,
+    method: 'get',
+  })
+}
 
 export function getAllTagsDetail() {
   return request({
@@ -27,6 +33,7 @@ export function getTag(id) {
     method: 'get',
   })
 }
+
 
 export function getTagDetail(id) {
   return request({

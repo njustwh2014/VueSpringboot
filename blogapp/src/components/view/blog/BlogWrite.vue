@@ -43,7 +43,7 @@
             </el-input>
           </el-form-item>
           <el-form-item label="文章分类" prop="category">
-            <el-select v-model="articleForm.category" value-key="id" placeholder="请选择文章分类">
+            <el-select v-model="articleForm.category" value-key="id" placeholder="请选择文章分类" @change="getTagByCategory(articleForm.category.id)">
               <el-option v-for="c in categorys" :key="c.id" :label="c.categorydescription" :value="c"></el-option>
             </el-select>
           </el-form-item>
@@ -68,7 +68,7 @@
   import MarkdownEditor from '@/components/common/markdown/MarkdownEditor'
   import {publishArticle, getArticleById} from '@/api/article'
   import {getAllCategorys} from '@/api/category'
-  import {getAllTags} from '@/api/tag'
+  import {getAllTags,getTagByCategory} from '@/api/tag'
   import {viewArticle} from '@/api/article'
 
   export default {
@@ -77,9 +77,11 @@
 
       if(this.$route.params.id){
         this.getArticle();
+        
       }
 
-      this.getCategorysAndTags();
+      this.getCategorys();
+      
       // this.editorToolBarToFixedWrapper = this.$_.throttle(this.editorToolBarToFixed, 200)
 
       // window.addEventListener('scroll', this.editorToolBarToFixedWrapper, false);
@@ -98,7 +100,12 @@
           id: '',
           title: '',
           summary: '',
-          category: '',
+          categoryid:0,
+          categorydescription:"",
+          category:{
+            id:0,
+            categorydescription:""
+          },
           imgs:[],
           tags: [],
           editor: {
@@ -160,13 +167,16 @@
         let that = this
         viewArticle(that.$route.params.id).then(data=> {
           Object.assign(that.articleForm, data.data.data)
-          that.articleForm.editor.value = data.data.data.body.content;
+          that.articleForm.editor.value = data.data.data.content;
+          that.articleForm.category.id=that.articleForm.categoryid;
+          that.articleForm.category.categorydescription=that.articleForm.categorydescription;
           let taglist=[];
           for(let item of that.articleForm.tags){
             let temp=item.tagid;
             taglist.push(temp);
           }
           that.articleForm.tags=taglist;
+          this.getTagByCategory(this.articleForm.categoryid);
         }).catch(error => {
           if (error !== 'error') {
             console.log(error)
@@ -232,9 +242,10 @@
               id: this.articleForm.id,
               title: this.articleForm.title,
               summary: this.articleForm.summary,
-              category: this.articleForm.category,
+              category:this.articleForm.category.id,
+
               tags: taglist,
-              categorydescription:categorydescription,
+              categorydescription:this.articleForm.categorydescription,
               cover:'',
               body: {
                 content: this.articleForm.editor.value,
@@ -279,24 +290,15 @@
           this.$router.push('/')
         })
       },
-      getCategorysAndTags() {
+      getCategorys() {
         let that = this
         getAllCategorys().then(data => {
           that.categorys = data.data.data;
         }).catch(error => {
           if (error !== 'error') {
-            that.$message({type: 'error', message: '文章分类加载失败', showClose: true})
+            that.$message({type: 'error', message: '分类加载失败', showClose: true})
           }
         })
-
-        getAllTags().then(data => {
-          that.tags = data.data.data;
-        }).catch(error => {
-          if (error !== 'error') {
-            that.$message({type: 'error', message: '标签加载失败', showClose: true})
-          }
-        })
-
       },
       editorToolBarToFixed() {
 
@@ -309,6 +311,18 @@
         //   document.getElementById("placeholder").style.display = "none";
         //   toolbar.classList.remove("me-write-toolbar-fixed");
         // }
+      },
+      getTagByCategory(categoryid){
+        console.log(categoryid);
+        getTagByCategory(categoryid).then(response=>{
+          this.tags=response.data.data;
+          console.log(this.tags)
+
+        }).catch(error => {
+          if (error !== 'error') {
+            that.$message({type: 'error', message: response.data.msg, showClose: true})
+          }
+        })
       }
     },
     components: {

@@ -1,4 +1,19 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+## 2019/3/25
+### 1.根据articleid阅读文章
+```sql
+select t1.id,t1.title,t2.commentcount,t2.viewcount,t1.summary,t1.author as authorid,t5.nickname,t1.category,t5.headportraiturl as authoravtar,
+            t3.id as categoryid,t3.categorydescription,t1.publishtime,t4.content from 
+            (((articles as t1 inner join articleviewinfo as t2 on t1.id=t2.articleid)
+            inner join category as t3 on t1.category=t3.id)
+            inner join articlebody as t4 on t1.id=t4.articleid)
+            inner join user_information as t5 on t1.author=t5.id and t1.id=#{id} limit 1;
+```
+### 2.文章获取tag
+```sql
+select t1.tagid,t2.tagdescription from articletag as t1 inner join tag as t2 on t1.tagid=t2.id and t1.articleid=#{articleid}
+```
+### 3.修改了发布和阅读文章接口，便于一次操作数据库，尽量使用Map
 ## 2019/3/24
 ### 1.实现了文章按category的status加载
 ## 2019/3/19

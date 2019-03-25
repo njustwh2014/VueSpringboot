@@ -80,5 +80,16 @@ public interface ArticleLinkTableDao {
             " order by t1.publishtime desc limit #{pageNumber},#{pageSize}"})
     List<Map<String,Object>> getAllArticleByKeyWords(@Param("pageNumber") Integer pageNumber, @Param("pageSize") Integer pageSize,@Param("keywords") String keywords);
 
+    @Select({"select t1.id,t1.title,t2.commentcount,t2.viewcount,t1.summary,t1.author as authorid,t5.nickname,t5.headportraiturl as authoravtar,\n" +
+            "t3.id as categoryid,t3.categorydescription,t1.publishtime,t4.content from \n" +
+            "(((articles as t1 inner join articleviewinfo as t2 on t1.id=t2.articleid) \n" +
+            "inner join category as t3 on t1.category=t3.id) \n" +
+            "inner join articlebody as t4 on t1.id=t4.articleid) \n" +
+            "inner join user_information as t5 on t1.author=t5.id and t1.id=#{id} limit 1;"})
+    Map<String,Object> getArticleByid(Integer id);
+
+    @Select({"select t1.id,t1.tagid,t2.tagdescription from articletag as t1 inner join tag as t2 on t1.tagid=t2.id and t1.articleid=#{articleid}"})
+    List<Map<String,Object>> getTagByArticleid(Integer articleid);
+
 
 }

@@ -8,6 +8,8 @@
 
 package seu.wh.seuwh_mstc.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import seu.wh.seuwh_mstc.dao.TagDao;
@@ -16,9 +18,11 @@ import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.TagService;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TagServiceImpl implements TagService {
+    private static final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
     @Autowired
     TagDao tagDao;
 
@@ -26,5 +30,17 @@ public class TagServiceImpl implements TagService {
     public ResultInfo getAllTag() {
         List<Tag> tags=tagDao.getAllTag();
         return ResultInfo.ok(tags);
+    }
+
+    @Override
+    public ResultInfo getTagByCategory(Integer id) {
+        try{
+            List<Map<String,Object>> tags=tagDao.getTagByCategoryid(id);
+            return ResultInfo.ok(tags);
+        }catch (Exception e){
+            logger.error("根据Categoryid获取tag出现异常",e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"根据分类获取标签时服务器出现异常");
+        }
     }
 }

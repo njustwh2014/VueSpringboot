@@ -60,12 +60,12 @@ public class ArticleServiceImpl implements ArticleService {
             //update
             ArticleInfo articleInfo=articleInfoDao.selectByid(articleRecive.getId());
             if(articleInfo!=null){
-                articleInfo.setCategory(articleRecive.getCategory().getId());
-                articleInfo.setCategorydescription(articleRecive.getCategory().getCategorydescription());
+                articleInfo.setCategory(articleRecive.getCategory());
                 articleInfo.setPublishtime(new Date());
                 articleInfo.setTitle(articleRecive.getTitle());
                 articleInfo.setSummary(articleRecive.getSummary());
                 articleInfo.setCover(articleRecive.getCover());
+                articleInfo.setArticlestatus("show");
                 articleInfoDao.updateArticle(articleInfo);
 
 
@@ -85,7 +85,6 @@ public class ArticleServiceImpl implements ArticleService {
                     articleTag=new ArticleTag();//值引用
                     articleTag.setArticleid(articleInfo.getId());
                     articleTag.setTagid(item.getId());
-                    articleTag.setTagdescription(item.getTagdescription());
                     articleTagList.add(articleTag);
                 }
                 articleTagDao.addArticleTagBatch(articleTagList);
@@ -103,12 +102,12 @@ public class ArticleServiceImpl implements ArticleService {
 
             author=userDao.selectById(author.getId());
             articleInfo.setAuthor(author.getId());
-            articleInfo.setCategory(articleRecive.getCategory().getId());
-            articleInfo.setCategorydescription(articleRecive.getCategory().getCategorydescription());
+            articleInfo.setCategory(articleRecive.getCategory());
             articleInfo.setPublishtime(new Date());
             articleInfo.setTitle(articleRecive.getTitle());
             articleInfo.setSummary(articleRecive.getSummary());
             articleInfo.setCover(articleRecive.getCover());
+            articleInfo.setArticlestatus("show");
             articleInfoDao.addArticle(articleInfo);
 
 
@@ -125,7 +124,6 @@ public class ArticleServiceImpl implements ArticleService {
                 articleTag=new ArticleTag();//值引用
                 articleTag.setArticleid(articleInfo.getId());
                 articleTag.setTagid(item.getId());
-                articleTag.setTagdescription(item.getTagdescription());
                 articleTagList.add(articleTag);
 
             }
@@ -148,18 +146,35 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ResultInfo view(Integer id) {
 
-        //获取ArticleInfo
-        ArticleInfo articleInfo=articleInfoDao.selectByid(id);
-        Category category=new Category();
-        category.setId(articleInfo.getCategory());
-        category.setCategorydescription(articleInfo.getCategorydescription());
+//        //获取ArticleInfo
+//        ArticleInfo articleInfo=articleInfoDao.selectByid(id);
+//        Category category=new Category();
+//        category.setId(articleInfo.getCategory());
+//        category.setCategorydescription(articleInfo.getCategorydescription());
+//
+//        //获取body
+//        ArticleBody articleBody=articleBodyDao.selectByArticleId(id);
+//
 
-        //获取body
-        ArticleBody articleBody=articleBodyDao.selectByArticleId(id);
+//
+//
+//
 
-        //获取Tags
-        List<ArticleTag> articleTagList=articleTagDao.SelectByArticleId(id);
-
+//
+//
+//        //组装成返回对象
+//        ArticleSend articleSend=new ArticleSend();
+//        articleSend.setAuthor(userDao.selectById(articleInfo.getAuthor()));
+//        articleSend.setBody(articleBody);
+//        articleSend.setCategory(category);
+//        articleSend.setCommentcount(commentDao.CountComment(articleInfo.getId()));
+//        articleSend.setId(articleInfo.getId());
+//        articleSend.setPublishtime(articleInfo.getPublishtime());
+//        articleSend.setSummary(articleInfo.getSummary());
+//        articleSend.setTags(articleTagList);
+//        articleSend.setViewcount(jedisClient.scard(viewKey));
+//        articleSend.setTitle(articleInfo.getTitle());
+        Map<String,Object> articlebylink=articleLinkTableDao.getArticleByid(id);
 
 
         //将viewcount写入redis
@@ -174,26 +189,16 @@ public class ArticleServiceImpl implements ArticleService {
         EventModel weightEventModel=new EventModel();
         weightEventModel.setAuthorid(hostHolder.getUser().getId());
         weightEventModel.setEntityid(id);
-        weightEventModel.setEntityownerid(articleInfo.getAuthor());
+        weightEventModel.setEntityownerid(Integer.parseInt(articlebylink.get("authorid").toString()));
         weightEventModel.setEventType(EventType.WEIGHT);
         eventProducer.fireEvent(weightEventModel);
 
+        //获取Tags
+//        List<ArticleTag> articleTagList=articleTagDao.SelectByArticleId(id);
+        List<Map<String,Object>> articleTagList=articleLinkTableDao.getTagByArticleid(id);
+        articlebylink.put("tags",articleTagList);
 
-        //组装成返回对象
-        ArticleSend articleSend=new ArticleSend();
-        articleSend.setAuthor(userDao.selectById(articleInfo.getAuthor()));
-        articleSend.setBody(articleBody);
-        articleSend.setCategory(category);
-        articleSend.setCommentcount(commentDao.CountComment(articleInfo.getId()));
-        articleSend.setId(articleInfo.getId());
-        articleSend.setPublishtime(articleInfo.getPublishtime());
-        articleSend.setSummary(articleInfo.getSummary());
-        articleSend.setTags(articleTagList);
-        articleSend.setViewcount(jedisClient.scard(viewKey));
-        articleSend.setTitle(articleInfo.getTitle());
-
-
-        return ResultInfo.ok(articleSend);
+        return ResultInfo.ok(articlebylink);
     }
 
     // 首页获取文章简要信息
@@ -201,7 +206,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ResultInfo getAllArticle(Integer pageNumber, Integer pageSize) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.GetAllArticle((pageNumber-1)*pageSize,pageSize);
         for(Map<String,Object> item:articleslist){
-            item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
+            item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
     }
@@ -224,7 +229,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ResultInfo getArticlesByCategory(Integer pageNumber, Integer pageSize, Integer id) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.GetArticlesByCategory((pageNumber-1)*pageSize,pageSize,id);
         for(Map<String,Object> item:articleslist){
-            item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
+            item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
     }
@@ -234,7 +239,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ResultInfo getArticlesByTag(Integer pageNumber, Integer pageSize, Integer id) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.GetArticlesByTag((pageNumber-1)*pageSize,pageSize,id);
         for(Map<String,Object> item:articleslist){
-            item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
+            item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
     }
@@ -243,7 +248,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ResultInfo searchArticles(Integer pageNumber, Integer pageSize, String searchData) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.getAllArticleByKeyWords((pageNumber-1)*pageSize,pageSize,searchData);
         for(Map<String,Object> item:articleslist){
-            item.put("tags",articleTagDao.SelectByArticleId(Integer.parseInt(item.get("id").toString())));
+            item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
     }

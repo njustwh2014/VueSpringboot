@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import seu.wh.seuwh_mstc.model.Tag;
 
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Mapper
@@ -26,4 +27,7 @@ public interface TagDao {
 
     @Select({"select * from"+TABLE_NAME})
     List<Tag> getAllTag();
+
+    @Select({"select id,tagdescription from"+TABLE_NAME+"where categoryid=#{categoryid}"})
+    List<Map<String,Object>> getTagByCategoryid(Integer categoryid);
 }

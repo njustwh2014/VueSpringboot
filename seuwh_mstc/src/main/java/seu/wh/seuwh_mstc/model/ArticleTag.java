@@ -9,10 +9,10 @@
 package seu.wh.seuwh_mstc.model;
 
 public class ArticleTag {
+    //对应的表articletag
     private Integer id;
     private Integer articleid;
     private Integer tagid;
-    private String tagdescription;
 
     public Integer getId() {
         return id;
@@ -36,23 +36,5 @@ public class ArticleTag {
 
     public void setTagid(Integer tagid) {
         this.tagid = tagid;
-    }
-
-    public String getTagdescription() {
-        return tagdescription;
-    }
-
-    public void setTagdescription(String tagdescription) {
-        this.tagdescription = tagdescription;
-    }
-
-    @Override
-    public String toString() {
-        return "ArticleTag{" +
-                "id=" + id +
-                ", articleid=" + articleid +
-                ", tagid=" + tagid +
-                ", tagdescription='" + tagdescription + '\'' +
-                '}';
     }
 }

@@ -26,4 +26,5 @@ public interface CategoryDao {
 
     @Select({"select * from"+TABLE_NAME+"where categorystatus='show'"})
     List<Category> getAllCategory();
+
 }

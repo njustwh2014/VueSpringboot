@@ -91,6 +91,13 @@ export default {
   },
   methods: {
     handleAdd(){
+      if(this.newcategory==""||this.newcategory==null){
+        this.$message({
+            type: 'info',
+            message: '分类为空'
+          }); 
+        return ;
+      }
       this.$confirm('此操作将添加该描述分类, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',

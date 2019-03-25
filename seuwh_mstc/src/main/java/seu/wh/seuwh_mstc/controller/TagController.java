@@ -10,10 +10,7 @@ package seu.wh.seuwh_mstc.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.TagService;
 
@@ -27,5 +24,9 @@ public class TagController {
     @RequestMapping(value = "/tags", method = RequestMethod.GET)
     public ResultInfo getAllTags(){
         return tagService.getAllTag();
+    }
+    @RequestMapping(value = "/tags/category/{id}",method = RequestMethod.GET)
+    public ResultInfo getTagByCategory(@PathVariable Integer id){
+        return tagService.getTagByCategory(id);
     }
 }

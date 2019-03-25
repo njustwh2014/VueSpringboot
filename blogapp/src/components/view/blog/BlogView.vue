@@ -14,10 +14,10 @@
           <h1 class="me-view-title">{{article.title}}</h1>
           <div class="me-view-author">
             <a class="">
-              <img class="me-view-picture" :src="article.author.avatar">
+              <img class="me-view-picture" :src="article.authoravtar">
             </a>
             <div class="me-view-info">
-              <span>{{article.author.nickname}}</span>
+              <span>{{article.nickname}}</span>
               <div class="me-view-meta">
                 <span>{{article.publishtime | format}}</span>
                 <span>阅读   {{article.viewcount}}</span>
@@ -26,7 +26,7 @@
 
             </div>
             <el-button
-              v-if="this.article.author.id == this.$store.state.id"
+              v-if="this.article.authorid == this.$store.state.id"
               @click="editArticle()"
               style="position: absolute;left: 60%;"
               size="mini"
@@ -55,10 +55,10 @@
           </div>
 
           <div class="me-view-tag">
-            文章分类：
+            新闻分类：
             <!--<span style="font-weight: 600">{{article.category.categoryname}}</span>-->
             <!-- <el-button @click="tagOrCategory('category', article.category)" size="mini" type="primary" round plain>{{article.category.categoryname}}</el-button> -->
-            <el-button size="mini" type="primary" round plain @click="jumpToCategory(article.category.id)">{{article.category.categorydescription}}</el-button>
+            <el-button size="mini" type="primary" round plain @click="jumpToCategory(article.categoryid)">{{article.categorydescription}}</el-button>
           </div>
 
           <div class="me-view-comment">
@@ -139,9 +139,12 @@
           commentcount: 0,
           viewcount: 0,
           summary: '',
-          author: {},
+          authorid:0,
+          nickname:"",
+          authoravtar:"",
           tags: [],
-          category:{id:0,categorydescription:""},
+          categoryid:0,
+          categorydescription:"",
           publishtime: '',
           editor: {
             value: '',
@@ -183,8 +186,7 @@
           console.log(data.data.data)
           Object.assign(that.article, data.data.data)
 
-          that.article.editor.value = data.data.data.body.content
-          that.article.author.avatar=data.data.data.author.headportraiturl
+          that.article.editor.value = data.data.data.content
           that.getCommentsByArticle()
         }).catch(error => {
           if (error !== 'error') {

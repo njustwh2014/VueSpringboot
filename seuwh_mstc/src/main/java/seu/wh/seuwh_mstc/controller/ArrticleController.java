@@ -10,6 +10,8 @@ package seu.wh.seuwh_mstc.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping(value="/articles")
 public class ArrticleController {
-
+    private static final Logger logger = LoggerFactory.getLogger(ArrticleController.class);
     @Autowired
     ArticleService articleService;
     @Autowired
@@ -38,7 +40,13 @@ public class ArrticleController {
     //发表文章
     @RequestMapping(value="/publish",method= RequestMethod.POST,produces= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultInfo publish(@RequestBody ArticleRecive articleRecive){
-        return articleService.publish(articleRecive);
+        try{
+            return articleService.publish(articleRecive);
+        }catch (Exception e){
+            logger.error("发布文章时出现异常",e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"发布文章时出现异常");
+        }
     }
 
     //浏览文章

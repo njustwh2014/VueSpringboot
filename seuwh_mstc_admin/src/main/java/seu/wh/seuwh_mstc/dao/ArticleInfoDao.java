@@ -37,4 +37,6 @@ public interface ArticleInfoDao {
 
     @Select({"select count(*) from ",TABLE_NAME})
     Integer countArticles();
+
+
 }

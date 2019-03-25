@@ -1,5 +1,10 @@
 + **打包命令** mvn clean package -Dmaven.test.skip=true
 + **sql导出命令** mysqldump -u root -p seumstc >f:/seumstc.sql
+## 2019/3/25
+### 1.修改articletag表
+```sql
+alter table articletag DROP COLUMN tagdescription;
+```
 
 ## 2019/3/24
 ### 1.修改category表
@@ -10,9 +15,20 @@ UPDATE category SET categorystatus=#{categorystatus} WHERE id=#{id};
 ```
 ### 2.修改tag表
 ```sql
+ALTER TABLE tag ADD categoryid int(11);
 ALTER TABLE tag ADD tagstatus varchar(10);
+
 ```
 ### 3.实现对category的管理
+### 4.修改articles表
+```sql
+ALTER TABLE articles ADD articlestatus varchar(10);
+ALTER TABLE articles DROP COLUMN categorydescription;
+```
+### 5.实现对tag的管理
+```sql
+select tag.id,tag.tagdescription,tag.tagstatus,category.categorydescription  from tag inner join category on tag.categoryid=category.id order by tag.id limit #{start},#{end}
+```
 
 ### 2.实现category状态修改
 ## 2019/3/22

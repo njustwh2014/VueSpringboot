@@ -11,5 +11,9 @@ package seu.wh.seuwh_mstc.service;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 
 public interface TagService {
-    public ResultInfo getAllTag();
+    public ResultInfo getAllTag(Integer pageNumber,Integer pageSize);
+    public ResultInfo changeStatus(Integer id,String status);
+    public ResultInfo getAllArtilcesByTag(Integer id);
+    public ResultInfo deleteTag(Integer id);
+    public ResultInfo addTag(String newtag,Integer categoryid);
 }

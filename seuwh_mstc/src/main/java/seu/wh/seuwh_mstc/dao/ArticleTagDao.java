@@ -20,7 +20,7 @@ import java.util.List;
 @Mapper
 public interface ArticleTagDao {
     String TABLE_NAME=" articletag";
-    String INSERT_FIELDS=" articleid,tagid,tagdescription";
+    String INSERT_FIELDS=" articleid,tagid";
     String SELECT_FIELDS="id, "+INSERT_FIELDS;
 
 //    @Insert({

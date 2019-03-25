@@ -12,4 +12,5 @@ import seu.wh.seuwh_mstc.result.ResultInfo;
 
 public interface TagService {
     public ResultInfo getAllTag();
+    public ResultInfo getTagByCategory(Integer id);
 }
