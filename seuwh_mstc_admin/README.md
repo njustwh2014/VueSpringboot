@@ -1,5 +1,8 @@
 + **打包命令** mvn clean package -Dmaven.test.skip=true
++ **nohup**  nohup java -jar seuwh_mstc_admin-0.0.1-SNAPSHOT.jar >admin.out 2>&1 &
 + **sql导出命令** mysqldump -u root -p seumstc >f:/seumstc.sql
+## 2019/4/4
+### 1.实现文章状态管理
 ## 2019/3/25
 ### 1.修改articletag表
 ```sql

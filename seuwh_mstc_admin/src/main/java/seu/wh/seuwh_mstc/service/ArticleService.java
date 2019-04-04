@@ -20,4 +20,5 @@ public interface ArticleService {
  public ResultInfo getArticlesByTag(Integer pageNumber,Integer pageSize,Integer id);
  public ResultInfo searchArticles(Integer pageNumber,Integer pageSize,String searchData);
  public ResultInfo deleteArticle(Integer articleid);
+ public ResultInfo changeStatus(Integer articleid,String articlestatus);
 }

@@ -38,5 +38,6 @@ public interface ArticleInfoDao {
     @Select({"select count(*) from ",TABLE_NAME})
     Integer countArticles();
 
-
+    @Update({"UPDATE articles SET articlestatus=#{articlestatus} WHERE id=#{id}"})
+    void changeStatus(@Param("id")Integer id,@Param("articlestatus")String articlestatus);
 }

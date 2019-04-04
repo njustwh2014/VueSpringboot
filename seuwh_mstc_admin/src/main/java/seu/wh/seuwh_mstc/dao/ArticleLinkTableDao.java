@@ -49,7 +49,7 @@ public interface ArticleLinkTableDao {
 
     }
     * */
-    @Select({"select t1.id,t1.title,t1.summary,t1.publishtime,t1.author,t2.commentcount,t2.viewcount,t3.nickname,t3.id as userid"+
+    @Select({"select t1.id,t1.title,t1.summary,t1.publishtime,t1.author,t1.articlestatus,t2.commentcount,t2.viewcount,t3.nickname,t3.id as userid"+
             " from "+
             " (articles as t1 inner join articleviewinfo as t2 on t1.id=t2.articleid)"+
             " inner join user_information as t3 on t1.author=t3.id"+

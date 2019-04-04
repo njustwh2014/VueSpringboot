@@ -1,4 +1,7 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
+**nohup**  nohup java -jar seuwh_mstc-0.0.1-SNAPSHOT.jar > nohup.out 2>&1
+## 2019/4/4
+### 1.实现文章状态管理
 ## 2019/3/25
 ### 1.根据articleid阅读文章
 ```sql

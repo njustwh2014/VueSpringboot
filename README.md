@@ -1,4 +1,7 @@
 # MyWebLearnPath
+## Elasticsearch
+https://www.cnblogs.com/dreamroute/p/8484457.html
+
 ## servlet学习
 servlet+idea环境配置参考：https://www.cnblogs.com/javabg/p/7976977.html
 

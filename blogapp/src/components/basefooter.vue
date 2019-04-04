@@ -3,7 +3,7 @@
     <div class="me-footer">
       <p style="margin:0px">Designed by
         <strong>
-          <router-link to="/" class="me-login-design-color">wh</router-link>
+          <router-link to="/" class="me-login-design-color">HNX</router-link>
         </strong>
       </p>
     </div>

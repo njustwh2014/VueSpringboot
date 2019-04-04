@@ -20,3 +20,14 @@ export function deleteArticle(params){
     }
   })
 }
+
+export function changeArticleStatus(id,status){
+  return request({
+    url:'articles/changestatus',
+    method:'post',
+    data:{
+      id:id,
+      articlestatus:status
+    }
+  })
+}

@@ -262,4 +262,17 @@ public class ArticleServiceImpl implements ArticleService {
             return ResultInfo.build(500,"删除时服务器出现异常！");
         }
     }
+
+
+    @Override
+    public ResultInfo changeStatus(Integer articleid, String articlestatus) {
+        try{
+            articleInfoDao.changeStatus(articleid,articlestatus);
+            return ResultInfo.ok();
+        }catch (Exception e){
+            logger.error("更改文章状态时出现异常",e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"更改文章状态时服务器出现异常！");
+        }
+    }
 }

@@ -112,10 +112,18 @@ public class ArrticleController {
     }
 
     //delete article
-    @RequestMapping(value = "delete",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
     public ResultInfo deleteArticle(@RequestBody JSONObject jsonObject){
         Integer articleid=jsonObject.getInteger("articleid");
         return articleService.deleteArticle(articleid);
+    }
+
+    //change status
+    @RequestMapping(value = "/changestatus",method = RequestMethod.POST)
+    public ResultInfo changeStatus(@RequestBody JSONObject jsonObject){
+        Integer articleid=jsonObject.getInteger("id");
+        String articlestatus=jsonObject.getString("articlestatus");
+        return articleService.changeStatus(articleid,articlestatus);
     }
 
     @RequestMapping(value="/test", method=RequestMethod.GET)

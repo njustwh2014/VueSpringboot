@@ -64,14 +64,19 @@
           <span>{{ scope.row.publishtime|parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
+      <el-table-column class-name="status-col" label="审核状态" width="110" align="center">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.articlestatus | statusFilter">{{ scope.row.articlestatus}}</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="320" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" :disabled="true" @click="handleUpdate(scope.row)">{{ "edit" }}</el-button>
-          <el-button v-if="scope.row.status!='published'" :disabled="true" size="mini" type="success" @click="handleModifyStatus(scope.row,'published')">
-            {{ "publish" }}
+          <el-button v-if="scope.row.status!='show'"  size="mini" type="success" @click="handleModifyStatus(scope.row,'show')">
+            {{ "show" }}
           </el-button>
-          <el-button v-if="scope.row.status!='draft'" :disabled="true" size="mini" @click="handleModifyStatus(scope.row,'draft')">
-            {{ "draft" }}
+          <el-button v-if="scope.row.status!='review'" type="gray" size="mini" @click="handleModifyStatus(scope.row,'review')">
+            {{ "review" }}
           </el-button>
           <!-- <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
             {{ "delete" }}
@@ -87,7 +92,7 @@
 </template>
 
 <script>
-import { getAllArticles,deleteArticle} from '@/api/article'
+import { getAllArticles,deleteArticle,changeArticleStatus} from '@/api/article'
 import { parseTime } from '@/utils'
 import waves from '@/directive/waves' // Waves directive
 import Pagination from '@/components/Pagination'
@@ -97,8 +102,8 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
+        show: 'success',
+        review: 'gray',
         deleted: 'danger'
       }
       return statusMap[status]
@@ -136,6 +141,20 @@ export default {
       
     },
     handleModifyStatus(row, status) {
+      changeArticleStatus(row.id,status).then(data=>{
+        if(data.status==200){
+          this.$message({
+          message: '操作成功',
+          type: 'success'
+          })
+          row.articlestatus=status;
+        }else{
+          this.$message({
+          message: '操作失败',
+          type: 'Danger'
+          })
+        }
+      })
       
     },
     sortChange(data) {

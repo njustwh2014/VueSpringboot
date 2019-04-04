@@ -38,7 +38,7 @@ public interface ArticleWeightDao {
     ArticleWeight selectByArticleid(Integer articleid);
 
     @Select({"select t1.articleid,t1.weight,t2.title,t2.cover"+
-            " from articleweight as t1 inner join articles as t2 on t1.articleid=t2.id"+
+            " from articleweight as t1 inner join articles as t2 on t1.articleid=t2.id and t2.articlestatus='show'"+
             " order by t1.weight desc limit 10"})
     List<Map<String,Object>> GetHotArticles();
 }

@@ -162,7 +162,7 @@ import {getAllCategorys} from '@/api/category'
   }
 
   .me-title img {
-    max-height: 5rem;
+    max-height: 3.5rem;
     max-width: 100%;
   }
 

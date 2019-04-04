@@ -5,10 +5,10 @@
       </video>-->
 
     <div class="me-login-box me-login-box-radius">
-      <p class="me-login-design-plus">
-          <strong>
-            <router-link to="/" class="me-login-design-color">wh</router-link>
-          </strong>
+      <p class="me-logo">
+          <router-link to="/">
+            <img  src="../assets/logo.png"/>
+          </router-link>
       </p>
       <h1>找回密码</h1>
 
@@ -50,7 +50,7 @@
       <div class="me-login-design">
         <p>Designed by
           <strong>
-            <router-link to="/" class="me-login-design-color">wh</router-link>
+            <router-link to="/" class="me-login-design-color">HNX</router-link>
           </strong>
         </p>
       </div>
@@ -272,6 +272,11 @@ let captchaflag=true;
       height: 40px;
       width: 55%;
       background-color: #f5f7fa;
+  }
+  .me-logo img {
+    max-height: 8rem;
+    max-width: 100%;
+    margin-left: 31%;
   }
 
 
