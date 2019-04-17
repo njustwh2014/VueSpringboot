@@ -65,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
                 articleInfo.setTitle(articleRecive.getTitle());
                 articleInfo.setSummary(articleRecive.getSummary());
                 articleInfo.setCover(articleRecive.getCover());
-                articleInfo.setArticlestatus("review");//show review
+                articleInfo.setArticlestatus("review");//show review`
                 articleInfoDao.updateArticle(articleInfo);
 
 
@@ -107,7 +107,7 @@ public class ArticleServiceImpl implements ArticleService {
             articleInfo.setTitle(articleRecive.getTitle());
             articleInfo.setSummary(articleRecive.getSummary());
             articleInfo.setCover(articleRecive.getCover());
-            articleInfo.setArticlestatus("show");
+            articleInfo.setArticlestatus("review");
             articleInfoDao.addArticle(articleInfo);
 
 

@@ -15,7 +15,7 @@
           <template slot="title">分类</template>
           <el-menu-item v-for="a in allcategory" :key=a.id :index="generateIndex(a.id)">{{a.categorydescription}}</el-menu-item>
         </el-submenu>
-        <el-menu-item index="3" disabled>步行街</el-menu-item>
+        <!-- <el-menu-item index="3" disabled>步行街</el-menu-item> -->
         <el-menu-item index="4" disabled>待开发</el-menu-item>
         <el-menu-item index="/userinfo" >个人中心</el-menu-item>
         <el-menu-item index="/write"><i class="el-icon-edit"></i>发布新闻</el-menu-item>
