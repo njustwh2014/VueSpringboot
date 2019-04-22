@@ -16,4 +16,5 @@ public interface TagService {
     public ResultInfo getAllArtilcesByTag(Integer id);
     public ResultInfo deleteTag(Integer id);
     public ResultInfo addTag(String newtag,Integer categoryid);
+    public ResultInfo getTagByCategory(Integer categoryid);
 }

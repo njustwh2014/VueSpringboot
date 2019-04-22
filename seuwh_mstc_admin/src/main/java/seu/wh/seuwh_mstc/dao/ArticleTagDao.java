@@ -36,6 +36,9 @@ public interface ArticleTagDao {
     @InsertProvider(type= ArticleTagDaoProvider.class,method = "addArticleTagBatch")
     void addArticleTagBatch(@Param("list") List<ArticleTag> articleTagList);
 
+    @InsertProvider(type= ArticleTagDaoProvider.class,method = "addArticleTagBatchNew")
+    void addArticleTagBatchNew(@Param("list") List<Integer> articleTagList,@Param("articleid")Integer articleid);
+
     @Select({"select * from ",TABLE_NAME,"where articleid=#{articleid}"})
     List<ArticleTag> SelectByArticleId(Integer articleid);
 

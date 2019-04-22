@@ -96,4 +96,11 @@ public interface ArticleLinkTableDao {
             " where articles.category=#{categoryid};"})
     int deleteArticleByCategoryid(Integer categoryid);
 
+    @Select({"select t1.id,t1.tagid,t2.tagdescription from articletag as t1 inner join tag as t2 on t1.tagid=t2.id and t1.articleid=#{articleid}"})
+    List<Map<String,Object>> getTagByArticleid(Integer articleid);
+
+    @Select({"select articles.id,articles.category as categoryid,articlebody.content,category.categorydescription as categoorydescription from articles inner join articlebody \n" +
+            "on articles.id=articlebody.articleid and articles.id=#{articleid} inner join category on category.id=articles.category   order by articles.id desc limit 1"})
+    Map<String,Object> getContentAndCategoryByArticleid(Integer articleid);
+
 }

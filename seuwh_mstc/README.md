@@ -1,5 +1,5 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
-**nohup**  nohup java -jar seuwh_mstc-0.0.1-SNAPSHOT.jar > nohup.out 2>&1
+**nohup**  nohup java -jar seuwh_mstc-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
 ## 2019/4/16
 ### 1.将文章发布默认修改为review
 ## 2019/4/4

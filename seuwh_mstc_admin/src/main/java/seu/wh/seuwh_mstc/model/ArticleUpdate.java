@@ -8,17 +8,16 @@
 
 package seu.wh.seuwh_mstc.model;
 
-import java.util.Date;
+import java.util.List;
 
-public class ArticleInfo {
+public class ArticleUpdate {
     private Integer id;
-    private Integer author;//作者id
-    private Date publishtime;
-    private String summary;
     private String title;
+    private String summary;
+    private String content;
     private Integer category;
-    private String cover;
     private String articlestatus;
+    private List<Integer> tags;
 
     public Integer getId() {
         return id;
@@ -26,30 +25,6 @@ public class ArticleInfo {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Integer author) {
-        this.author = author;
-    }
-
-    public Date getPublishtime() {
-        return publishtime;
-    }
-
-    public void setPublishtime(Date publishtime) {
-        this.publishtime = publishtime;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
     }
 
     public String getTitle() {
@@ -60,6 +35,22 @@ public class ArticleInfo {
         this.title = title;
     }
 
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     public Integer getCategory() {
         return category;
     }
@@ -68,19 +59,32 @@ public class ArticleInfo {
         this.category = category;
     }
 
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
-    }
-
     public String getArticlestatus() {
         return articlestatus;
     }
 
     public void setArticlestatus(String articlestatus) {
         this.articlestatus = articlestatus;
+    }
+
+    public List<Integer> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Integer> tags) {
+        this.tags = tags;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleUpdate{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", summary='" + summary + '\'' +
+                ", content='" + content + '\'' +
+                ", category=" + category +
+                ", articlestatus='" + articlestatus + '\'' +
+                ", tags=" + tags +
+                '}';
     }
 }

@@ -47,4 +47,9 @@ public class TagController {
         Integer categoryid=jsonObject.getInteger("categoryid");
         return tagService.addTag(newtag,categoryid);
     }
+
+    @RequestMapping(value = "/category/{id}",method = RequestMethod.GET)
+    public ResultInfo getTagByCategory(@PathVariable Integer id){
+        return tagService.getTagByCategory(id);
+    }
 }

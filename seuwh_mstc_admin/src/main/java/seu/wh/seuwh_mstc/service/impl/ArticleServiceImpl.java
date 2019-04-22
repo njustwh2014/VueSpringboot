@@ -62,7 +62,6 @@ public class ArticleServiceImpl implements ArticleService {
             ArticleInfo articleInfo=articleInfoDao.selectByid(articleRecive.getId());
             if(articleInfo!=null){
                 articleInfo.setCategory(articleRecive.getCategory().getId());
-                articleInfo.setCategorydescription(articleRecive.getCategory().getCategorydescription());
                 articleInfo.setPublishtime(new Date());
                 articleInfo.setTitle(articleRecive.getTitle());
                 articleInfo.setSummary(articleRecive.getSummary());
@@ -105,7 +104,6 @@ public class ArticleServiceImpl implements ArticleService {
             author=userDao.selectById(author.getId());
             articleInfo.setAuthor(author.getId());
             articleInfo.setCategory(articleRecive.getCategory().getId());
-            articleInfo.setCategorydescription(articleRecive.getCategory().getCategorydescription());
             articleInfo.setPublishtime(new Date());
             articleInfo.setTitle(articleRecive.getTitle());
             articleInfo.setSummary(articleRecive.getSummary());
@@ -153,7 +151,6 @@ public class ArticleServiceImpl implements ArticleService {
         ArticleInfo articleInfo=articleInfoDao.selectByid(id);
         Category category=new Category();
         category.setId(articleInfo.getCategory());
-        category.setCategorydescription(articleInfo.getCategorydescription());
 
         //获取body
         ArticleBody articleBody=articleBodyDao.selectByArticleId(id);
@@ -273,6 +270,46 @@ public class ArticleServiceImpl implements ArticleService {
             logger.error("更改文章状态时出现异常",e.getMessage());
             e.printStackTrace();
             return ResultInfo.build(500,"更改文章状态时服务器出现异常！");
+        }
+    }
+
+    @Override
+    public ResultInfo dialogGetInfo(Integer articleid) {
+        try{
+            Map<String,Object> ret=articleLinkTableDao.getContentAndCategoryByArticleid(articleid);
+            ret.put("tags",articleLinkTableDao.getTagByArticleid(articleid));
+            return ResultInfo.ok(ret);
+
+        }catch (Exception e){
+            logger.error("获取文章内容、标签、分类时出现异常",e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"获取文章内容、标签、分类时服务器出现异常！");
+        }
+    }
+
+    @Override
+    public ResultInfo updateArticle(ArticleUpdate articleUpdate) {
+        try{
+            ArticleInfo articleInfo=articleInfoDao.selectByid(articleUpdate.getId());
+            articleInfo.setArticlestatus(articleUpdate.getArticlestatus());
+            articleInfo.setCategory(articleUpdate.getCategory());
+            articleInfo.setTitle(articleUpdate.getTitle());
+            articleInfo.setSummary(articleUpdate.getSummary());
+            articleInfoDao.updateArticle(articleInfo);
+
+            ArticleBody articleBody=articleBodyDao.selectByArticleId(articleUpdate.getId());
+            articleBody.setContent(articleUpdate.getContent());
+            articleBodyDao.updateArticleBodyByArticleId(articleBody);
+
+            //先删除tag
+            articleTagDao.deleteArticleTagByArticleId(articleUpdate.getId());
+            articleTagDao.addArticleTagBatchNew(articleUpdate.getTags(),articleUpdate.getId());
+            return ResultInfo.ok();
+
+        }catch (Exception e){
+            logger.error("更新文章时出现异常",e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"更新文章时服务器出现异常！");
         }
     }
 }

@@ -30,6 +30,9 @@ public interface TagDao {
     @Select({"select tag.id,tag.tagdescription,tag.tagstatus,category.categorydescription  from tag inner join category on tag.categoryid=category.id order by tag.id limit #{start},#{end}"})
     List<Map<String,Object>> getAllTag(@Param("start")Integer start, @Param("end")Integer end);
 
+    @Select({"select id,tagdescription from"+TABLE_NAME+"where categoryid=#{categoryid} and tagstatus='show'"})
+    List<Map<String,Object>> getTagByCategoryid(Integer categoryid);
+
     @Select({"SELECT COUNT(*) FROM "+TABLE_NAME})
     Integer countTag();
 

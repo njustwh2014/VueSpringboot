@@ -46,4 +46,9 @@ public class CategoryController {
         return categoryService.addCategory(newcategory);
     }
 
+    @RequestMapping(value = "getallwithoutsize",method = RequestMethod.GET)
+    public ResultInfo getCategory(){
+        return categoryService.getCategory();
+    }
+
 }

@@ -10,6 +10,12 @@ export function getAllCategory(params) {
     }
   })
 }
+export function getCategory() {
+  return request({
+    url: '/category/getallwithoutsize',
+    method: 'get',
+  })
+}
 export function changeCategoryStatus(id,status){
   return request({
     url:'category/changestatus',

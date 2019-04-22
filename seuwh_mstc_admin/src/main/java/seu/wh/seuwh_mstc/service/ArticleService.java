@@ -9,6 +9,7 @@
 package seu.wh.seuwh_mstc.service;
 
 import seu.wh.seuwh_mstc.model.ArticleRecive;
+import seu.wh.seuwh_mstc.model.ArticleUpdate;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 
 public interface ArticleService {
@@ -21,4 +22,6 @@ public interface ArticleService {
  public ResultInfo searchArticles(Integer pageNumber,Integer pageSize,String searchData);
  public ResultInfo deleteArticle(Integer articleid);
  public ResultInfo changeStatus(Integer articleid,String articlestatus);
+ public ResultInfo dialogGetInfo(Integer articleid);
+ public ResultInfo updateArticle(ArticleUpdate articleUpdate);
 }

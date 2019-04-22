@@ -17,9 +17,28 @@ public class ArticleTagDaoProvider {
     public String addArticleTagBatch(List<ArticleTag> list){
         StringBuilder sb=new StringBuilder();
         sb.append("insert into articletag ");
-        sb.append("(articleid,tagid,tagdescription) ");
+        sb.append("(articleid,tagid) ");
         sb.append("values ");
-        MessageFormat mf=new MessageFormat(" #'{' list[{0}].articleid},#'{'list[{0}].tagid},#'{'list[{0}].tagdescription}");
+        MessageFormat mf=new MessageFormat(" #'{' list[{0}].articleid},#'{'list[{0}].tagid}");
+        for(int i=0;i<list.size();i++) {
+            sb.append("(");
+            String str = mf.format(new Object[]{i});
+            sb.append(str);
+            sb.append(")");
+            if(i<list.size()-1){
+                sb.append(",");
+            }
+
+        }
+        return sb.toString();
+    }
+
+    public String addArticleTagBatchNew(List<Integer> list,Integer articleid){
+        StringBuilder sb=new StringBuilder();
+        sb.append("insert into articletag ");
+        sb.append("(articleid,tagid) ");
+        sb.append("values ");
+        MessageFormat mf=new MessageFormat(" #'{' articleid},#'{'list[{0}]}");
         for(int i=0;i<list.size();i++) {
             sb.append("(");
             String str = mf.format(new Object[]{i});

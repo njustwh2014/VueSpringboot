@@ -89,6 +89,18 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public ResultInfo getCategory() {
+        try{
+            List<Category> ret=categoryDao.getCategory();
+            return ResultInfo.ok(ret);
+        }catch(Exception e){
+            logger.error("获取category时出现异常",e.getMessage());
+            e.printStackTrace();
+            return  ResultInfo.build(500,"获取category时服务器出现异常");
+        }
+    }
+
+    @Override
     public ResultInfo getAllArtilcesByCategory(Integer id) {
         return null;
     }

@@ -20,15 +20,16 @@ import java.util.List;
 public interface ArticleInfoDao {
 
     String TABLE_NAME=" articles ";
-    String INSERT_FIELDS=" author,publishtime,title,summary,category,categorydescription,cover";
+    String INSERT_FIELDS=" author,publishtime,title,summary,category,cover,articlestatus";
     String SELECT_FIELDS="id, "+INSERT_FIELDS;
 
-    @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{author},#{publishtime},#{title},#{summary},#{category},#{categorydescription},#{cover})"})
+    @Insert({"insert into",TABLE_NAME,"(",INSERT_FIELDS,") values(#{author},#{publishtime},#{title},#{summary},#{category},#{cover},#{articlestatus})"})
     @Options(useGeneratedKeys=true, keyProperty="id", keyColumn="id")
     int addArticle(ArticleInfo articleInfo);
 
-    @Update({"update ",TABLE_NAME, " set title=#{title},publishtime=#{publishtime}, summary=#{summary},category=#{category},categorydescription=#{categorydescription} where id=#{id}"})
+    @Update({"update ",TABLE_NAME, " set title=#{title},publishtime=#{publishtime}, summary=#{summary},category=#{category},articlestatus=#{articlestatus} where id=#{id}"})
     int updateArticle(ArticleInfo articleInfo);
+
     @Select({"select * from ",TABLE_NAME,"where id=#{id}"})
     ArticleInfo selectByid(Integer id);
 

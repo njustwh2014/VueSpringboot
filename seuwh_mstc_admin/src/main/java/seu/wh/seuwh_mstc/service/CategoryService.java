@@ -17,4 +17,5 @@ public interface CategoryService {
     public ResultInfo getAllArtilcesByCategory(Integer id);
     public ResultInfo deleteCategory(Integer id);
     public ResultInfo addCategory(String newcategory);
+    public ResultInfo getCategory();
 }

@@ -31,3 +31,29 @@ export function changeArticleStatus(id,status){
     }
   })
 }
+
+export function dialogGetInfo(id){
+  return request({
+    url:'articles/dialoggetinfo',
+    method:'post',
+    data:{
+      id:id
+    }
+  })
+}
+
+export function updateArticle(param){
+  return request({
+    url:'articles/updatearticle',
+    method:'post',
+    data:{
+      id:param.id,
+      title:param.title,
+      articlestatus:param.articlestatus,
+      summary:param.summary,
+      content:param.content,
+      tags:param.tags,
+      category:param.category.id
+    }
+  })
+}

@@ -42,4 +42,6 @@ public interface CategoryDao {
 
     @Select({"select id from ",TABLE_NAME,"where categorydescription=#{categorydescription} limit 1"})
     Integer selectIdByDescription(String categoryDescription);
+    @Select({"select * from"+TABLE_NAME+"where categorystatus='show'"})
+    List<Category> getCategory();
 }

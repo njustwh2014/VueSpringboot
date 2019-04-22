@@ -85,4 +85,16 @@ public class TagServiceImpl implements TagService {
             return  ResultInfo.build(500,"添加category时服务器出现异常");
         }
     }
+
+    @Override
+    public ResultInfo getTagByCategory(Integer categoryid) {
+        try{
+            List<Map<String,Object>> tags=tagDao.getTagByCategoryid(categoryid);
+            return ResultInfo.ok(tags);
+        }catch (Exception e){
+            logger.error("根据Categoryid获取tag出现异常",e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"根据分类获取标签时服务器出现异常");
+        }
+    }
 }

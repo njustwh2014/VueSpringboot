@@ -10,6 +10,13 @@ export function getAllTag(params) {
     }
   })
 }
+
+export function getTags(params) {
+  return request({
+    url: '/tag/gettagswithoutsize',
+    method: 'get',
+  })
+}
 export function changeTagStatus(id,status){
   return request({
     url:'tag/changestatus',
@@ -38,5 +45,12 @@ export function deleteTag(params){
     data:{
       id:params
     }
+  })
+}
+
+export function getTagByCategory(id) {
+  return request({
+    url: `/tag/category/${id}`,
+    method: 'get',
   })
 }

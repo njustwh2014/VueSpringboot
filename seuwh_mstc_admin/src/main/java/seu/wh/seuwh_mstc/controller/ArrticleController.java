@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import seu.wh.seuwh_mstc.dao.ArticleLinkTableDao;
 import seu.wh.seuwh_mstc.dao.LinkTableQuery;
 import seu.wh.seuwh_mstc.model.ArticleRecive;
+import seu.wh.seuwh_mstc.model.ArticleUpdate;
 import seu.wh.seuwh_mstc.model.Category;
 import seu.wh.seuwh_mstc.result.ResultInfo;
 import seu.wh.seuwh_mstc.service.ArticleService;
@@ -124,6 +125,18 @@ public class ArrticleController {
         Integer articleid=jsonObject.getInteger("id");
         String articlestatus=jsonObject.getString("articlestatus");
         return articleService.changeStatus(articleid,articlestatus);
+    }
+
+    //dialog获取信息
+    @RequestMapping(value = "/dialoggetinfo",method = RequestMethod.POST)
+    public ResultInfo dialogGetInfo(@RequestBody JSONObject jsonObject){
+        Integer articleid=jsonObject.getInteger("id");
+        return articleService.dialogGetInfo(articleid);
+    }
+
+    @RequestMapping(value="/updatearticle",method = RequestMethod.POST)
+    public ResultInfo updateArticle(@RequestBody ArticleUpdate articleUpdate){
+        return articleService.updateArticle(articleUpdate);
     }
 
     @RequestMapping(value="/test", method=RequestMethod.GET)

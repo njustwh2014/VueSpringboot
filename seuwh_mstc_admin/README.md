@@ -1,6 +1,23 @@
 + **打包命令** mvn clean package -Dmaven.test.skip=true
 + **nohup**  nohup java -jar seuwh_mstc_admin-0.0.1-SNAPSHOT.jar >admin.out 2>&1 &
 + **sql导出命令** mysqldump -u root -p seumstc >f:/seumstc.sql
+## 2019/4/22
+### 1.实现后台管理系统对于文章编辑的后端。
+## 2019/4/21
+### 1.获取文章的内容、标签、分类sql语句
+```sql
+select articles.id,articles.category as categoryid,articlebody.content,category.categorydescription as categoorydescription from articles inner join articlebody 
+on articles.id=articlebody.articleid and articles.id=#{articleid} inner join category on category.id=articles.category   order by articles.id desc limit 1
+```
+### 2.获取所有分类
+```sql
+select * from category where categorystatus='show'
+```
+### 3.根据分类获取标签
+```
+@Select({"select id,tagdescription from"+TABLE_NAME+"where categoryid=#{categoryid}"})
+List<Map<String,Object>> getTagByCategoryid(Integer categoryid);
+```
 ## 2019/4/4
 ### 1.实现文章状态管理
 ## 2019/3/25
