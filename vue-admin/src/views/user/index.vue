@@ -67,13 +67,13 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="320" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" :disabled="true" @click="handleUpdate(scope.row)">{{ "edit" }}</el-button>
+          <!-- <el-button type="primary" size="mini" :disabled="true" @click="handleUpdate(scope.row)">{{ "edit" }}</el-button>
           <el-button v-if="scope.row.status!='published'" :disabled="true" size="mini" type="success" @click="handleModifyStatus(scope.row,'禁言')">
             {{ "publish" }}
           </el-button>
           <el-button v-if="scope.row.status!='draft'" :disabled="true" size="mini" @click="handleModifyStatus(scope.row,'draft')">
             {{ "draft" }}
-          </el-button>
+          </el-button> -->
           <!-- <el-button v-if="scope.row.status!='deleted'" size="mini" type="danger" @click="handleModifyStatus(scope.row,'deleted')">
             {{ "delete" }}
           </el-button> -->

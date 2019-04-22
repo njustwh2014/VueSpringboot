@@ -38,7 +38,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="320" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" :disabled="true" @click="handleUpdate(scope.row)">{{ "edit" }}</el-button>
+          <!-- <el-button type="primary" size="mini" :disabled="true" @click="handleUpdate(scope.row)">{{ "edit" }}</el-button> -->
           <el-button v-if="scope.row.tagstatus!='hide'" size="mini" type="gray" @click="handleModifyStatus(scope.row,'hide')">
             {{ "hide" }}
           </el-button>
