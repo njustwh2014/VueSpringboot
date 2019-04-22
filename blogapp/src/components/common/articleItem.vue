@@ -9,6 +9,10 @@
       <span class="me-pull-right me-article-count">
         <i class="el-icon-view"></i>&nbsp;{{viewcount}}
       </span>
+      <span class="me-pull-right me-article-count">
+        <!-- <i class="el-icon-star-off"></i>&nbsp;{{collectcount}} -->
+        <i class="el-icon-star-off"></i>&nbsp;0
+      </span>
     </div>
     <div class="me-article-description">
       {{summary}}

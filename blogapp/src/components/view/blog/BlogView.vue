@@ -32,7 +32,22 @@
               size="mini"
               round
               icon="el-icon-edit">编辑</el-button>
+              <el-button
+              v-if="this.article.isCollected==false"
+              @click="handleCollect()"
+              style="position: absolute;left: 65%;"
+              size="mini"
+              round
+              icon="el-icon-star-off">收藏({{article.collectcount}})</el-button>
+              <el-button
+              v-if="this.article.isCollected==true"
+              @click="handleCollect()"
+              style="position: absolute;left: 65%;"
+              size="mini"
+              round
+              icon="el-icon-star-on">收藏({{article.collectcount}})</el-button>
           </div>
+          
           <div class="me-view-content">
             <markdown-editor :editor=article.editor></markdown-editor>
           </div>
@@ -151,7 +166,9 @@
             toolbarsFlag: false,
             subfield: false,
             defaultOpen: 'preview'
-          }
+          },
+          isCollected:false,
+          collectcount:0
         },
         comments: [],
         comment: {
@@ -174,6 +191,9 @@
       }
     },
     methods: {
+      handleCollect(){
+        this.article.isCollected=!this.article.isCollected;
+      },
       tagOrCategory(type, id) {
         this.$router.push({path: `/${type}/${id}`})
       },

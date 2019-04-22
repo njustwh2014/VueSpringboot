@@ -31,6 +31,7 @@ import static java.lang.String.valueOf;
 
 @Service
 public class ArticleServiceImpl implements ArticleService {
+
     @Autowired
     UserDao userDao;
     @Autowired
@@ -53,6 +54,8 @@ public class ArticleServiceImpl implements ArticleService {
     JedisClient jedisClient;
     @Autowired
     EventProducer eventProducer;
+    @Autowired
+    ArticleCollectDao articleCollectDao;
 
     @Override
     public ResultInfo publish(ArticleRecive articleRecive) {
@@ -251,5 +254,21 @@ public class ArticleServiceImpl implements ArticleService {
             item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
+    }
+
+    /*
+    * 方法： 实现收藏功能
+    * 输入参数：用户id(userid)、文章id(articleid)
+    * 返回：ok
+    * */
+    @Override
+    public ResultInfo collectArticle(Integer userid, Integer articleid) {
+        Map<String,Object> collectRet=articleCollectDao.selectCollect(userid,articleid);//判断是否已经收藏
+        if(collectRet!=null){
+            articleCollectDao.addCollect(userid,articleid);
+            return ResultInfo.ok();
+        }else{
+            return ResultInfo.ok("您已收藏该文章");
+        }
     }
 }

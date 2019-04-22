@@ -1,5 +1,34 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
 **nohup**  nohup java -jar seuwh_mstc-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
+## 2019/4/22
+### 增加文章收藏表
+```sql
+create table articlecollect(
+  id int(11) not null primary key auto_increment,
+  articleid int(11) not null,
+  userid int(11) not null
+);
+```
++ new记录
+```sql
+insert into articlecollect (userid,articleid) values(#{userid},#{articleid}) 
+```
++ 查重
+```sql
+select id,userid,articleid from articlecollect where articleid=#{articleid} and userid=#{userid} limit 1
+```
+### 2.收藏功能具体实现
+
++ 1.前端点击，发送articleid,usrid
+
++ 2.查询是否重复
+
++ 3.写入mysql
+
++ 4.消息队列统计收藏量
+
+### 3.前端获取收藏量
++ 1.读取redis
 ## 2019/4/16
 ### 1.将文章发布默认修改为review
 ## 2019/4/4
