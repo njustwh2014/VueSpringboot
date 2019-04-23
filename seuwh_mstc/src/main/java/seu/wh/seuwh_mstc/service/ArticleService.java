@@ -19,5 +19,12 @@ public interface ArticleService {
  public ResultInfo getArticlesByCategory(Integer pageNumber,Integer pageSize,Integer id);
  public ResultInfo getArticlesByTag(Integer pageNumber,Integer pageSize,Integer id);
  public ResultInfo searchArticles(Integer pageNumber,Integer pageSize,String searchData);
- public ResultInfo collectArticle(Integer userid,Integer articleid);
+
+ /*
+  * 方法： 实现收藏功能
+  * 输入参数：用户id(userid)、文章id(articleid),type:(1:收藏 0：取消收藏)
+  * 返回：ok
+  * */
+ public ResultInfo collectArticle(Integer userid,Integer articleid,Integer type);
+
 }

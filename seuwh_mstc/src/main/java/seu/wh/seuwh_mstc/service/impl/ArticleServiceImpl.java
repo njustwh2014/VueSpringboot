@@ -56,6 +56,10 @@ public class ArticleServiceImpl implements ArticleService {
     EventProducer eventProducer;
     @Autowired
     ArticleCollectDao articleCollectDao;
+    @Autowired
+    ArticleCollectInfoDao articleCollectInfoDao;
+
+
 
     @Override
     public ResultInfo publish(ArticleRecive articleRecive) {
@@ -180,6 +184,7 @@ public class ArticleServiceImpl implements ArticleService {
         Map<String,Object> articlebylink=articleLinkTableDao.getArticleByid(id);
 
 
+
         //将viewcount写入redis
         SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date nowDate=new Date();
@@ -187,6 +192,19 @@ public class ArticleServiceImpl implements ArticleService {
         String viewKey= RedisKeyUtils.getViewKey(id);
         if(hostHolder.getUser()!=null){
             jedisClient.sadd(viewKey,String.valueOf(hostHolder.getUser().getId())+dateYmd);
+            //当前文章是否被当前用户收藏
+            Map<String,Object> collectItem=articleCollectDao.selectCollect(hostHolder.getUser().getId(),id);
+            if(collectItem!=null){
+                articlebylink.put("collected",Integer.valueOf(1));
+            }else{
+                articlebylink.put("collected",Integer.valueOf(0));
+            }
+        }
+        Integer collectCount=articleCollectInfoDao.getCollectCountByArticleId(id);
+        if(collectCount==null){
+            articlebylink.put("collectcount",Integer.valueOf(0));
+        }else{
+            articlebylink.put("collectcount",collectCount);
         }
         //计算文章热度
         EventModel weightEventModel=new EventModel();
@@ -209,6 +227,12 @@ public class ArticleServiceImpl implements ArticleService {
     public ResultInfo getAllArticle(Integer pageNumber, Integer pageSize) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.GetAllArticle((pageNumber-1)*pageSize,pageSize);
         for(Map<String,Object> item:articleslist){
+            Integer collectCount=articleCollectInfoDao.getCollectCountByArticleId(Integer.parseInt(item.get("id").toString()));
+            if(collectCount==null){
+                item.put("collectcount",Integer.valueOf(0));
+            }else{
+                item.put("collectcount",collectCount);
+            }
             item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
@@ -232,6 +256,12 @@ public class ArticleServiceImpl implements ArticleService {
     public ResultInfo getArticlesByCategory(Integer pageNumber, Integer pageSize, Integer id) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.GetArticlesByCategory((pageNumber-1)*pageSize,pageSize,id);
         for(Map<String,Object> item:articleslist){
+            Integer collectCount=articleCollectInfoDao.getCollectCountByArticleId(Integer.parseInt(item.get("id").toString()));
+            if(collectCount==null){
+                item.put("collectcount",Integer.valueOf(0));
+            }else{
+                item.put("collectcount",collectCount);
+            }
             item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
@@ -242,6 +272,12 @@ public class ArticleServiceImpl implements ArticleService {
     public ResultInfo getArticlesByTag(Integer pageNumber, Integer pageSize, Integer id) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.GetArticlesByTag((pageNumber-1)*pageSize,pageSize,id);
         for(Map<String,Object> item:articleslist){
+            Integer collectCount=articleCollectInfoDao.getCollectCountByArticleId(Integer.parseInt(item.get("id").toString()));
+            if(collectCount==null){
+                item.put("collectcount",Integer.valueOf(0));
+            }else{
+                item.put("collectcount",collectCount);
+            }
             item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
@@ -251,6 +287,12 @@ public class ArticleServiceImpl implements ArticleService {
     public ResultInfo searchArticles(Integer pageNumber, Integer pageSize, String searchData) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.getAllArticleByKeyWords((pageNumber-1)*pageSize,pageSize,searchData);
         for(Map<String,Object> item:articleslist){
+            Integer collectCount=articleCollectInfoDao.getCollectCountByArticleId(Integer.parseInt(item.get("id").toString()));
+            if(collectCount==null){
+                item.put("collectcount",Integer.valueOf(0));
+            }else{
+                item.put("collectcount",collectCount);
+            }
             item.put("tags",articleLinkTableDao.getTagByArticleid(Integer.parseInt(item.get("id").toString())));
         }
         return ResultInfo.ok(articleslist);
@@ -258,17 +300,53 @@ public class ArticleServiceImpl implements ArticleService {
 
     /*
     * 方法： 实现收藏功能
-    * 输入参数：用户id(userid)、文章id(articleid)
+    * 输入参数：用户id(userid)、文章id(articleid),type:(1:收藏 0：取消收藏)
     * 返回：ok
     * */
     @Override
-    public ResultInfo collectArticle(Integer userid, Integer articleid) {
+    public ResultInfo collectArticle(Integer userid, Integer articleid,Integer type) {
+        ArticleCollectItem articleCollectItem=new ArticleCollectItem(userid,articleid);
         Map<String,Object> collectRet=articleCollectDao.selectCollect(userid,articleid);//判断是否已经收藏
-        if(collectRet!=null){
-            articleCollectDao.addCollect(userid,articleid);
-            return ResultInfo.ok();
+        if(collectRet==null){
+            if(type==0){
+                return ResultInfo.build(500,"你还没有收藏该文章!");
+            }
+            articleCollectDao.addCollect(articleCollectItem);
+            return ResultInfo.build(200,"你已成功收藏该文章！",updateCollectCount(articleid,1));
         }else{
-            return ResultInfo.ok("您已收藏该文章");
+            if(type==0){
+                articleCollectDao.deleteCollect(userid,articleid);
+                //返回当前收藏量
+                return ResultInfo.build(200,"你已成功取消点赞",updateCollectCount(articleid,0));
+            }
+            return ResultInfo.build(200,"您已收藏过该文章",articleCollectInfoDao.getCollectCountByArticleId(articleid));
         }
+    }
+
+    /*
+    * 方法：collectcount更新与查询
+    * 实现原理：当有新的收藏，如果没有该记录就新建
+    * @输入：articleid type(0:取消 1：收藏)
+      @输出：更新后的collectcount
+    * */
+    private final Integer updateCollectCount(Integer articleid,Integer type){
+        ArticleCollectInfo articleCollectInfo=new ArticleCollectInfo();
+        articleCollectInfo.setArticleid(articleid);
+        Integer collectCount=articleCollectInfoDao.getCollectCountByArticleId(articleid);
+        if(type==1){
+            if(collectCount==null){
+                //之前未有该文章记录
+                //创建记录
+                articleCollectInfo.setCollectcount(1);
+                articleCollectInfoDao.addCollectCountInfo(articleCollectInfo);
+            }else{
+                articleCollectInfo.setCollectcount(collectCount+1);
+                articleCollectInfoDao.updateCollectCountInfo(articleCollectInfo);
+            }
+        }else{
+            articleCollectInfo.setCollectcount(collectCount-1);
+            articleCollectInfoDao.updateCollectCountInfo(articleCollectInfo);
+        }
+        return articleCollectInfo.getCollectcount();
     }
 }

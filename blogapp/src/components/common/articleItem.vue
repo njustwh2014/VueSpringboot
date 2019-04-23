@@ -11,7 +11,7 @@
       </span>
       <span class="me-pull-right me-article-count">
         <!-- <i class="el-icon-star-off"></i>&nbsp;{{collectcount}} -->
-        <i class="el-icon-star-off"></i>&nbsp;0
+        <i class="el-icon-star-off"></i>&nbsp;{{collectcount}}
       </span>
     </div>
     <div class="me-article-description">
@@ -41,6 +41,7 @@ export default {
     title:String,
     commentcount:Number,
     viewcount:Number,
+    collectcount:Number,
     summary:String,
     // author:Object,
     userid:Number,

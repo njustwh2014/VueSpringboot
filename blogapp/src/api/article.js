@@ -99,3 +99,15 @@ export function getArticleById(id) {
     method: 'get'
   })
 }
+
+export function collectArticle(userid,articleid,type) {
+  return request({
+    url:'/articles/collect',
+    method:'post',
+    data:{
+      userid:userid,
+      articleid:articleid,
+      type:type
+    }
+  })
+}

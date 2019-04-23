@@ -120,6 +120,25 @@ public class ArrticleController {
         return articleService.searchArticles(pageNumber,pageSize,searchData);
     }
 
+    /*
+    * 文章收藏接口设计
+    * jsonObject: userid articleid type
+    * url: /collect
+    * */
+    @RequestMapping(value="/collect",method = RequestMethod.POST)
+    public ResultInfo articleCollect(@RequestBody JSONObject jsonObject){
+        Integer userid=jsonObject.getInteger("userid");
+        Integer articleid=jsonObject.getInteger("articleid");
+        Integer type=jsonObject.getInteger("type");
+        try{
+            return articleService.collectArticle(userid,articleid,type);
+        }catch (Exception e){
+            logger.error("收藏文章时出现异常"+e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"收藏文章时服务器异常！");
+        }
+    }
+
     @RequestMapping(value="/test", method=RequestMethod.GET)
     public ResultInfo testLinkTableQuery(){
         return ResultInfo.ok(null);

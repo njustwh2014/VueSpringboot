@@ -129,7 +129,7 @@
 <script>
   import MarkdownEditor from '@/components/common/markdown/MarkdownEditor'
   import CommmentItem from '@/components/view/comment/CommentItem'
-  import {viewArticle} from '@/api/article'
+  import {viewArticle,collectArticle} from '@/api/article'
   import {getCommentsByArticle, publishComment} from '@/api/comment'
   import {getAllCategorys} from '@/api/category'
   import {getAllTags} from '@/api/tag'
@@ -161,6 +161,7 @@
           categoryid:0,
           categorydescription:"",
           publishtime: '',
+          collected:0,
           editor: {
             value: '',
             toolbarsFlag: false,
@@ -192,6 +193,42 @@
     },
     methods: {
       handleCollect(){
+        //收藏或取消收藏文章
+        if(this.article.isCollected){
+          //已经收藏了该文章,点击按钮表示想取消收藏
+          collectArticle(this.$store.state.id,this.article.id,0).then(response=>{
+            if(response.data.status==200){
+              //取消收藏成功
+              this.article.isCollected=false;
+              this.article.collectcount=response.data.data;
+              this.$message(response.data.msg);
+            }else{
+              //取消收藏失败
+              this.$message(response.data.msg);
+            }
+          }).catch(error => {
+            if (error !== 'error') {
+              that.$message({type: 'error', message: '文章取消收藏失败', showClose: true})
+            }
+          });
+        }else{
+          //未收藏该文章,点击按钮表示想收藏
+          collectArticle(this.$store.state.id,this.article.id,1).then(response=>{
+            if(response.data.status==200){
+              //收藏成功
+              this.article.isCollected=true;
+              this.article.collectcount=response.data.data;
+              this.$message(response.data.msg);
+            }else{
+              //收藏失败
+              this.$message(response.data.msg);
+            }
+          }).catch(error => {
+            if (error !== 'error') {
+              that.$message({type: 'error', message: '文章收藏失败', showClose: true})
+            }
+          });
+        }
         this.article.isCollected=!this.article.isCollected;
       },
       tagOrCategory(type, id) {
@@ -205,7 +242,11 @@
         viewArticle(that.$route.params.id).then(data=> {
           console.log(data.data.data)
           Object.assign(that.article, data.data.data)
-
+          if(that.article.collected==0){
+            this.article.isCollected=false;
+          }else{
+            this.article.isCollected=true;
+          }
           that.article.editor.value = data.data.data.content
           that.getCommentsByArticle()
         }).catch(error => {

@@ -1,5 +1,15 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
 **nohup**  nohup java -jar seuwh_mstc-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
+## 2019/4/23
+### 增加文章收藏量表
+```sql
+create table  articlecollectinfo(
+  id int(11) not null primary key auto_increment,
+  articleid int(11) not null,
+  collectcount int(11) not null
+);
+```
+### 实现文章收藏功能
 ## 2019/4/22
 ### 增加文章收藏表
 ```sql
@@ -16,6 +26,10 @@ insert into articlecollect (userid,articleid) values(#{userid},#{articleid})
 + 查重
 ```sql
 select id,userid,articleid from articlecollect where articleid=#{articleid} and userid=#{userid} limit 1
+```
++ 取消收藏
+```sql
+delete from articlecollect where articleid=#{articleid} and userid=#{userid}
 ```
 ### 2.收藏功能具体实现
 
