@@ -76,6 +76,13 @@ public class CommentServiceImpl implements CommentService {
             hotEventModel.setEventType(EventType.WEIGHT);
             eventProducer.fireEvent(hotEventModel);
 
+            //评论异步系统消息
+            EventModel commentEventModel=new EventModel();
+            commentEventModel.setEventType(EventType.COMMENT);
+            commentEventModel.setEntityid(comment.getArticleid());
+            commentEventModel.setEntityownerid(articleInfoDao.selectByid(commentEventModel.getEntityid()).getAuthor());
+            commentEventModel.setAuthorid(comment.getAuthorid());
+            eventProducer.fireEvent(commentEventModel);
 
             commentSend.setAuthor(userDao.selectById(comment.getAuthorid()));
             commentSend.setChildrens(null);
@@ -85,6 +92,8 @@ public class CommentServiceImpl implements CommentService {
             commentSend.setCreatedate(comment.getCreatedate());
             commentSend.setLikecount(comment.getLikecount());
             commentSend.setId(comment.getId());
+
+
             return ResultInfo.ok(commentSend);
         }else{
             comment.setParentid(commentRecive.getParentid());

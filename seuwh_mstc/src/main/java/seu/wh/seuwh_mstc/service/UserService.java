@@ -28,4 +28,5 @@ public interface UserService {
     public ResultInfo updateHeadUrlById(User user,String token);//更新头像
     public ResultInfo getUserInfoByUserId(Integer userId);//获取个人信息
     public ResultInfo updateInfo(JSONObject jsonObject);
+    public User getUserInfoByUserIdAndReturnUSer(Integer id);//获取个人信息
 }

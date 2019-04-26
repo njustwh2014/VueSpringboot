@@ -8,8 +8,12 @@
 
 package seu.wh.seuwh_mstc.service;
 
+import seu.wh.seuwh_mstc.model.ArticleInfo;
 import seu.wh.seuwh_mstc.model.ArticleRecive;
 import seu.wh.seuwh_mstc.result.ResultInfo;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ArticleService {
  public ResultInfo publish(ArticleRecive articleRecive);
@@ -19,12 +23,13 @@ public interface ArticleService {
  public ResultInfo getArticlesByCategory(Integer pageNumber,Integer pageSize,Integer id);
  public ResultInfo getArticlesByTag(Integer pageNumber,Integer pageSize,Integer id);
  public ResultInfo searchArticles(Integer pageNumber,Integer pageSize,String searchData);
-
+ public ArticleInfo getArticleInfoByid(Integer id);
  /*
   * 方法： 实现收藏功能
   * 输入参数：用户id(userid)、文章id(articleid),type:(1:收藏 0：取消收藏)
   * 返回：ok
   * */
  public ResultInfo collectArticle(Integer userid,Integer articleid,Integer type);
+ public List<Map<String,Object>>  getCollectorByArticleid(Integer articleid);//获取关注该篇文章的所有用户
 
 }

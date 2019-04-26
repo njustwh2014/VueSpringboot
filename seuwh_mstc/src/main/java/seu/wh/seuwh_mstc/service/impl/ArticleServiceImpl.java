@@ -312,12 +312,12 @@ public class ArticleServiceImpl implements ArticleService {
                 return ResultInfo.build(500,"你还没有收藏该文章!");
             }
             articleCollectDao.addCollect(articleCollectItem);
-            return ResultInfo.build(200,"你已成功收藏该文章！",updateCollectCount(articleid,1));
+            return ResultInfo.build(200,"你已成功收藏该文章！",updateCollectCount(articleid));
         }else{
             if(type==0){
                 articleCollectDao.deleteCollect(userid,articleid);
                 //返回当前收藏量
-                return ResultInfo.build(200,"你已成功取消点赞",updateCollectCount(articleid,0));
+                return ResultInfo.build(200,"你已成功取消点赞",updateCollectCount(articleid));
             }
             return ResultInfo.build(200,"您已收藏过该文章",articleCollectInfoDao.getCollectCountByArticleId(articleid));
         }
@@ -329,24 +329,56 @@ public class ArticleServiceImpl implements ArticleService {
     * @输入：articleid type(0:取消 1：收藏)
       @输出：更新后的collectcount
     * */
-    private final Integer updateCollectCount(Integer articleid,Integer type){
+//    private final Integer updateCollectCount(Integer articleid,Integer type){
+//        ArticleCollectInfo articleCollectInfo=new ArticleCollectInfo();
+//        articleCollectInfo.setArticleid(articleid);
+//        Integer collectCount=articleCollectInfoDao.getCollectCountByArticleId(articleid);
+//        if(type==1){
+//            if(collectCount==null){
+//                //之前未有该文章记录
+//                //创建记录
+//                articleCollectInfo.setCollectcount(1);
+//                articleCollectInfoDao.addCollectCountInfo(articleCollectInfo);
+//            }else{
+//                articleCollectInfo.setCollectcount(collectCount+1);
+//                articleCollectInfoDao.updateCollectCountInfo(articleCollectInfo);
+//            }
+//        }else{
+//            articleCollectInfo.setCollectcount(collectCount-1);
+//            articleCollectInfoDao.updateCollectCountInfo(articleCollectInfo);
+//        }
+//        return articleCollectInfo.getCollectcount();
+//    }
+
+    /*
+    * 方法：collectcount更新与查询 改进
+    * 实现原理：当有新的收藏，如果没有该记录就新建
+    * @输入：articleid
+      @输出：更新后的collectcount
+    * */
+    private final Integer updateCollectCount(Integer articleid){
         ArticleCollectInfo articleCollectInfo=new ArticleCollectInfo();
         articleCollectInfo.setArticleid(articleid);
         Integer collectCount=articleCollectInfoDao.getCollectCountByArticleId(articleid);
-        if(type==1){
-            if(collectCount==null){
-                //之前未有该文章记录
-                //创建记录
-                articleCollectInfo.setCollectcount(1);
-                articleCollectInfoDao.addCollectCountInfo(articleCollectInfo);
-            }else{
-                articleCollectInfo.setCollectcount(collectCount+1);
-                articleCollectInfoDao.updateCollectCountInfo(articleCollectInfo);
-            }
+        articleCollectInfo.setCollectcount(articleCollectDao.countCollectByArticleid(articleid));
+        if(collectCount==null){
+            //未创建该记录
+            articleCollectInfoDao.addCollectCountInfo(articleCollectInfo);
         }else{
-            articleCollectInfo.setCollectcount(collectCount-1);
             articleCollectInfoDao.updateCollectCountInfo(articleCollectInfo);
         }
         return articleCollectInfo.getCollectcount();
+    }
+
+
+    @Override
+    public ArticleInfo getArticleInfoByid(Integer id) {
+        return articleInfoDao.selectByid(id);
+    }
+
+
+    @Override
+    public List<Map<String,Object>>  getCollectorByArticleid(Integer articleid) {
+        return articleCollectDao.getCollectorByArticleId(articleid);
     }
 }

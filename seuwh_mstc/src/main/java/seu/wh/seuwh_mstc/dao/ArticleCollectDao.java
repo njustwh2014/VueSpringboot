@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import seu.wh.seuwh_mstc.model.ArticleCollectItem;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -36,4 +37,12 @@ public interface ArticleCollectDao {
     @Delete({"delete from articlecollect where articleid=#{articleid} and userid=#{userid}"})
     int deleteCollect(@Param("userid")Integer userid,@Param("articleid")Integer articleid);
 
+
+    //统计收藏量
+    @Select({"select count(id) from articlecollect where articleid=#{articleid}"})
+    Integer countCollectByArticleid(Integer articleid);
+
+    //获取某个文章的收藏者
+    @Select({"select userid from articlecollect where articleid=#{articleid}"})
+    List<Map<String,Object>> getCollectorByArticleId(Integer id);
 }

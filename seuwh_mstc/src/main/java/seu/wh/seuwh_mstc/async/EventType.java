@@ -14,7 +14,9 @@ public enum EventType {
 
     WEIGHT(0),//计算文章热度
     DELETEARTICLE(1),//删除文章
-    DELETECOMMENT(2);//删除评论
+    DELETECOMMENT(2),//删除评论
+    COMMENT(3),//发表评论
+    ;
     private int value;
     EventType(int value){
         this.value=value;

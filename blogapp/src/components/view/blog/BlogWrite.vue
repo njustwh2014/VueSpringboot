@@ -11,6 +11,7 @@
             <el-button round @click="cancel">取消</el-button>
           </div>
         </el-col>
+        
       </base-header>
 
       <el-container class="me-area me-write-box">

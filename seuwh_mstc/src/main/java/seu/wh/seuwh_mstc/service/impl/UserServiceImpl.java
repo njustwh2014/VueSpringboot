@@ -218,4 +218,10 @@ public class UserServiceImpl implements UserService {
         }
         return ResultInfo.build(500,"failed",null);
     }
+
+    @Override
+    public User getUserInfoByUserIdAndReturnUSer(Integer id) {
+        User user=userDao.selectById(id);
+        return user;
+    }
 }
