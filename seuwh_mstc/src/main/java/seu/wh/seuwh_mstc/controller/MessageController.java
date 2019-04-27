@@ -8,6 +8,7 @@
 
 package seu.wh.seuwh_mstc.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,55 @@ public class MessageController {
             logger.error("获取用户未读消息数目时出现异常！"+e.getMessage());
             e.printStackTrace();
             return ResultInfo.build(500,"获取用户未读消息数目时出现异常！");
+        }
+    }
+
+    /*
+    * 接口：获取用户所有未读消息
+    * */
+    @RequestMapping(value="/unreadmessage/{userid}",method = RequestMethod.GET)
+    public ResultInfo getAllUnreadMessage(@PathVariable Integer userid){
+        try{
+            List<SystemMessage> systemMessageList=messageService.getAllUnreadMessage(userid);
+            Integer total=systemMessageList.size();
+            Map<String,Object> ret=new HashMap<>();
+            ret.put("total",total);
+            ret.put("systemmessagelist",systemMessageList);
+            return ResultInfo.ok(ret);
+        }catch (Exception e){
+            logger.error("获取用户未读消息时出现异常！"+e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"获取用户未读消息时出现异常！");
+        }
+    }
+    /*
+    * 接口：根据batch获取用户历史消息
+    * */
+    @RequestMapping(value="/readmessage",method = RequestMethod.POST)
+    public ResultInfo getReadMessageByBatch(@RequestBody JSONObject jsonObject){
+        Integer userid=jsonObject.getInteger("userid");
+        Integer index=jsonObject.getInteger("index");
+        Integer batchSize=jsonObject.getInteger("batchsize");
+        try{
+            return ResultInfo.ok(messageService.getAReadMessageByBatch(userid,index,batchSize));
+        }catch(Exception e){
+            logger.error("获取用户历史消息时出现异常！"+e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"获取用户历史消息时出现异常！");
+        }
+    }
+
+    /*
+    * 接口：将未读消息设置成已读
+    * */
+    @RequestMapping(value = "/changemessage/{messageid}",method = RequestMethod.GET)
+    public ResultInfo changeMessageStatus(@PathVariable Integer messageid){
+        try{
+            return ResultInfo.ok(messageService.changeMessageStatus(messageid));
+        }catch(Exception e){
+            logger.error("修改消息异常时出现异常！"+e.getMessage());
+            e.printStackTrace();
+            return ResultInfo.build(500,"修改消息异常时出现异常！");
         }
     }
 }

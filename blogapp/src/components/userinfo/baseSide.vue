@@ -2,8 +2,10 @@
   <el-aside class="me-info-aside">
     <el-menu :default-active="activeIndex" :router=true :unique-opened=true active-text-color="#5FB878">
       <el-menu-item index="/userinfo">
-        <template slot="title"><i class="el-icon-message"></i>基本资料</template>
-        
+        <template slot="title"><i class="el-icon-user"></i>基本资料</template>
+      </el-menu-item>
+      <el-menu-item index="/systemmessage">
+        <template slot="title"><i class="el-icon-message"></i>系统消息</template>
       </el-menu-item>
       <el-submenu index="2">
         <template slot="title"><i class="el-icon-menu"></i>导航二</template>

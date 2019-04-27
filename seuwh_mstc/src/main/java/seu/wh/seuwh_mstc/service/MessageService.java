@@ -28,4 +28,26 @@ public interface MessageService {
     * @输出：未读消息
     * */
     public List<SystemMessage> getFourUnreadMessage(Integer userid);
+
+    /*
+    * 获取用户所有未读消息
+    * @输入：用户id
+    * @输出：未读消息
+    * */
+    public List<SystemMessage> getAllUnreadMessage(Integer userid);
+
+    /*
+    * 获取用户历史消息
+    * @输入： 用户id index batchSize
+    * @输出：历史消息
+    * */
+    public List<SystemMessage> getAReadMessageByBatch(Integer userid,Integer index,Integer batchSize);
+
+    /*
+    * 将未读消息设置成已读
+    * @输入：消息id
+    * @输出：修改记录数
+    * */
+    public Integer changeMessageStatus(Integer messageId);
+
 }

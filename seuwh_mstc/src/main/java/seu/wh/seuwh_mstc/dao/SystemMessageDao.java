@@ -8,10 +8,7 @@
 
 package seu.wh.seuwh_mstc.dao;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import seu.wh.seuwh_mstc.model.SystemMessage;
 
@@ -54,6 +51,25 @@ public interface SystemMessageDao {
     /*
     * 获取前4条未读消息
     * */
-    @Select({"select * from "+TABLE_NAME+"where listener=#{userid} and messagestatus=0 limit 4"})
+    @Select({"select * from "+TABLE_NAME+"where listener=#{userid} and messagestatus=0 order by id desc limit 4"})
     List<SystemMessage> getFourUnreadMessage(Integer userid);
+    /*
+    * 获取所有未读消息
+    * */
+    @Select({"select * from"+TABLE_NAME+"where listener=#{userid} and messagestatus=0 order by id desc "})
+    List<SystemMessage> getAllUnreadMessage(Integer userid);
+
+    /*
+    * 根据batch获取用户历史消息
+    * */
+    @Select({"select * from"+TABLE_NAME+"where listener=#{userid} and messagestatus=1 order by id desc limit #{start},#{size}"})
+    List<SystemMessage> getReadMessageByBatch(@Param("userid") Integer userid,@Param("start") Integer start,@Param("size") Integer size);
+
+    /*
+     * 将未读消息设置成已读
+     * @输入：消息id
+     * @输出：修改记录数
+     * */
+    @Update({"update"+TABLE_NAME+"set messagestatus=1 where id=#{messageid} limit 1"})
+    Integer changeMessageStatus(Integer messageid);
 }

@@ -48,7 +48,7 @@ public class CommentHandler implements EventHandler {
             systemMessage.setEntityid(eventModel.getEntityid());//对应文章的id
             systemMessage.setEntitytype(1);
             User sender=userService.getUserInfoByUserIdAndReturnUSer(eventModel.getAuthorid());
-            systemMessage.setMessagecontent("用户 "+sender.getNickname()+"对您的文章发表了新评论，快去看看吧!");
+            systemMessage.setMessagecontent("用户 "+sender.getNickname()+" 对您的文章发表了新评论，快去看看吧!");
             systemMessage.setListener(eventModel.getEntityownerid());
             systemMessage.setMessagedate(new Date());
             systemMessage.setSender(sender.getId());
@@ -61,7 +61,7 @@ public class CommentHandler implements EventHandler {
 
             //对于文章收藏者的提醒
             List<Map<String,Object>>  collectors=articleService.getCollectorByArticleid(systemMessage.getEntityid());
-            systemMessage.setMessagecontent("用户 "+sender.getNickname()+"对您收藏的文章发表了新评论，快去看看吧!");
+            systemMessage.setMessagecontent("用户 "+sender.getNickname()+" 对您收藏的文章发表了新评论，快去看看吧!");
 
             if(collectors!=null){
                 for(Map<String,Object> collector:collectors){

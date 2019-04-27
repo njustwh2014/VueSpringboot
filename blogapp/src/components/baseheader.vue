@@ -67,15 +67,15 @@
           <template v-else>
             <el-menu-item>
               <el-badge :value="unreadMessagecount" :max="10" class="item" :hidden="badgeFlag">
-                <el-popover placement="bottom" width="400" trigger="click" class="popover-item">
+                <el-popover placement="bottom" width="400" trigger="hover" class="popover-item">
                   <div>
                     共有{{unreadMessagecount}}条未读消息
                     <el-divider></el-divider>
                     <div v-for="c in unreadMessageList" :key="c.id" class="text">
-                      <span>{{c.messagecontent}}</span>
+                      <span @click="handleJumpToPage(c)"><b>{{c.messagedate|format}}:</b>&nbsp;{{c.messagecontent}}</span>
                       <el-divider></el-divider>
                     </div>
-                    <el-button type="text">
+                    <el-button type="text" @click="handleGetAllMessage()">
                       <i class="el-icon-more-outline"></i>&nbsp;显示全部消息
                     </el-button>
                   </div>
@@ -103,7 +103,7 @@
 
 <script>
 import { getAllCategorys } from "@/api/category";
-import { getMessageStatus } from "@/api/message";
+import { getMessageStatus,changeMessageStatus } from "@/api/message";
 export default {
   name: "baseheader",
   props: {
@@ -115,6 +115,12 @@ export default {
   },
   created() {
     this.getCategorys();
+  },
+  update(){
+    let userid=this.$store.state.id;
+    if(userid!=""){
+      this.validateHaveUnReadMessage();
+    }
   },
   data() {
     return {
@@ -142,6 +148,46 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
+    /*
+     点击消息跳转到指定页面
+     */
+     handleJumpToPage(SystemMessage){
+       if(SystemMessage.messagetype<=4){
+         /*
+         1. messagetype:
+        + 0：文章被收藏
+        + 1：收藏的文章更新
+        + 2：收藏的文章有新的评论
+        + 3：评论被点赞
+        + 4: 发表的文章被评论
+        + ...(后续可以扩充，比如有新的用户关注，关注的用户发布了新的文章)
+         */ 
+
+        if(SystemMessage.messagestatus==0){
+          changeMessageStatus(SystemMessage.id).then(response=>{
+            if(response.data.status==200){
+              // this.readMessageList=[];
+              // this.haveReadMessageFlag=true;
+              // this,index=0;
+              // this.getAllUnreadMessage();
+              // this.getAllReadMessage();
+              this.validateHaveUnReadMessage();
+            }else{
+              this.$message.error(response.data.msg);
+            }
+          }).catch(error => {
+          if (error !== "error") {
+            this.$message({
+              type: "error",
+              message: "更改消息状态失败！",
+              showClose: true
+            });
+          }
+        });
+        }
+        this.$router.push({path:`/view/${SystemMessage.entityid}`})
+       }
+     },
     logout() {
       let that = this;
       this.$store
@@ -199,7 +245,12 @@ export default {
           }
         });
       }
+    },
+    handleGetAllMessage(){
+      this.$router.push({ path: "/systemmessage" });
     }
+
+
   },
   directives: {
     focus: {
@@ -262,5 +313,9 @@ export default {
   /* margin-right: 20px; */
 }
 .popover-item {
+}
+
+.el-divider--horizontal{
+  margin:3px 0;
 }
 </style>

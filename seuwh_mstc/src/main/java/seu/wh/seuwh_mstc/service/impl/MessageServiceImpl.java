@@ -45,4 +45,35 @@ public class MessageServiceImpl implements MessageService {
         List<SystemMessage> ret=systemMessageDao.getFourUnreadMessage(userid);
         return ret;
     }
+
+
+    /*
+     * 获取用户所有未读消息
+     * @输入：用户id
+     * @输出：未读消息
+     * */
+    @Override
+    public List<SystemMessage> getAllUnreadMessage(Integer userid) {
+        return systemMessageDao.getAllUnreadMessage(userid);
+    }
+
+    /*
+     * 获取用户历史消息
+     * @输入： 用户id index batchSize
+     * @输出：历史消息
+     * */
+    @Override
+    public List<SystemMessage> getAReadMessageByBatch(Integer userid, Integer index, Integer batchSize) {
+        return systemMessageDao.getReadMessageByBatch(userid,index*batchSize,batchSize);
+    }
+
+    /*
+     * 将未读消息设置成已读
+     * @输入：消息id
+     * @输出：修改记录数
+     * */
+    @Override
+    public Integer changeMessageStatus(Integer messageId) {
+        return systemMessageDao.changeMessageStatus(messageId);
+    }
 }

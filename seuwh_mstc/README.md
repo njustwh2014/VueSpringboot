@@ -1,5 +1,8 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
 **nohup**  nohup java -jar seuwh_mstc-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
+
+## 2019/4/27
+### 1.基本实现系统消息提示
 ## 2019/4/26
 ### 1.与前端共同实现了系统消息提示，还不完善。
 ## 2019/4/23
