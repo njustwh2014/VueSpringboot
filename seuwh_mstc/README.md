@@ -1,6 +1,8 @@
 **打包命令** mvn clean package -Dmaven.test.skip=true
 **nohup**  nohup java -jar seuwh_mstc-0.0.1-SNAPSHOT.jar > nohup.out 2>&1 &
 
+## 2019/5/15
+### 1.实现redis缓存
 ## 2019/4/27
 ### 1.基本实现系统消息提示
 ## 2019/4/26

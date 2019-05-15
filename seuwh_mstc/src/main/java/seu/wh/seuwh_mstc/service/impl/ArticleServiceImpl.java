@@ -9,6 +9,7 @@
 package seu.wh.seuwh_mstc.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import seu.wh.seuwh_mstc.async.EventModel;
 import seu.wh.seuwh_mstc.async.EventProducer;
@@ -253,6 +254,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
     @Override
+    @Cacheable(value="resultInfo",key="'getArticlesByCategory:PageNumber:'.concat(#pageNumber.toString()).concat(':pageSize:').concat(#pageSize.toString()).concat(':id:').concat(#id.toString())")
     public ResultInfo getArticlesByCategory(Integer pageNumber, Integer pageSize, Integer id) {
         List<Map<String,Object>> articleslist=articleLinkTableDao.GetArticlesByCategory((pageNumber-1)*pageSize,pageSize,id);
         for(Map<String,Object> item:articleslist){
