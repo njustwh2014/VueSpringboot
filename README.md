@@ -1,4 +1,50 @@
 # MyWebLearnPath
+## 阿里云配置
+项目文件放置在：/home/huanhuan/myweb
+## docker安装
+参考教程：https://blog.csdn.net/u010046908/article/details/79553227
+```bash
+yum update -y
+yum -y install docker
+systemctl start docker
+```
+## docker安装nginx
+```bash
+docker pull nginx
+#创建/home/huanhuan/myweb/nginxdata并进入
+mkdir /home/huanhuan/myweb/nginxdata
+cd /home/huanhuan/myweb/nginxdata
+# 创建conf
+mkdir conf
+# 复制主机nginx.conf到服务器的conf文件夹内
+# 创建容器
+docker run -d -p 3000:3000 -p 3100:3100 --name nginx-web -v /home/huanhuan/myweb/myvue:/home/huanhuan/myweb/myvue -v /home/huanhuan/myweb/images:/home/huanhuan/myweb/images -v /home/huanhuan/myweb/myvueadmin:/home/huanhuan/myweb/myvueadmin -v /home/huanhuan/myweb/myvueadmin:/home/huanhuan/myweb/myvueadmin -v /home/huanhuan/myweb/nginxdata/conf/nginx.conf:/etc/nginx/nginx.conf nginx
+```
+## docker安装mysql
+```bash
+# pull image
+docker pull mysql:latest
+# run
+docker run --name mysql-mstc -v /home/huanhuan/myweb/mysqldata:/data -e MYSQL_ROOT_PASSWORD=123456 -d -i -p 3306:3306 --restart=always  mysql:latest
+# 导出sql文件
+mysqldump -u root -p seumstc > F:/seumstc.sql
+# docker容器内导入sql文件
+# 进入docker容器
+docker exec -it mysql-mstc bash
+# 连接mysql
+mysql -u root -p
+# 新建数据库
+create database seumstc;
+use seumstc;
+# 导入sql文件
+source /data/seumstc.sql;
+```
+### 解决mysql Client does not support authentication protocol requested by server; consider upgrading MySQL错误
+```sql
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
+SELECT plugin FROM mysql.user WHERE User = 'root';
+```
 ## Elasticsearch
 https://www.cnblogs.com/dreamroute/p/8484457.html
 
