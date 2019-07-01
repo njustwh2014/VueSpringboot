@@ -16,15 +16,17 @@ Vue.use(Router)
 const home = resolve => require(['@/components/home.vue'], resolve)
 const login = resolve => require(['@/components/login.vue'], resolve)
 const regist = resolve => require(['@/components/regist.vue'], resolve)
-const test = resolve => require(['@/components/test.vue'], resolve)
+const test = resolve => require(['@/components/userinfonew/index'], resolve)
 const index=resolve=>require(['@/components/view/index.vue'],resolve)
 const blogview=resolve=>require(['@/components/view/blog/BlogView.vue'],resolve)
 const blogwrite=resolve=>require(['@/components/view/blog/BlogWrite.vue'],resolve)
 const blogcategorytag=resolve=>require(['@/components/view/blog/BlogCategoryTag.vue'],resolve)
 const infoindex=resolve=>require(['@/components/userinfo/infoindex'],resolve)
-const baseinfo=resolve=>require(['@/components/userinfo//childComponents/baseinfo'],resolve)
-const systemmessage=resolve=>require(['@/components/userinfo//childComponents/systemmessage'],resolve)
+const baseinfo=resolve=>require(['@/components/userinfo/childComponents/baseinfo'],resolve)
+const following=resolve=>require(['@/components/userinfo/childComponents/following'],resolve)
+const systemmessage=resolve=>require(['@/components/userinfo/childComponents/systemmessage'],resolve)
 const searchresult=resolve=>require(['@/components/searchResult.vue'],resolve)
+
 const router=new Router({
   routes: [
     {
@@ -50,11 +52,11 @@ const router=new Router({
           }
         },
         {
-          path:'/userinfo',
+          path:'/userinfo/:id',
           component:infoindex,
           children:[
             {
-              path:'/userinfo',
+              path:'/userinfo/:id',
               component:baseinfo,
               meta: {
                 requireLogin: true
@@ -66,12 +68,19 @@ const router=new Router({
               meta: {
                 requireLogin: true
               }
-            }
+            },
+            // {
+            //   path:'/following',
+            //   component:following,
+            //   meta: {
+            //     requireLogin: true
+            //   }
+            // }
           ]
         },
     
         {
-          path:'/test/:id',
+          path:'/test',
           component:test
         },
         {

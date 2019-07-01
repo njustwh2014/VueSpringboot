@@ -50,7 +50,7 @@
       <div class="me-login-design">
         <p>Designed by
           <strong>
-            <router-link to="/" class="me-login-design-color">HNX</router-link>
+            <router-link to="/" class="me-login-design-color">WH</router-link>
           </strong>
         </p>
       </div>

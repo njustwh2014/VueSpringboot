@@ -31,7 +31,8 @@ public class JedisClientPool implements JedisClient, InitializingBean {
     public void afterPropertiesSet() throws Exception {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxTotal(1000);//设置最大连接池数量
-        jedisPool = new JedisPool("redis://localhost:6379/10");
+//        jedisPool = new JedisPool("redis://localhost:6379/10");
+       jedisPool = new JedisPool(config,"127.0.0.1",6379,2000,"wanghuan");
     }
 
     public JedisPool getJedisPool() {

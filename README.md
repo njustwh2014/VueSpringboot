@@ -1,4 +1,14 @@
 # MyWebLearnPath
+## docker安装wrk
+https://hub.docker.com/r/skandyla/wrk/
+
+```bash
+docker pull skandyla/wrk
+
+ipconfig /all # 查看docker的ip 代替localhost
+
+docker run --rm -v F:/LearnJava/loadbanlance/internal-service:/data skandyla/wrk -t4 -c1024 -d60s -T5 -s wrk.lua http://10.0.75.1:8087/invoke
+```
 ## 阿里云配置
 项目文件放置在：/home/huanhuan/myweb
 ## docker安装
@@ -18,7 +28,9 @@ cd /home/huanhuan/myweb/nginxdata
 mkdir conf
 # 复制主机nginx.conf到服务器的conf文件夹内
 # 创建容器
-docker run -d -p 3000:3000 -p 3100:3100 --name nginx-web -v /home/huanhuan/myweb/myvue:/home/huanhuan/myweb/myvue -v /home/huanhuan/myweb/images:/home/huanhuan/myweb/images -v /home/huanhuan/myweb/myvueadmin:/home/huanhuan/myweb/myvueadmin -v /home/huanhuan/myweb/myvueadmin:/home/huanhuan/myweb/myvueadmin -v /home/huanhuan/myweb/nginxdata/conf/nginx.conf:/etc/nginx/nginx.conf nginx
+docker run -d -p 3000:3000 -p 3100:3100 -p 8000:8000 --name nginx-web -v /home/huanhuan/myweb/myvue:/home/huanhuan/myweb/myvue -v /home/huanhuan/myweb/images:/home/huanhuan/myweb/images -v /home/huanhuan/myweb/myvueadmin:/home/huanhuan/myweb/myvueadmin -v /home/huanhuan/myweb/nginxdata/conf/nginx.conf:/etc/nginx/nginx.conf nginx
+# 创建容器for windows
+docker run -d -p 8000:8000 --name nginx-web -v F:/git_repository/VueSpringboot/images:/home/huanhuan/myweb/images -v F:/codeHub/docker/nginx/nginx.conf:/etc/nginx/nginx.conf nginx
 ```
 ## docker安装mysql
 ```bash
@@ -26,6 +38,8 @@ docker run -d -p 3000:3000 -p 3100:3100 --name nginx-web -v /home/huanhuan/myweb
 docker pull mysql:latest
 # run
 docker run --name mysql-mstc -v /home/huanhuan/myweb/mysqldata:/data -e MYSQL_ROOT_PASSWORD=123456 -d -i -p 3306:3306 --restart=always  mysql:latest
+# run for windows
+docker run --name mysql-mstc -v F:/codeHub/docker/mysqll:/data -e MYSQL_ROOT_PASSWORD=123456 -d -i -p 3306:3306 --restart=always  mysql:latest
 # 导出sql文件
 mysqldump -u root -p seumstc > F:/seumstc.sql
 # docker容器内导入sql文件
@@ -45,6 +59,21 @@ ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456';
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123456';
 SELECT plugin FROM mysql.user WHERE User = 'root';
 ```
+## docker配置redis
+```bash
+# 运行服务for windows
+docker run -it --name redis -v F:/codeHub/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf -v F:/codeHub/docker/redis/data:/data -d -p 6379:6379 redis:latest /bin/bash
+
+# 运行服务 
+docker run -it --name redis -v /home/huanhuan/myweb/redisdata/redis.conf:/usr/local/etc/redis/redis.conf -v /home/huanhuan/myweb/redisdata/data:/data -d -p 6379:6379 redis:latest /bin/bash
+# 进入容器
+docker exec -it redis bash
+# 加载配置
+redis-server /usr/local/etc/redis/redis.conf
+# 测试连接
+redis-cli -a wanghuan
+```
+
 ## Elasticsearch
 https://www.cnblogs.com/dreamroute/p/8484457.html
 

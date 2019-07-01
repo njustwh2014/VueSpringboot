@@ -7,6 +7,9 @@
       <el-menu-item index="/systemmessage">
         <template slot="title"><i class="el-icon-message"></i>系统消息</template>
       </el-menu-item>
+      <!-- <el-menu-item index="/following">
+        <template slot="title"><i class="el-icon-message"></i>我关注的人</template>
+      </el-menu-item> -->
       <el-submenu index="2">
         <template slot="title"><i class="el-icon-menu"></i>导航二</template>
         <el-menu-item-group>

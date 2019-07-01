@@ -3,7 +3,7 @@
     <el-row class="me-header">
       <el-col :span="4" class="me-header-left" align="center">
         <router-link to="/" class="me-title">
-          <img src="../assets/logo.png">
+          <img src="static/logo.png">
         </router-link>
       </el-col>
 
@@ -26,12 +26,19 @@
           </el-submenu>
           <!-- <el-menu-item index="3" disabled>步行街</el-menu-item> -->
           <!-- <el-menu-item index="4" disabled>待开发</el-menu-item> -->
-          <el-menu-item index="/userinfo">
-            <i class="el-icon-user"></i>个人中心
-          </el-menu-item>
-          <el-menu-item index="/write">
-            <i class="el-icon-edit"></i>发布新闻
-          </el-menu-item>
+          
+          
+          <template v-if="!user.login">
+          </template>
+          <template v-else>
+            <el-menu-item @click="jumpToUserInfo(user.id)">
+              <i class="el-icon-user"></i>个人中心
+            </el-menu-item>
+            <el-menu-item index="/write">
+              <i class="el-icon-edit"></i>发布新闻
+            </el-menu-item>
+          </template>
+          
           <!-- <el-menu-item index="/tag/all">标签</el-menu-item>
           <el-menu-item index="/archives">文章归档</el-menu-item>
           <el-menu-item index="/log">日志</el-menu-item>
@@ -135,12 +142,14 @@ export default {
     user() {
       let login = this.$store.state.email.length != 0;
       let avatar = this.$store.state.avatar;
+      let id=this.$store.state.id;
       if (login) {
         this.validateHaveUnReadMessage();
       }
       return {
         login,
-        avatar
+        avatar,
+        id
       };
     }
   },
@@ -248,6 +257,9 @@ export default {
     },
     handleGetAllMessage(){
       this.$router.push({ path: "/systemmessage" });
+    },
+    jumpToUserInfo(userid){
+      this.$router.push({path:`/userinfo/${userid}`})
     }
 
 

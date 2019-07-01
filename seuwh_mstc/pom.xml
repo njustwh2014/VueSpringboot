@@ -112,7 +112,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--FastDFS-->
         <dependency>
             <groupId>org.csource</groupId>
             <artifactId>fastdfs-client-java</artifactId>

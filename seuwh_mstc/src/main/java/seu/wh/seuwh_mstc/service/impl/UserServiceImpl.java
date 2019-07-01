@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(Md5Utils.MD5(password + user.getSalt()));//存入密码加盐后的加密密文
         user.setLasttime(date);
         user.setToken(token);
-        user.setHeadportraiturl("http://47.100.58.57:3000/efee39c8-cfb6-438d-8ea7-c80c279ca850_niming.jpg");
+        user.setHeadportraiturl("http://47.100.58.57:3000/7b185cce-adda-49a5-94bb-ddc870f0cd61_niming.jpg");
         user.setId(userDao.addUser(user));
 
 //        return ResultInfo.ok(user.getId());
