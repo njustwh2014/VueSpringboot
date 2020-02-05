@@ -37,7 +37,7 @@ docker run -d -p 8000:8000 --name nginx-web -v F:/git_repository/VueSpringboot/i
 # pull image
 docker pull mysql:latest
 # run
-docker run --name mysql-mstc -v /home/huanhuan/myweb/mysqldata:/data -e MYSQL_ROOT_PASSWORD=123456 -d -i -p 3306:3306 --restart=always  mysql:latest
+docker run --name mysql-mstc -v /root/wanghuan/docker/mysql/data:/data -e MYSQL_ROOT_PASSWORD=123456 -d -i -p 3306:3306 --restart=always  mysql:latest
 # run for windows
 docker run --name mysql-mstc -v F:/codeHub/docker/mysqll:/data -e MYSQL_ROOT_PASSWORD=123456 -d -i -p 3306:3306 --restart=always  mysql:latest
 # 导出sql文件
@@ -65,7 +65,7 @@ SELECT plugin FROM mysql.user WHERE User = 'root';
 docker run -it --name redis -v F:/codeHub/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf -v F:/codeHub/docker/redis/data:/data -d -p 6379:6379 redis:latest /bin/bash
 
 # 运行服务 
-docker run -it --name redis -v /home/huanhuan/myweb/redisdata/redis.conf:/usr/local/etc/redis/redis.conf -v /home/huanhuan/myweb/redisdata/data:/data -d -p 6379:6379 redis:latest /bin/bash
+docker run -it --name redis -v /root/wanghuan/docker/redis/cfg/redis.conf:/usr/local/etc/redis/redis.conf -v /root/wanghuan/docker/redis/data:/data -d -p 6379:6379 redis:latest /bin/bash
 # 进入容器
 docker exec -it redis bash
 # 加载配置
